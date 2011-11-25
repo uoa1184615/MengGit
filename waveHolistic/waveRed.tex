@@ -1,6 +1,9 @@
 \documentclass[10pt,a5paper]{article}
 \IfFileExists{ajr.sty}{\usepackage{ajr}}{}
-\usepackage{reducecode}
+\usepackage{amsmath,defns,reducecode}
+\newcommand{\cG}{\ensuremath{\mathcal G}}
+%\newcommand{\rat}[2]{{\textstyle\frac{#1}{#2}}}
+\newcommand{\sech}{\operatorname{sech}}
 
 \title{Good numerics of wave-like PDEs}
 \author{Tony Roberts \and Meng Cao}
@@ -12,13 +15,29 @@
 
 Try to develop good numerics of wave-like PDEs using
 a staggered element approach.  It is a bit hairy. 
+For `small' parameter~$\nu$, the \pde{}s for fields $h(x,t)$~and~$u(x,t)$ are among
+\begin{align*}&
+\D th=-\D xu\,,
+\\&
+\D tu=-\D xh-\nu u+\nu\DD xu-\nu u\D xu\,.
+\end{align*}
+To be solved on elements centred on~$X_j$ with coupling condition
+\begin{equation*}
+(1-\rat\gamma2)\left[u_j(X_{j+1},t)-u_j(X_{j-1},t)\right]
+=\rat\gamma2\left[u_{j+2}(X_{j+1},t)-u_{j-2}(X_{j-1},t)\right],
+\end{equation*}
+and correspondingly for~$h$.
 
-\section{Construct the model}
 
+\section{Computer algebra constructs the model}
+
+\paragraph{Improve printing}
 \begin{reduce}
 on div; off allfac; on revpri;
 linelength(70)$ factor dx,df; 
 \end{reduce}
+
+\paragraph{Avoid slow integration with specific operator}
 Introduce the sign function to handle the derivative discontinuities across the centre of each element.  Define the integral operator to handle polynomials with sign functions, both indefinite and definite to $\xi=\verb|q|=\pm 1$.
 \begin{reduce}
 let df(sign(~x),~y)=>0;
@@ -33,10 +52,14 @@ let { intx(xi^~~p,xi)=>xi^(p+1)/(p+1)
     , intx(sign(xi),xi,~q)=>sign(q)*q
     };
 \end{reduce}
+
+\paragraph{Introduce subgrid variable}
 Introduced above is the subgrid variable $\xi=(x-X_j)/dx$, $|\xi|<1$\,, in which the fields are described.
 \begin{reduce}
 depend xi,x;  let df(xi,x)=>1/dx;
 \end{reduce}
+
+\paragraph{Define evolving amplitudes}
 Amplitudes are as $U_j(t)=u_j(X_j,t)$ and $H_j(t)=h_j(X_j,t)$.  The difference here is that we take, say, even~$j$ to be the $u$-elements and odd~$j$ to be the $h$-elements.  Actually it does not matter which way around, or even if you regard the modelling as being of two disjoint systems (one one way and one the other).  The amplitudes depend upon time according to some approximation stored in \verb|gh|~and~\verb|gu|.
 \begin{reduce}
 operator hh; operator uu;
@@ -45,28 +68,42 @@ let { df(hh(~k),t)=>sub(j=k,gh)
     , df(uu(~k),t)=>sub(j=k,gu)
     };
 \end{reduce}
-Now the evolution equations are coupled together.  By some symmetry we decouple the equations using this operator~\verb|ginv|.  However, I expect that some problems will not decouple (look for non-cancelling pollution by~\verb|ginv| operators).  In which case we have to accept that the DEs for the amplitudes are \emph{implicit} DEs.
+
+\paragraph{But solvability condition is coupled}
+Now the evolution equations are coupled together.  By some symmetry we decouple the equations using this operator~\verb|ginv|.  However, I expect that some problems will not decouple (look for non-cancelling pollution by~\verb|ginv| operators).  In which case we have to accept that the DEs for the amplitudes are \emph{implicit} DEs using the following operator.  Let's define $\cG=E+E^{-1}$ so that $\cG F_j=F_{j+1}+F_{j-1}$\,.  Take $\cG^{-1}$ of this equation to deduce $\cG^{-1} F_{j\pm1}=F_j-\cG^{-1} F_{j\mp1}$\,, and change subscripts, $j\mapsto k\mp1$\,, to deduce $\cG^{-1} F_k=F_{k\mp1}-\cG^{-1} F_{k\mp2}$\,.  That is, we change an inverse of~\cG\ to one with subscript closer to $k=j$\,, or otherwise if we desire. Have here coded some quadratic transformations so we can resolve quadratic terms in the model, but I guess we also might want cubic.
 \begin{reduce}
 operator ginv; linear ginv;
-let { ginv(uu(j+~k),j)=>uu(j+k-1)-ginv(uu(j+k-2),j) when k>1
-    , ginv(uu(j+~k),j)=>uu(j+k+1)-ginv(uu(j+k+2),j) when k<0
-    , ginv(hh(j+~k),j)=>hh(j+k-1)-ginv(hh(j+k-2),j) when k>1
-    , ginv(hh(j+~k),j)=>hh(j+k+1)-ginv(hh(j+k+2),j) when k<0
+let { df(ginv(~a,t),t)=>ginv(df(a,t),t)
+    , ginv(~a(j+~k),t)=>a(j+k-1)-ginv(a(j+k-2),t) when k>1
+    , ginv(~a(j+~k),t)=>a(j+k+1)-ginv(a(j+k+2),t) when k<0
+    , ginv(~a(j+~k)^2,t)=>a(j+k-1)^2-ginv(a(j+k-2)^2,t) when k>1
+    , ginv(~a(j+~k)^2,t)=>a(j+k+1)^2-ginv(a(j+k+2)^2,t) when k<0
+    , ginv(~a(j+~~k)*~b(j+~~l),t)=> a(j+k-1)*b(j+l-1)
+      -ginv(a(j+k-2)*b(j+l-2),t) when k+l>2
+    , ginv(~a(j+~~k)*~b(j+~~l),t)=> a(j+k+1)*b(j+l+1)
+      -ginv(a(j+k+2)*b(j+l+2),t) when k+l<-1
     };
 \end{reduce}
+
+\paragraph{Start with linear approximation}
 Linear approximation is the usual piecewise constant fields in each element.
 \begin{reduce}
 hj:=hh(j); uj:=uu(j);
 gh:=gu:=0;
-let gam^7=>0;
+let gam^4=>0;
 gamma:=gam;
 \end{reduce}
-Iterate to seek a solution.
+
+\paragraph{Iterate to a slow manifold}
+Iterate to seek a solution, terminating only when residuals are zero to specified order.
 \begin{reduce}
-for it:=1:19 do begin
+for it:=1:9 do begin
 \end{reduce}
+
+\paragraph{Use $h$-equation to update $u$-field}
 Compute residuals for the $h$-equations that give the $h_j$-evolution and the $u_j$-field, but shifted so that the~$\xi$
-variables are the same for the terms.  Blithely assumes the \verb|gh|~and~\verb|gu| update can always be done!
+variables are the same for the terms.  
+
 \begin{reduce}
 hr:=sub({xi=xi-1,j=j+1},(hj where sign(xi)=>-1))$
 reshr:=(df(hr,t)+df(uj,x) where sign(xi)=>+1);
@@ -78,44 +115,55 @@ resuc:=(1-gamma/2)*(sub(xi=1,uj)-sub(xi=-1,uj))
          -gamma/2*(+sub({xi=-1,j=j+2},uj)-sub({xi=+1,j=j-2},uj));
 write lengthresuc:=length(resuc);
 ghd:=ginv(resuc/dx-intx(reshr,xi,+1)
-                  +intx(reshl,xi,-1),j);
+                  +intx(reshl,xi,-1),t);
 gh:=gh+ghd;
 uj:=uj-dx*intx( (1+sign(xi))/2*(reshr+sub(j=j+1,ghd))
                +(1-sign(xi))/2*(reshl+sub(j=j-1,ghd)),xi);
 \end{reduce}
-Second, do the converse case exactly the same but opposite, by symmetry.  However, now try small bed drag in the $u$-equation.
+
+\paragraph{Use $u$-equation to update $h$-field}
+Second, do the converse case exactly the same but opposite, by symmetry.  However, now try small bed drag and/or dissipation and/or nonlinear advection in the $u$-equation: find that there is no change in the subgrid fields for linear dissipation, just apparently reasonable changes in the evolution.  
+
 \begin{reduce}
-let nu^3=>0;  factor nu;
+let nu^2=>0;  factor nu; 
 ur:=sub({xi=xi-1,j=j+1},(uj where sign(xi)=>-1))$
-resur:=(df(ur,t)+df(hj,x)-nu*df(ur,x,x) where sign(xi)=>+1);
+resur:=(df(ur,t)+df(hj,x)+nu*df(ur,x)*ur where sign(xi)=>+1);
 write lengthresur:=length(resur);
 ul:=sub({xi=xi+1,j=j-1},(uj where sign(xi)=>+1))$
-resul:=(df(ul,t)+df(hj,x)-nu*df(ul,x,x) where sign(xi)=>-1);
+resul:=(df(ul,t)+df(hj,x)+nu*df(ul,x)*ul where sign(xi)=>-1);
 write lengthresul:=length(resul);
 reshc:=(1-gamma/2)*(sub(xi=1,hj)-sub(xi=-1,hj))
          -gamma/2*(+sub({xi=-1,j=j+2},hj)-sub({xi=+1,j=j-2},hj));
 write lengthreshc:=length(reshc);
 gud:=ginv(reshc/dx-intx(resur,xi,+1)
-                  +intx(resul,xi,-1),j);
+                  +intx(resul,xi,-1),t);
 gu:=gu+gud;
 hj:=hj-dx*intx( (1+sign(xi))/2*(resur+sub(j=j+1,gud))
                +(1-sign(xi))/2*(resul+sub(j=j-1,gud)),xi);
 \end{reduce}
+
+\paragraph{Terminate the loop}
 Exit the loop if all residuals are zero.
 \begin{reduce}
   if {reshr,reshl,resuc,resur,resul,reshc}={0,0,0,0,0,0}
   then write it:=it+100000;
   showtime;
-end;
+end;    
 \end{reduce}
-Finish by finding the equivalent PDE for the discretisation.
+
+\paragraph{Equivalent PDEs}
+Finish by finding the equivalent \pde\ for the discretisation.  Since $\cG=E+E^{-1}=e^{dx\partial}+e^{-dx\partial}=2\cosh(dx\partial)$ so $\cG^{-1}=\rat12\sech(dx\partial)$.
 \begin{reduce}
 let dx^8=>0;
 depend uu,x; depend hh,x;
 rules:={uu(j)=>uu, uu(j+~p)=>uu+(for n:=1:8 sum 
                df(uu,x,n)*(dx*p)^n/factorial(n))
        ,hh(j)=>hh, hh(j+~p)=>hh+(for n:=1:8 sum 
-               df(hh,x,n)*(dx*p)^n/factorial(n)) }$
+               df(hh,x,n)*(dx*p)^n/factorial(n)) 
+       ,ginv(~a,t)=>1/2*(a-1/2*dx^2*df(a,x,2) 
+       +5/24*dx^4*df(a,x,4) -61/720*dx^6*df(a,x,6)
+       +277/8064*dx^8*df(a,x,8) )
+       }$
 ghde:=(gh where rules);
 gude:=(gu where rules);
 end;
