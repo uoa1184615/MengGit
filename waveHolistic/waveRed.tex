@@ -1,9 +1,9 @@
-\documentclass[11pt,a5paper]{article}
+\documentclass[10pt,a5paper]{article}
 \IfFileExists{ajr.sty}{\usepackage{ajr}}{}
 \usepackage{reducecode}
 
 \title{Good numerics of wave-like PDEs}
-\author{Tony Roberts}
+\author{Tony Roberts \and Meng Cao}
 \date{\today}
 
 \begin{document}
@@ -13,16 +13,31 @@
 Try to develop good numerics of wave-like PDEs using
 a staggered element approach.  It is a bit hairy. 
 
+\section{Construct the model}
 
 \begin{reduce}
 on div; off allfac; on revpri;
-let df(sign(~x),~y)=>0;
+linelength(70)$ factor dx,df; 
 \end{reduce}
-$xi=(x-X_j)/dx$ is internal variable, $|xi|<1$
+Introduce the sign function to handle the derivative discontinuities across the centre of each element.  Define the integral operator to handle polynomials with sign functions, both indefinite and definite to $\xi=\verb|q|=\pm 1$.
+\begin{reduce}
+let df(sign(~x),~y)=>0;
+operator intx; linear intx;
+let { intx(xi^~~p,xi)=>xi^(p+1)/(p+1)
+    , intx(1,xi)=>xi
+    , intx(sign(xi)*xi^~~p,xi)=>sign(xi)*xi^(p+1)/(p+1)
+    , intx(sign(xi),xi)=>sign(xi)*xi
+    , intx(xi^~~p,xi,~q)=>q^(p+1)/(p+1)
+    , intx(1,xi,~q)=>q
+    , intx(sign(xi)*xi^~~p,xi,~q)=>sign(q)*q^(p+1)/(p+1)
+    , intx(sign(xi),xi,~q)=>sign(q)*q
+    };
+\end{reduce}
+Introduced above is the subgrid variable $\xi=(x-X_j)/dx$, $|\xi|<1$\,, in which the fields are described.
 \begin{reduce}
 depend xi,x;  let df(xi,x)=>1/dx;
 \end{reduce}
-amplitudes are defined at ??
+Amplitudes are as $U_j(t)=u_j(X_j,t)$ and $H_j(t)=h_j(X_j,t)$.  The difference here is that we take, say, even~$j$ to be the $u$-elements and odd~$j$ to be the $h$-elements.  Actually it does not matter which way around, or even if you regard the modelling as being of two disjoint systems (one one way and one the other).  The amplitudes depend upon time according to some approximation stored in \verb|gh|~and~\verb|gu|.
 \begin{reduce}
 operator hh; operator uu;
 depend hh,t; depend uu,t;
@@ -30,26 +45,109 @@ let { df(hh(~k),t)=>sub(j=k,gh)
     , df(uu(~k),t)=>sub(j=k,gu)
     };
 \end{reduce}
-linear approximation
+Now the evolution equations are coupled together.  By some symmetry we decouple the equations using this operator~\verb|ginv|.  However, I expect that some problems will not decouple (look for non-cancelling pollution by~\verb|ginv| operators).  In which case we have to accept that the DEs for the amplitudes are \emph{implicit} DEs.
 \begin{reduce}
-h:=hh(j); up:=uu(j);
-gh:=gu:=0;
-let gam^2=>0;
+operator ginv; linear ginv;
+let { ginv(uu(j+~k),j)=>uu(j+k-1)-ginv(uu(j+k-2),j) when k>+1
+    , ginv(uu(j+~k),j)=>uu(j+k+1)-ginv(uu(j+k+2),j) when k<-1
+    , ginv(hh(j+~k),j)=>hh(j+k-1)-ginv(hh(j+k-2),j) when k>+1
+    , ginv(hh(j+~k),j)=>hh(j+k+1)-ginv(hh(j+k+2),j) when k<-1
+    };
 \end{reduce}
-compute some residuals, but shifted so that the xi
-variables are the same for the terms
+Linear approximation is the usual piecewise constant fields in each element.
 \begin{reduce}
-reshr:=sub(xi=xi+1/2,df(h,t))+df(up,x);
-resur:=sub(xi=xi-1/2,df(up,t))+df(h,x);
-reshl:=sub({xi=xi-1/2,j=j+1},df(h,t))+df(up,x);
-resul:=sub({xi=xi+1/2,j=j-1},df(up,t))+df(h,x);
-reshc:=sub(xi=1/2,h)-sub(xi=-1/2,h)-gam/2*(
-     sub(xi=+1/2,h)+sub({xi=-1/2,j=j+1},h)
-    -sub(xi=-1/2,h)-sub({xi=+1/2,j=j-1},h));
-resuc:=sub(xi=1/2,up)-sub(xi=-1/2,up)-gam/2*(
-     sub(xi=+1/2,up)+sub({xi=-1/2,j=j+1},up)
-    -sub(xi=-1/2,up)-sub({xi=+1/2,j=j-1},up));
+hj:=hh(j); uj:=uu(j);
+gh:=gu:=0;
+let gam^6=>0;
+gamma:=gam;
+\end{reduce}
+Iterate to seek a solution.
+\begin{reduce}
+for it:=1:9 do begin
+\end{reduce}
+Compute residuals for the $h$-equations that give the $h_j$-evolution and the $u_j$-field, but shifted so that the~$\xi$
+variables are the same for the terms.  Blithely assumes the \verb|gh|~and~\verb|gu| update can always be done!
+\begin{reduce}
+hr:=sub({xi=xi-1,j=j+1},(hj where sign(xi)=>-1))$
+reshr:=(df(hr,t)+df(uj,x) where sign(xi)=>+1);
+hl:=sub({xi=xi+1,j=j-1},(hj  where sign(xi)=>+1))$
+reshl:=(df(hl,t)+df(uj,x) where sign(xi)=>-1);
+resuc:=(1-gamma/2)*(sub(xi=1,uj)-sub(xi=-1,uj))
+         -gamma/2*(+sub({xi=-1,j=j+2},uj)-sub({xi=+1,j=j-2},uj));
+ghd:=ginv(resuc/dx-intx(reshr,xi,+1)
+                  +intx(reshl,xi,-1),j);
+gh:=gh+ghd;
+uj:=uj-dx*intx( (1+sign(xi))/2*(reshr+sub(j=j+1,ghd))
+               +(1-sign(xi))/2*(reshl+sub(j=j-1,ghd)),xi);
+\end{reduce}
+Second, do the converse case exactly the same but opposite, by symmetry.
+\begin{reduce}
+ur:=sub({xi=xi-1,j=j+1},(uj where sign(xi)=>-1))$
+resur:=(df(ur,t)+df(hj,x) where sign(xi)=>+1);
+ul:=sub({xi=xi+1,j=j-1},(uj where sign(xi)=>+1))$
+resul:=(df(ul,t)+df(hj,x) where sign(xi)=>-1);
+reshc:=(1-gamma/2)*(sub(xi=1,hj)-sub(xi=-1,hj))
+         -gamma/2*(+sub({xi=-1,j=j+2},hj)-sub({xi=+1,j=j-2},hj));
+gud:=ginv(reshc/dx-intx(resur,xi,+1)
+                  +intx(resul,xi,-1),j);
+gu:=gu+gud;
+hj:=hj-dx*intx( (1+sign(xi))/2*(resur+sub(j=j+1,gud))
+               +(1-sign(xi))/2*(resul+sub(j=j-1,gud)),xi);
+\end{reduce}
+Exit the loop if all residuals are zero.
+\begin{reduce}
+  if {reshr,reshl,resuc,resur,resul,reshc}={0,0,0,0,0,0}
+  then write it:=it+100000;
+  showtime;
+end;
+\end{reduce}
+Finish by finding the equivalent PDE for the discretisation.
+\begin{reduce}
+let dx^8=>0;
+depend uu,x;
+rules:={uu(j)=>uu, uu(j+~p)=>uu+(for n:=1:8 sum 
+               df(uu,x,n)*(dx*p)^n/factorial(n)) }$
+ghde:=(gh where rules);
 end;
 \end{reduce}
 
+\section{Sample output}
+\begin{verbatim}
+1: in_tex "waveRed.tex"$
+
+hj := hh(j)
+
+uj := uu(j)
+
+gh := gu := 0
+
+gamma := gam
+
+Time: 10 ms
+
+Time: 10 ms
+
+Time: 20 ms
+
+Time: 30 ms
+
+Time: 30 ms
+
+it := 100006
+
+Time: 20 ms
+
+                                       2      1         1     3
+ghde :=  - df(uu,x)*gam + df(uu,x,3)*dx *( - ---*gam + ---*gam )
+                                              6         6
+
+                        4       1          1      3    3      5
+         + df(uu,x,5)*dx *( - -----*gam + ----*gam  - ----*gam )
+                               120         12          40
+
+                        6       1           13      3    1      5
+         + df(uu,x,7)*dx *( - ------*gam + -----*gam  - ----*gam )
+                               5040         720          16
+
+\end{verbatim}
 \end{document}
