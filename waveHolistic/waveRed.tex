@@ -13,23 +13,32 @@
 Try to develop good numerics of wave-like PDEs using
 a staggered element approach.  It is a bit hairy. 
 
+
 \begin{reduce}
 on div; off allfac; on revpri;
 let df(sign(~x),~y)=>0;
-write "xi=(x-X_j)/dx is internal variable, |xi|<1/2";
+\end{reduce}
+$xi=(x-X_j)/dx$ is internal variable, $|xi|<1$
+\begin{reduce}
 depend xi,x;  let df(xi,x)=>1/dx;
-write "amplitudes are defined at ??";
-operator hh; operator uup;
-depend hh,t; depend uup,t;
+\end{reduce}
+amplitudes are defined at ??
+\begin{reduce}
+operator hh; operator uu;
+depend hh,t; depend uu,t;
 let { df(hh(~k),t)=>sub(j=k,gh)
-    , df(uup(~k),t)=>sub(j=k,gup)
+    , df(uu(~k),t)=>sub(j=k,gu)
     };
-write "linear approximation";
-h:=hh(j); up:=uup(j);
-gh:=gup:=0;
+\end{reduce}
+linear approximation
+\begin{reduce}
+h:=hh(j); up:=uu(j);
+gh:=gu:=0;
 let gam^2=>0;
-write "compute some residuals, but shifted so that the xi
-variables are the same for the terms";
+\end{reduce}
+compute some residuals, but shifted so that the xi
+variables are the same for the terms
+\begin{reduce}
 reshr:=sub(xi=xi+1/2,df(h,t))+df(up,x);
 resur:=sub(xi=xi-1/2,df(up,t))+df(h,x);
 reshl:=sub({xi=xi-1/2,j=j+1},df(h,t))+df(up,x);
