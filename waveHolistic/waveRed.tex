@@ -48,46 +48,53 @@ let { df(hh(~k),t)=>sub(j=k,gh)
 Now the evolution equations are coupled together.  By some symmetry we decouple the equations using this operator~\verb|ginv|.  However, I expect that some problems will not decouple (look for non-cancelling pollution by~\verb|ginv| operators).  In which case we have to accept that the DEs for the amplitudes are \emph{implicit} DEs.
 \begin{reduce}
 operator ginv; linear ginv;
-let { ginv(uu(j+~k),j)=>uu(j+k-1)-ginv(uu(j+k-2),j) when k>+1
-    , ginv(uu(j+~k),j)=>uu(j+k+1)-ginv(uu(j+k+2),j) when k<-1
-    , ginv(hh(j+~k),j)=>hh(j+k-1)-ginv(hh(j+k-2),j) when k>+1
-    , ginv(hh(j+~k),j)=>hh(j+k+1)-ginv(hh(j+k+2),j) when k<-1
+let { ginv(uu(j+~k),j)=>uu(j+k-1)-ginv(uu(j+k-2),j) when k>1
+    , ginv(uu(j+~k),j)=>uu(j+k+1)-ginv(uu(j+k+2),j) when k<0
+    , ginv(hh(j+~k),j)=>hh(j+k-1)-ginv(hh(j+k-2),j) when k>1
+    , ginv(hh(j+~k),j)=>hh(j+k+1)-ginv(hh(j+k+2),j) when k<0
     };
 \end{reduce}
 Linear approximation is the usual piecewise constant fields in each element.
 \begin{reduce}
 hj:=hh(j); uj:=uu(j);
 gh:=gu:=0;
-let gam^6=>0;
+let gam^7=>0;
 gamma:=gam;
 \end{reduce}
 Iterate to seek a solution.
 \begin{reduce}
-for it:=1:9 do begin
+for it:=1:19 do begin
 \end{reduce}
 Compute residuals for the $h$-equations that give the $h_j$-evolution and the $u_j$-field, but shifted so that the~$\xi$
 variables are the same for the terms.  Blithely assumes the \verb|gh|~and~\verb|gu| update can always be done!
 \begin{reduce}
 hr:=sub({xi=xi-1,j=j+1},(hj where sign(xi)=>-1))$
 reshr:=(df(hr,t)+df(uj,x) where sign(xi)=>+1);
+write lengthreshr:=length(reshr);
 hl:=sub({xi=xi+1,j=j-1},(hj  where sign(xi)=>+1))$
 reshl:=(df(hl,t)+df(uj,x) where sign(xi)=>-1);
+write lengthreshl:=length(reshl);
 resuc:=(1-gamma/2)*(sub(xi=1,uj)-sub(xi=-1,uj))
          -gamma/2*(+sub({xi=-1,j=j+2},uj)-sub({xi=+1,j=j-2},uj));
+write lengthresuc:=length(resuc);
 ghd:=ginv(resuc/dx-intx(reshr,xi,+1)
                   +intx(reshl,xi,-1),j);
 gh:=gh+ghd;
 uj:=uj-dx*intx( (1+sign(xi))/2*(reshr+sub(j=j+1,ghd))
                +(1-sign(xi))/2*(reshl+sub(j=j-1,ghd)),xi);
 \end{reduce}
-Second, do the converse case exactly the same but opposite, by symmetry.
+Second, do the converse case exactly the same but opposite, by symmetry.  However, now try small bed drag in the $u$-equation.
 \begin{reduce}
+let nu^3=>0;  factor nu;
 ur:=sub({xi=xi-1,j=j+1},(uj where sign(xi)=>-1))$
-resur:=(df(ur,t)+df(hj,x) where sign(xi)=>+1);
+resur:=(df(ur,t)+df(hj,x)-nu*df(ur,x,x) where sign(xi)=>+1);
+write lengthresur:=length(resur);
 ul:=sub({xi=xi+1,j=j-1},(uj where sign(xi)=>+1))$
-resul:=(df(ul,t)+df(hj,x) where sign(xi)=>-1);
+resul:=(df(ul,t)+df(hj,x)-nu*df(ul,x,x) where sign(xi)=>-1);
+write lengthresul:=length(resul);
 reshc:=(1-gamma/2)*(sub(xi=1,hj)-sub(xi=-1,hj))
          -gamma/2*(+sub({xi=-1,j=j+2},hj)-sub({xi=+1,j=j-2},hj));
+write lengthreshc:=length(reshc);
 gud:=ginv(reshc/dx-intx(resur,xi,+1)
                   +intx(resul,xi,-1),j);
 gu:=gu+gud;
@@ -104,10 +111,13 @@ end;
 Finish by finding the equivalent PDE for the discretisation.
 \begin{reduce}
 let dx^8=>0;
-depend uu,x;
+depend uu,x; depend hh,x;
 rules:={uu(j)=>uu, uu(j+~p)=>uu+(for n:=1:8 sum 
-               df(uu,x,n)*(dx*p)^n/factorial(n)) }$
+               df(uu,x,n)*(dx*p)^n/factorial(n))
+       ,hh(j)=>hh, hh(j+~p)=>hh+(for n:=1:8 sum 
+               df(hh,x,n)*(dx*p)^n/factorial(n)) }$
 ghde:=(gh where rules);
+gude:=(gu where rules);
 end;
 \end{reduce}
 
