@@ -34,7 +34,7 @@ and correspondingly for~$h$.
 \paragraph{Improve printing}
 \begin{reduce}
 on div; off allfac; on revpri;
-linelength(70)$ factor dx,df; 
+linelength(70)$ factor dd,df; 
 \end{reduce}
 
 \paragraph{Avoid slow integration with specific operator}
@@ -54,19 +54,20 @@ let { intx(xi^~~p,xi)=>xi^(p+1)/(p+1)
 \end{reduce}
 
 \paragraph{Introduce subgrid variable}
-Introduced above is the subgrid variable $\xi=(x-X_j)/dx$, $|\xi|<1$\,, in which the fields are described.
+Introduced above is the subgrid variable $\xi=(x-X_j)/D$, $|\xi|<1$\,, in which the fields are described.
 \begin{reduce}
-depend xi,x;  let df(xi,x)=>1/dx;
+depend xi,x;  let df(xi,x)=>1/dd;
 \end{reduce}
 
 \paragraph{Define evolving amplitudes}
-Amplitudes are as $U_j(t)=u_j(X_j,t)$ and $H_j(t)=h_j(X_j,t)$.  The difference here is that we take, say, even~$j$ to be the $u$-elements and odd~$j$ to be the $h$-elements.  Actually it does not matter which way around, or even if you regard the modelling as being of two disjoint systems (one one way and one the other).  The amplitudes depend upon time according to some approximation stored in \verb|gh|~and~\verb|gu|.
+Amplitudes are as $U_j(t)=u_j(X_j,t)$ and $H_j(t)=h_j(X_j,t)$, although I also try the element averages $U_j(t)=\frac1{2D}\int_{X_{j-1}}^{X_{j+1}}u_j(x,t)\,dx$ for conservation reasons---no real difference that I can yet see.  The difference here is that we take, say, even~$j$ to be the $u$-elements and odd~$j$ to be the $h$-elements.  Actually it does not matter which way around, or even if you regard the modelling as being of two disjoint systems (one one way and one the other).  The amplitudes depend upon time according to some approximation stored in \verb|gh|~and~\verb|gu|.
 \begin{reduce}
 operator hh; operator uu;
 depend hh,t; depend uu,t;
 let { df(hh(~k),t)=>sub(j=k,gh)
     , df(uu(~k),t)=>sub(j=k,gu)
     };
+conserve:=1; % flags conservation
 \end{reduce}
 
 \paragraph{But solvability condition is coupled}
@@ -114,11 +115,12 @@ write lengthreshl:=length(reshl);
 resuc:=(1-gamma/2)*(sub(xi=1,uj)-sub(xi=-1,uj))
          -gamma/2*(+sub({xi=-1,j=j+2},uj)-sub({xi=+1,j=j-2},uj));
 write lengthresuc:=length(resuc);
-ghd:=ginv(resuc/dx-intx(reshr,xi,+1)
+ghd:=ginv(resuc/dd-intx(reshr,xi,+1)
                   +intx(reshl,xi,-1),t);
 gh:=gh+ghd;
-uj:=uj-dx*intx( (1+sign(xi))/2*(reshr+sub(j=j+1,ghd))
+uj:=uj-dd*intx( (1+sign(xi))/2*(reshr+sub(j=j+1,ghd))
                +(1-sign(xi))/2*(reshl+sub(j=j-1,ghd)),xi);
+if conserve then uj:=uj-(intx(uj,xi,1)-intx(uj,xi,-1))/2+uu(j);
 \end{reduce}
 
 \paragraph{Use $u$-equation to update $h$-field}
@@ -135,11 +137,12 @@ write lengthresul:=length(resul);
 reshc:=(1-gamma/2)*(sub(xi=1,hj)-sub(xi=-1,hj))
          -gamma/2*(+sub({xi=-1,j=j+2},hj)-sub({xi=+1,j=j-2},hj));
 write lengthreshc:=length(reshc);
-gud:=ginv(reshc/dx-intx(resur,xi,+1)
+gud:=ginv(reshc/dd-intx(resur,xi,+1)
                   +intx(resul,xi,-1),t);
 gu:=gu+gud;
-hj:=hj-dx*intx( (1+sign(xi))/2*(resur+sub(j=j+1,gud))
+hj:=hj-dd*intx( (1+sign(xi))/2*(resur+sub(j=j+1,gud))
                +(1-sign(xi))/2*(resul+sub(j=j-1,gud)),xi);
+if conserve then hj:=hj-(intx(hj,xi,1)-intx(hj,xi,-1))/2+hh(j);
 \end{reduce}
 
 \paragraph{Terminate the loop}
@@ -152,17 +155,17 @@ end;
 \end{reduce}
 
 \paragraph{Equivalent PDEs}
-Finish by finding the equivalent \pde\ for the discretisation.  Since $\cG=E+E^{-1}=e^{dx\partial}+e^{-dx\partial}=2\cosh(dx\partial)$ so $\cG^{-1}=\rat12\sech(dx\partial)$.
+Finish by finding the equivalent \pde\ for the discretisation.  Since $\cG=E+E^{-1}=e^{dd\partial}+e^{-dd\partial}=2\cosh(dd\partial)$ so $\cG^{-1}=\rat12\sech(dd\partial)$.
 \begin{reduce}
-let dx^8=>0;
+let dd^8=>0;
 depend uu,x; depend hh,x;
 rules:={uu(j)=>uu, uu(j+~p)=>uu+(for n:=1:8 sum 
-               df(uu,x,n)*(dx*p)^n/factorial(n))
+               df(uu,x,n)*(dd*p)^n/factorial(n))
        ,hh(j)=>hh, hh(j+~p)=>hh+(for n:=1:8 sum 
-               df(hh,x,n)*(dx*p)^n/factorial(n)) 
-       ,ginv(~a,t)=>1/2*(a-1/2*dx^2*df(a,x,2) 
-       +5/24*dx^4*df(a,x,4) -61/720*dx^6*df(a,x,6)
-       +277/8064*dx^8*df(a,x,8) )
+               df(hh,x,n)*(dd*p)^n/factorial(n)) 
+       ,ginv(~a,t)=>1/2*(a-1/2*dd^2*df(a,x,2) 
+       +5/24*dd^4*df(a,x,4) -61/720*dd^6*df(a,x,6)
+       +277/8064*dd^8*df(a,x,8) )
        }$
 ghde:=(gh where rules);
 gude:=(gu where rules);
@@ -196,15 +199,15 @@ it := 100006
 Time: 20 ms
 
                                        2      1         1     3
-ghde :=  - df(uu,x)*gam + df(uu,x,3)*dx *( - ---*gam + ---*gam )
+ghde :=  - df(uu,x)*gam + df(uu,x,3)*dd *( - ---*gam + ---*gam )
                                               6         6
 
                         4       1          1      3    3      5
-         + df(uu,x,5)*dx *( - -----*gam + ----*gam  - ----*gam )
+         + df(uu,x,5)*dd *( - -----*gam + ----*gam  - ----*gam )
                                120         12          40
 
                         6       1           13      3    1      5
-         + df(uu,x,7)*dx *( - ------*gam + -----*gam  - ----*gam )
+         + df(uu,x,7)*dd *( - ------*gam + -----*gam  - ----*gam )
                                5040         720          16
 
 \end{verbatim}
