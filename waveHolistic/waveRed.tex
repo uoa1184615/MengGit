@@ -5,7 +5,7 @@
 %\newcommand{\rat}[2]{{\textstyle\frac{#1}{#2}}}
 \newcommand{\sech}{\operatorname{sech}}
 
-\title{Good numerics of wave-like PDEs}
+\title{Holistic discretisation of wave-like PDEs}
 \author{Tony Roberts \and Meng Cao}
 \date{\today}
 
@@ -13,9 +13,8 @@
 
 \maketitle
 
-Try to develop good numerics of wave-like PDEs using
-a staggered element approach.  It is a bit hairy. 
-For `small' parameter~$\nu$, the \pde{}s for fields $h(x,t)$~and~$u(x,t)$ are among
+Try to develop good numerics of wave-like \pde{}s using
+a staggered element approach. For `small' parameter~$\nu$, the \pde{}s for fields $h(x,t)$~and~$u(x,t)$ are among
 \begin{align*}&
 \D th=-\D xu\,,
 \\&
@@ -38,7 +37,7 @@ linelength(70)$ factor dd,df;
 \end{reduce}
 
 \paragraph{Avoid slow integration with specific operator}
-Introduce the sign function to handle the derivative discontinuities across the centre of each element.  Define the integral operator to handle polynomials with sign functions, both indefinite and definite to $\xi=\verb|q|=\pm 1$.
+Introduce the sign function to handle the derivative discontinuities across the centre of each element.  Define the integral operator to handle polynomials with sign functions, both indefinite ($\int_0^\xi d\xi$) and definite to $\xi=\verb|q|=\pm 1$ ($\int_0^qd\xi$).
 \begin{reduce}
 let df(sign(~x),~y)=>0;
 operator intx; linear intx;
@@ -67,7 +66,7 @@ depend hh,t; depend uu,t;
 let { df(hh(~k),t)=>sub(j=k,gh)
     , df(uu(~k),t)=>sub(j=k,gu)
     };
-conserve:=1; % flags conservation
+conserve:=0; % non-zero for conservation
 \end{reduce}
 
 \paragraph{But solvability condition is coupled}
@@ -91,14 +90,14 @@ Linear approximation is the usual piecewise constant fields in each element.
 \begin{reduce}
 hj:=hh(j); uj:=uu(j);
 gh:=gu:=0;
-let gam^4=>0;
+let gam^6=>0;
 gamma:=gam;
 \end{reduce}
 
 \paragraph{Iterate to a slow manifold}
 Iterate to seek a solution, terminating only when residuals are zero to specified order.
 \begin{reduce}
-for it:=1:9 do begin
+for it:=1:19 do begin
 \end{reduce}
 
 \paragraph{Use $h$-equation to update $u$-field}
@@ -127,7 +126,7 @@ if conserve then uj:=uj-(intx(uj,xi,1)-intx(uj,xi,-1))/2+uu(j);
 Second, do the converse case exactly the same but opposite, by symmetry.  However, now try small bed drag and/or dissipation and/or nonlinear advection in the $u$-equation: find that there is no change in the subgrid fields for linear dissipation, just apparently reasonable changes in the evolution.  
 
 \begin{reduce}
-let nu^2=>0;  factor nu; 
+let nu=>0; % factor nu; 
 ur:=sub({xi=xi-1,j=j+1},(uj where sign(xi)=>-1))$
 resur:=(df(ur,t)+df(hj,x)+nu*df(ur,x)*ur where sign(xi)=>+1);
 write lengthresur:=length(resur);
@@ -169,6 +168,19 @@ rules:={uu(j)=>uu, uu(j+~p)=>uu+(for n:=1:8 sum
        }$
 ghde:=(gh where rules);
 gude:=(gu where rules);
+\end{reduce}
+
+\paragraph{Draw graph of subgrid field}
+The first plot call is a dummy that appears needed on my system for some unknown reason.
+\begin{reduce}
+plot(sin(xi),terminal=aqua);
+u0:=(uj where {nu=>0,gam=>1,uu(j)=>1,uu(j+~k)=>0 when k neq 0});
+h0:=(hj where {nu=>0,gam=>1,hh(j)=>1,hh(j+~k)=>0 when k neq 0});
+plot({u0,h0},xi=(-2 .. 2),terminal=aqua);
+\end{reduce}
+
+\paragraph{Finish}
+\begin{reduce}
 end;
 \end{reduce}
 
