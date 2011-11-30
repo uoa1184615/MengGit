@@ -1,0 +1,167 @@
+\IfFileExists{ajr.sty}
+{\documentclass[11pt,a5paper]{article}}
+{\documentclass[11pt,a4paper]{refart}}
+\usepackage{url,versions,verbatim,defns}
+\IfFileExists{ajr.sty}{\usepackage{ajr}}{}
+
+\excludeversion{gitx}
+\includeversion{gitgui}
+
+\title{git: version control and collaboration}
+\author{A.~J. Roberts}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+The software package git empowers you to easily maintain a history of a project, so you can recover old information for example, and additionally to collaborate with others on the project, so you can all work in parallel for example.  These two aspects are introduced separately:\footnote{I base this introduction on \emph{Git for the lazy}, \url{http://www.spheredev.org/wiki/Git_for_the_lazy} [Nov~2011].} Section~\ref{sec:mypl} introduces how to maintain a local history; and Section~\ref{sec:coti} introduces collaboration over the internet.
+
+\section{Installation and initialisation}
+
+\paragraph{Download} Perhaps download git from \url{http://git-scm.com/download}  To install on a Mac: download the \texttt{dmg} file; double click to unpack; look in the Git `disk symbol' on the desktop; double click on the \texttt{pkg} file, and follow instructions.  This installs git software accessible as commands from any terminal window.
+
+\paragraph{Introduce yourself to git}
+Set some useful global parameters for git.  In a terminal window type the following commands\footnote{The first two establish your identity; the third and fourth invoke some pretty colouring for the command interaction; and the last changes the default editor for command interaction to something that is generally easier to use (nano is a free version of pico).}
+\begin{verbatim}
+git config --global user.name="Your Name"
+git config --global user.email="youremail@adelaide.edu.au"
+git config --global color.ui=auto
+git config --global color.interactive=auto
+git config --global "nano -w"
+\end{verbatim}
+Review these settings, at any time, by executing in a terminal window the command
+\begin{verbatim}
+git config --global --list
+\end{verbatim}
+
+\paragraph{Perhaps use a graphical user interface}  
+Many people want a graphical user interface to git.  The web has many suggestions, and differing opinions.  
+\begin{gitx}
+I tentatively suggest using GitX (for the Mac), but use another \textsc{gui} if you prefer.\footnote{Another \textsc{gui} is git gui which comes with git; type the command \texttt{git~gui} in a terminal window.}
+
+Download GitX from \url{http://gitx.frim.nl/}, and drag into your application folder, and perhaps your menu bar.
+\end{gitx}
+\begin{gitgui}
+I tentatively suggest using `git gui', but use another \textsc{gui} if you prefer.  This application comes with git on common operating systems: just type \verb|git gui &| into a terminal window.\footnote{Make a desktop shortcut to git-gui by creating a file, named \texttt{gitgui.command}, with two lines: first, \texttt{\#!/bin/bash}, second \texttt{git gui \&}\,.  Then execute in a terminal window, \texttt{chmod ugo+x gitgui.command}\,.  Subsequent double-clicking the file icon should start git-gui.}   
+%(If not already done as above, set your git name and email via the \texttt{Preferences} for git-gui.)
+\end{gitgui}
+
+\section{Manage your project locally}
+\label{sec:mypl}
+
+With git there are \emph{three} places for storage of your files, there is:
+\begin{itemize}
+\item  your working area, directory, where you work, edit and refine files in your project as usual;
+\item  a local store of history of the project and its stages that is managed by git; and
+\item possibly an online repository, also managed by git, where you and collaborators merge independent progress on the project.
+\end{itemize}
+This second section only addresses the first two aspects of you working alone, with git, in your local working and storage area.  Section~\ref{sec:coti} discusses collaboration over the internet.
+
+
+\subsection{Start your project}
+
+Make your working directory for the project as usual, say called  \texttt{myproject}.  Then execute the following commands in a terminal window.
+\begin{description}
+\item[\texttt{cd myproject}] First change to the directory in which you are going to work.
+\item[\texttt{git init}] Tell git to start managing the history of selected files in this directory.\footnote{git creates an invisible sub-directory called \texttt{.git} in which is stored the history of the stages in your project.  Do not meddle with this sub-directory.}
+\item[\texttt{git add .}] Tell git to manage all the current files in the directory; or instead of the dot, specify a list of specific files. 
+\item[\texttt{git commit}] Stores the information that this (first) version is an identifiable stage, a `milepost', in the project.  git will request you type a message in the editor: make the first line a one line overall summary, such as ``Initial version'', and optionally provide additional information in subsequent lines.
+\end{description}
+
+\begin{gitx}
+\paragraph{Equivalent GitX GUI}
+\begin{itemize}
+\item Initialise the existing directory for git by selecting \texttt{New...} from the \texttt{File} menu, and navigating to \texttt{myproject} directory.
+\item To add files to be managed: change to the \texttt{Commit view} via a button near the top-left; double click on the required file(s) in the left-bottom-pane (so they move to the right).
+\item To commit: enter a message such as ``Initial version'' in the middle window at the bottom; and finally click \texttt{Commit} button at the bottom.
+\end{itemize}
+\end{gitx}
+\begin{gitgui}
+\paragraph{Equivalent Git-gui}
+\begin{itemize}
+\item Initialise the existing directory for git by selecting \texttt{Create new repository} from the the dialogue box, browse to the \texttt{myproject} directory, then click \texttt{Create}.
+\item To add files to be managed: click on the \emph{icon} of the required file(s) in the top-left-pane (so they move to the bottom-left); whereas clicking on the file\emph{name} displays their contents in the top-right window.
+\item To commit: enter a message such as ``Initial version'' in the window at the bottom=right; optionally click \texttt{Sign Off}; and finally click \texttt{Commit} button at the bottom.
+\end{itemize}
+\end{gitgui}
+
+\subsection{Work in small stages}
+It is best to work in small stages: remember, if you cannot summarise the work in the last stage in a one line sentence, then you have gone too long without committing.  Typically work according to the following cycle, repeat as much as you like but ensure you end with the \texttt{add} and \texttt{commit}.
+
+\begin{description}
+\item[Working]  Work, edit and refine files in your project as usual.
+\item[\texttt{git status}] Optional, checks which files you have changed.
+\item[\texttt{git diff}] Optional, check what the actual changes were.
+\item[\texttt{git add file1 file2}] Essential, nominates the files (and perhaps new files and new directories) whose updates are to be saved as the new version at this stage.
+\item[\texttt{git commit}] Essential, commits the current version of your nominated files as an identifiable stage in your project; enter and save your commit message (of at least a one line summary). 
+\end{description}
+
+
+\begin{gitx}
+\paragraph{Equivalent GitX GUI}
+\begin{itemize}
+\item Work, edit and refine files in your project as usual.
+\item Start GitX and choose the project directory from, say, the \texttt{Open Recent} list under the \texttt{File} menu.
+\item Change to the \texttt{Commit view} via a button near the top-left: managed files you have edited will be flagged by a green symbol; unmanaged files are also listed; managed files that have not changed are not listed.
+\item Optional, click on the file name in the bottom-left-pane to see, in the top window, the \texttt{diff}erences between the current version and the last commit.
+\item Double click on edited files in the bottom-left to identify (add) them as the ones that will be committed (those appearing in the bottom-right).
+\item To commit: enter a message in the middle window at the bottom; and finally click the \texttt{Commit} button at the bottom.
+\end{itemize}
+\end{gitx}
+\begin{gitgui}
+\paragraph{Equivalent Git-gui}
+\begin{itemize}
+\item Work, edit and refine files in your project as usual, in small stages.
+\item Start git-gui and choose the project directory from the \texttt{Open Recent Repository} list in the opening dialogue box.
+If git-gui is already executing, then click \texttt{Rescan} to update git-gui's information about your repository.
+\item Managed files you have edited will be flagged by a blue icon; unmanaged files are also listed; managed files that have not changed are not listed.
+\item Optional, click on the file\emph{name} in the top-left-pane to see, in the top window, the \texttt{diff}erences between the current version and the last commit.
+\item Click on the \emph{icon} of changed files in the top-left to identify (add) them as the ones that will be committed (those appearing in the bottom-left).  Alternatively, `add' all changed files under management by choosing \texttt{Stage Changed Files to Commit} from the \texttt{Commit} menu.
+\item To commit: enter a message in the middle window at the bottom; and finally click the \texttt{Commit} button at the bottom.
+\end{itemize}
+\end{gitgui}
+
+
+
+\subsection{Review your work}
+
+\begin{description}
+\item[\texttt{git log}] To overview history so far of the project.
+
+\begin{gitx}
+In the GitX \textsc{gui}, just click on the \texttt{History View} button on the top-left.
+\end{gitx}
+\begin{gitgui}
+In git-gui, click on the \texttt{View master's history} from the \texttt{Repository} menu.\footnote{This view uses gitk.  If gitk fails to start, you may need a soft link such as: \texttt{cd /usr/local/bin}\,, then \texttt{su ln -s /usr/local/git/bin/gitk}\,.}
+\end{gitgui}
+
+\item[\texttt{git log --pretty=oneline}] Lists the one line summaries.
+
+\item[\texttt{git commit --amend}] Changes the message of the last commit.
+
+\begin{gitx}
+In GitX \textsc{gui}, click on the \texttt{Amend} box in the bottom middle window.
+\end{gitx}
+\begin{gitgui}
+In git-gui, click on the \texttt{Amend Last Commit} box on the middle-right.
+\end{gitgui}
+
+\item[\texttt{git reset --hard}] If you have not committed, but realised that you have messed up your local files, then use this to recover the files as at the last commit.
+
+\item[\texttt{git checkout filename}] Just recovers the named file as at the last commit.
+
+\item[\texttt{git mv oldname newname}] Version control requires a little discipline.  One is that files under version control must only be renamed/moved via git using this command.
+
+\item[\texttt{git rm filename}] Similarly delete/remove files under version control only via git using this command.
+
+\end{description}
+
+
+
+\section{Collaborate over the internet}
+\label{sec:coti}
+
+Yet to do.
+
+\end{document}
