@@ -1,4 +1,6 @@
-\documentclass[10pt,a5paper]{article}
+\IfFileExists{ajr.sty}
+{\documentclass[10pt,a5paper]{article}}
+{\documentclass[10pt,a4paper]{refart}}
 \IfFileExists{ajr.sty}{\usepackage{ajr}}{}
 \usepackage{amsmath,defns,reducecode}
 \newcommand{\cG}{\ensuremath{\mathcal G}}
