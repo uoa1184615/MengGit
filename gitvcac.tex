@@ -15,7 +15,7 @@
 
 \maketitle
 
-The software package git empowers you to easily maintain a history of a project, so you can recover old information for example, and additionally to collaborate with others on the project, so you can all work in parallel for example.  These two aspects are introduced separately:\footnote{I base this introduction on \emph{Git for the lazy}, \url{http://www.spheredev.org/wiki/Git_for_the_lazy} [Nov~2011].} Section~\ref{sec:mypl} introduces how to maintain a local history; and Section~\ref{sec:coti} introduces collaboration over the internet.
+The software package git empowers you to easily maintain a history of a project, so you can recover old information for example, and additionally to collaborate with others on the project, so you can all work in parallel for example.  These two aspects are introduced separately: Section~\ref{sec:mypl} introduces how to maintain a local history;\footnote{I base this introduction on \emph{Git for the lazy}, \url{http://www.spheredev.org/wiki/Git_for_the_lazy} [Nov~2011].} and Section~\ref{sec:coti} introduces collaboration over the internet.
 
 \section{Installation and initialisation}
 
@@ -43,7 +43,7 @@ I tentatively suggest using GitX (for the Mac), but use another \textsc{gui} if 
 Download GitX from \url{http://gitx.frim.nl/}, and drag into your application folder, and perhaps your menu bar.
 \end{gitx}
 \begin{gitgui}
-I tentatively suggest using `git gui', but use another \textsc{gui} if you prefer.  This application comes with git on common operating systems: just type \verb|git gui &| into a terminal window.\footnote{Make a desktop shortcut to git-gui by creating a file, named \texttt{gitgui.command}, with two lines: first, \texttt{\#!/bin/bash}, second \texttt{git gui \&}\,.  Then execute in a terminal window, \texttt{chmod ugo+x gitgui.command}\,.  Subsequent double-clicking the file icon should start git-gui.}   
+I tentatively suggest using `git-gui', but use another \textsc{gui} if you prefer.  The git-gui application comes with git on common operating systems: just type \verb|git gui &| into a terminal window.\footnote{Make a desktop shortcut to git-gui by creating a file, named \texttt{gitgui.command}, with two lines: first, \texttt{\#!/bin/bash}, second \texttt{git gui \&}\,.  Then execute in a terminal window, \texttt{chmod ugo+x gitgui.command}\,.  Subsequent double-clicking the file icon should start git-gui.}   
 %(If not already done as above, set your git name and email via the \texttt{Preferences} for git-gui.)
 \end{gitgui}
 
@@ -53,7 +53,7 @@ I tentatively suggest using `git gui', but use another \textsc{gui} if you prefe
 With git there are \emph{three} places for storage of your files, there is:
 \begin{itemize}
 \item  your working area, directory, where you work, edit and refine files in your project as usual;
-\item  a local store of history of the project and its stages that is managed by git; and
+\item  a local store of history of the project and all its stages that is managed by git; and
 \item possibly an online repository, also managed by git, where you and collaborators merge independent progress on the project.
 \end{itemize}
 This second section only addresses the first two aspects of you working alone, with git, in your local working and storage area.  Section~\ref{sec:coti} discusses collaboration over the internet.
