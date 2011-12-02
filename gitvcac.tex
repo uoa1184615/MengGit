@@ -104,6 +104,7 @@ Make your working directory for the project as usual, say called  \texttt{myproj
 \end{gitgui}
 
 \subsection{Work in small stages}
+\label{sec:wiss}
 It is best to work in small stages: remember, if you cannot summarise the work in the last stage in a one line sentence, then you have gone too long without committing.  Typically work according to the following cycle, repeat as much as you like but ensure you end with the \texttt{add} and \texttt{commit}.
 
 \begin{description}
@@ -153,6 +154,7 @@ If git-gui is already executing, then click \texttt{Rescan} to update git-gui's 
 
 
 \subsection{Review your work}
+\label{sec:ryw}
 
 \begin{description}
 \item[\texttt{git log}] To overview history so far of the project.
@@ -197,6 +199,34 @@ In GitHub's history view, click \texttt{Rollback to this commit} button.
 \section{Collaborate over the internet}
 \label{sec:coti}
 
+\begin{gitx}
+Yet to do.
+\end{gitx}
+\begin{gitgui}
 Yet to do.  git-gui seems to have problems.
+\end{gitgui}
+\begin{github}
+To share and collaborate we need an information store.  The company GiHub provides some free storage (as well as a commercial service).  To \emph{start}, let's use GitHub.
+
+\paragraph{Create an account} Go to \url{https://github.com/plans} and click on \texttt{Create a free account}.   Follow the instructions which involves: registering; generating an ssh key to give to GitHub; save on your git preference the \textsc{api}-token from GitHub; and setting git config.  GitHub's instructions lead you through the process. 
+\end{github}
+
+
+\subsection{Clone an existing project}
+\begin{github}
+\begin{itemize}
+\item Use a web browser to connect to GitHub \url{https://github.com}
+\item Find the project (somehow): for example, just go to \url{https://github.com/uoa1184615/MengGit}
+\item On the left-side beneath  ``uoa1184615/MengGit '' and beneath ``Code'', you should see and click on \texttt{Clone in Mac}.
+\item Click \texttt{OK} and then choose a location on your computer for the repository folder to be created and material copied.
+\item Drag that new folder onto GitHub for GitHub to manage the local repository.  
+\item Thereafter, work and commit as in Sections~\ref{sec:wiss}--\ref{sec:ryw}, but occasionally \emph{Click}.
+\end{itemize}
+\end{github}
+
+
+\subsection{Create a new external repository}
+
+Yet to do.
 
 \end{document}
