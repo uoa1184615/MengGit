@@ -5,7 +5,8 @@
 \IfFileExists{ajr.sty}{\usepackage{ajr}}{}
 
 \excludeversion{gitx}
-\includeversion{gitgui}
+\excludeversion{gitgui}
+\includeversion{github}
 
 \title{git: version control and collaboration}
 \author{A.~J. Roberts}
@@ -15,7 +16,6 @@
 
 \maketitle
 
-hmm
 
 The software package git empowers you to easily maintain a history of a project, so you can recover old information for example, and additionally to collaborate with others on the project, so you can all work in parallel for example.  These two aspects are introduced separately: Section~\ref{sec:mypl} introduces how to maintain a local history;\footnote{I base this introduction on \emph{Git for the lazy}, \url{http://www.spheredev.org/wiki/Git_for_the_lazy} [Nov~2011].} and Section~\ref{sec:coti} introduces collaboration over the internet.
 
@@ -39,10 +39,15 @@ git config --global --list
 
 \paragraph{Perhaps use a graphical user interface}  
 Many people want a graphical user interface to git.  The web has many suggestions, and differing opinions.  
+\begin{github}
+I tentatively suggest using GitHub for the Mac, but use another \textsc{gui} if you prefer.\footnote{Another \textsc{gui} is git gui which comes with git; type the command \texttt{git~gui} in a terminal window.}
+
+Download GitHub from \url{http://mac.github.com/}, and drag into your application folder, and perhaps your Dock.
+\end{github}
 \begin{gitx}
 I tentatively suggest using GitX (for the Mac), but use another \textsc{gui} if you prefer.\footnote{Another \textsc{gui} is git gui which comes with git; type the command \texttt{git~gui} in a terminal window.}
 
-Download GitX from \url{http://gitx.frim.nl/}, and drag into your application folder, and perhaps your menu bar.
+Download GitX from \url{http://gitx.frim.nl/}, and drag into your application folder, and perhaps your Dock.
 \end{gitx}
 \begin{gitgui}
 I tentatively suggest using `git-gui', but use another \textsc{gui} if you prefer.  The git-gui application comes with git on common operating systems: just type \verb|git gui &| into a terminal window.\footnote{Make a desktop shortcut to git-gui by creating a file, named \texttt{gitgui.command}, with two lines: first, \texttt{\#!/bin/bash}, second \texttt{git gui \&}\,.  Then execute in a terminal window, \texttt{chmod ugo+x gitgui.command}\,.  Subsequent double-clicking the file icon should start git-gui.}   
@@ -71,6 +76,16 @@ Make your working directory for the project as usual, say called  \texttt{myproj
 \item[\texttt{git commit}] Stores the information that this (first) version is an identifiable stage, a `milepost', in the project.  git will request you type a message in the editor: make the first line a one line overall summary, such as ``Initial version'', and optionally provide additional information in subsequent lines.
 \end{description}
 
+\begin{github}
+\paragraph{Equivalent GitHub GUI}
+\begin{itemize}
+\item Initialise an existing directory for git by dragging the folder icon onto the GitHub application or its window.  Click \texttt{Yes}.
+\item In \texttt{Repositories} view, double click on the entry for \texttt{myproject}.
+\item Click on \texttt{Settings} in the left-hand tabs: then type lines\texttt{.gitignore} and \texttt{.DS\_Store} into the \texttt{Ignored files} window and click \texttt{Save Changes} on bottom-right.\footnote{You may also want to ignore other files including \texttt{*.aux}, \texttt{*.log}, \texttt{*.out}, \texttt{*.synctex.gz} and \texttt{*.blg}.  The asterisk matches all files with that extension.}
+\item To add files to be managed, click on the \texttt{Changes} tab on the left: by default GitHub adds all files to management, change if you wish; files managed but unchanged are not shown; the contents of shown files are displayed in the right-hand pane.
+\item To commit: enter a message such as ``Initial version'' in the single line in the top-left, and enter more detail if you wish just below; and finally click \texttt{Commit Changes} button near top-left.
+\end{itemize}
+\end{github}
 \begin{gitx}
 \paragraph{Equivalent GitX GUI}
 \begin{itemize}
@@ -100,6 +115,17 @@ It is best to work in small stages: remember, if you cannot summarise the work i
 \end{description}
 
 
+\begin{github}
+\paragraph{Equivalent GitHub GUI}
+\begin{itemize}
+\item Work, edit and refine files in your project as usual.
+\item Start GitHub and double-click the project directory from the list in the \texttt{Repositories} window.
+\item Managed files you have edited will be listed; unmanaged files are also listed; managed files that have not changed are not listed.
+\item Optional, click on the file name in the left-pane to see, in the right pane, the \texttt{diff}erences between the current version and the last commit.
+\item By default, all new files (even in a new directory) and all changed files will get committed; change if you wish.
+\item To commit: enter a message such as ``Initial version'' in the single line in the top-left, and more detail if you wish just below; and finally click \texttt{Commit Changes} button near top-left.
+\end{itemize}
+\end{github}
 \begin{gitx}
 \paragraph{Equivalent GitX GUI}
 \begin{itemize}
@@ -131,6 +157,9 @@ If git-gui is already executing, then click \texttt{Rescan} to update git-gui's 
 \begin{description}
 \item[\texttt{git log}] To overview history so far of the project.
 
+\begin{github}
+In the GitHub \textsc{gui}, just click on the \texttt{History} tab on the top-left.
+\end{github}
 \begin{gitx}
 In the GitX \textsc{gui}, just click on the \texttt{History View} button on the top-left.
 \end{gitx}
@@ -150,6 +179,10 @@ In git-gui, click on the \texttt{Amend Last Commit} box on the middle-right.
 \end{gitgui}
 
 \item[\texttt{git reset --hard}] If you have not committed, but realised that you have messed up your local files, then use this to recover the files as at the last commit.
+
+\begin{github}
+In GitHub's history view, click \texttt{Rollback to this commit} button.
+\end{github}
 
 \item[\texttt{git checkout filename}] Just recovers the named file as at the last commit.
 
