@@ -199,6 +199,7 @@ In GitHub's history view, click \texttt{Rollback to this commit} button.
 \section{Collaborate over the internet}
 \label{sec:coti}
 
+To share and collaborate we need an information store on the internet.  
 \begin{gitx}
 Yet to do.
 \end{gitx}
@@ -206,7 +207,7 @@ Yet to do.
 Yet to do.  git-gui seems to have problems.
 \end{gitgui}
 \begin{github}
-To share and collaborate we need an information store on the web.  The company GiHub provides some free storage (as well as a commercial service).  To \emph{start}, let's use GitHub.
+The company GiHub provides some free storage (as well as a commercial service).  To \emph{start}, let's use GitHub.
 
 \paragraph{Create an account} Go to \url{https://github.com/plans} and click on \texttt{Create a free account}.   Follow the instructions which involves: registering; generating an ssh key to give to GitHub; saving the \textsc{api}-token from GitHub into your git preference; and setting git config.  GitHub's instructions lead you through the process. 
 \end{github}
@@ -220,15 +221,33 @@ Assume that a collaborator, say~\texttt{username}, has established a repository,
 \item Find the project (somehow): for example, just go to \url{https://github.com/username/ourproject}
 \item On the left-side beneath  ``username/ourproject'' and beneath ``Code'', you should see and click on \texttt{Clone in Mac}.
 \item Click \texttt{OK} and then choose a location on your computer for the repository folder to be created and material copied.
-\item Drag that new folder onto GitHub for GitHub to manage the local repository.  
-\item Thereafter, work and commit as in Sections~\ref{sec:wiss}--\ref{sec:ryw}, but additionally occasionally \emph{Click the \texttt{Sync} button on the \texttt{Changes} window}.\footnote{I believe the \texttt{Sync} operation not only copies information to the remote repository, but also merges into your local repository any changes made there by collaborators in parallel to you.}
-\item Checking and downloading, `pulling', any changes by your collaborators is one additional step you might like to do before starting work each session: from menu \texttt{Repository} select \texttt{Pull}.
+\item On your computer, drag that new folder onto GitHub for GitHub to manage the local repository.  
+\item Thereafter, work and commit as in Sections~\ref{sec:wiss}--\ref{sec:ryw}, but additionally occasionally \emph{Click the \texttt{Sync} button on the \texttt{Changes} window}.%
+%\footnote{I believe the \texttt{Sync} operation not only copies information to the remote repository, but also merges into your local repository any changes made there by collaborators in parallel to you.}
+\item Checking and downloading, `pulling', any changes by your collaborators is one additional step you might do before starting work each session: from menu \texttt{Repository} select \texttt{Pull}.
 \end{itemize}
 \end{github}
 
 
 \subsection{Create a new external repository}
 
+Given a local git repository, you want to \emph{also} place the repository somewhere on the internet, perhaps for backup, but mainly for collaboration.
+
+\begin{gitx}
 Yet to do.
+\end{gitx}
+\begin{gitgui}
+Yet to do.  git-gui seems to have problems.
+\end{gitgui}
+\begin{github}
+Here use the free service operated by GitHub.
+Ensure you have, and login to, a GitHub account as described above.
+\begin{itemize}
+\item Click on either \texttt{Create a repository} or \texttt{New repository} in the web interface to \texttt{github.com}.
+\item Follow the route flagged \texttt{Existing Git Repository} and connect the web storage to your existing local git folder.
+\item Thereafter work as described previously. 
+\end{itemize}
+
+\end{github}
 
 \end{document}
