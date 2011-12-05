@@ -208,19 +208,21 @@ Yet to do.  git-gui seems to have problems.
 \begin{github}
 To share and collaborate we need an information store on the web.  The company GiHub provides some free storage (as well as a commercial service).  To \emph{start}, let's use GitHub.
 
-\paragraph{Create an account} Go to \url{https://github.com/plans} and click on \texttt{Create a free account}.   Follow the instructions which involves: registering; generating an ssh key to give to GitHub; save in your git preference the \textsc{api}-token from GitHub; and setting git config.  GitHub's instructions lead you through the process. 
+\paragraph{Create an account} Go to \url{https://github.com/plans} and click on \texttt{Create a free account}.   Follow the instructions which involves: registering; generating an ssh key to give to GitHub; saving the \textsc{api}-token from GitHub into your git preference; and setting git config.  GitHub's instructions lead you through the process. 
 \end{github}
 
 
-\subsection{Clone an existing project}
+\subsection{Clone a collaborative existing project}
 \begin{github}
+Assume that a collaborator, say~\texttt{username}, has established a repository, say~\texttt{ourproject}: they must give you collaboration rights by web browsing to the repository, clicking \texttt{Admin}, clicking \texttt{Collaborators} on the left menu, then entering  your GitHub name and \texttt{Add}ing.
 \begin{itemize}
 \item Use a web browser to connect to GitHub \url{https://github.com}, and login (top-right).
-\item Find the project (somehow): for example, just go to \url{https://github.com/uoa1184615/MengGit}
-\item On the left-side beneath  ``uoa1184615/MengGit '' and beneath ``Code'', you should see and click on \texttt{Clone in Mac}.
+\item Find the project (somehow): for example, just go to \url{https://github.com/username/ourproject}
+\item On the left-side beneath  ``username/ourproject'' and beneath ``Code'', you should see and click on \texttt{Clone in Mac}.
 \item Click \texttt{OK} and then choose a location on your computer for the repository folder to be created and material copied.
 \item Drag that new folder onto GitHub for GitHub to manage the local repository.  
 \item Thereafter, work and commit as in Sections~\ref{sec:wiss}--\ref{sec:ryw}, but additionally occasionally \emph{Click the \texttt{Sync} button on the \texttt{Changes} window}.\footnote{I believe the \texttt{Sync} operation not only copies information to the remote repository, but also merges into your local repository any changes made there by collaborators in parallel to you.}
+\item Checking and downloading, `pulling', any changes by your collaborators is one additional step you might like to do before starting work each session: from menu \texttt{Repository} select \texttt{Pull}.
 \end{itemize}
 \end{github}
 
