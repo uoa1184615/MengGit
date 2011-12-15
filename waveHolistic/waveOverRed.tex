@@ -1,0 +1,245 @@
+\IfFileExists{ajr.sty}
+{\documentclass[12pt,a5paper]{article}}
+{\documentclass[12pt,a4paper]{refart}}
+
+\usepackage{amsmath,defns,reducecode}
+\IfFileExists{ajr.sty}{\usepackage{ajr}}{}
+
+\newcommand{\cG}{\ensuremath{\mathcal G}}
+\newcommand{\shift}{\text{\small$\mathcal E$}}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\jp}{_{j+1}}
+\newcommand{\jm}{_{j-1}}
+\newcommand{\jpm}{_{j\pm1}}
+\newcommand{\jmp}{_{j\mp1}}
+\newcommand{\jpmh}{_{j\pm1/2}}
+\newcommand{\jmm}{_{j-2}}
+\newcommand{\jpp}{_{j+2}}
+
+\title{Holistic discretisation of wave-like PDEs, II}
+\author{Tony Roberts \and Meng Cao}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+Try to develop good numerics of wave-like \pde{}s using
+a staggered element approach. For `small' parameter~$\nu$, the \pde{}s for fields $h(x,t)$~and~$u(x,t)$ are among
+\begin{align*}&
+\D th=-\D xu\,,
+\\&
+\D tu=-\D xh-\nu u+\nu\DD xu-\nu u\D xu\,.
+\end{align*}
+To be solved on elements centred on~$X_j$, $X_j=jD$ say, with some coupling condition.  The difference here is that we let the elements overlap so the $j$th~element is the interval $E_j=(X\jm,X\jp)$.
+
+Because of even/odd symmetry I think it is more convenient to imagine two fields, each on overlapping elements, for each physical field: in element~$E_j$ introduce $h_j(x,t)$, $h'_j(x,t)$, $u_j(x,t)$ and~$u'_j(x,t)$.  I aim to eventuates that even-undashed fields interact with odd-undashed fields, and vice versa, but that the two sets of fields do not interact with the other.  The \pde{}s are then
+\begin{align*}&
+j\text{ odd (even)}&&j\text{ even (odd)}
+\\&
+\D t{h'_j}=-\D x{u_j}\,,
+&&\D t{h_j}=-\D x{u'_j}\,,
+\\&
+\D t{u_j}=-\D x{h'_j}-\nu u_j\,,
+&&\D t{u'_j}=-\D x{h_j}-\nu u'_j\,.
+\end{align*}
+
+
+Here I propose the coupling condition on the $h_j$~fields, $j$~even (odd), of
+\begin{equation*}
+h\jpm(X_j)=h'_j(X_j)
+\pm(1-\gamma)\rat12\big[h\jp(X\jpp)-h\jm(X\jmm)\big], 
+\end{equation*}
+and correspondingly couple the $u_j$~fields, $j$~odd (even), with
+\begin{equation*}
+u\jpm(X_j)=u'_j(X_j)
+\pm(1-\gamma)\rat12\big[u\jp(X\jpp)-u\jm(X\jmm)\big]. 
+\end{equation*}
+Then define the amplitudes to be 
+\begin{equation*}
+H_j=h'_j(X_j) \qtq{and} U_j=u'_j(X_j),
+\end{equation*}
+respectively for $j$~even and odd (odd and even).
+Be careful with the dashes.
+
+
+
+
+
+
+\section{Computer algebra constructs the model}
+
+\paragraph{Improve printing}
+\begin{reduce}
+on div; off allfac; on revpri;
+linelength(70)$ factor dd,df; 
+\end{reduce}
+
+\paragraph{Avoid slow integration with specific operator}
+Introduce the sign function to handle the derivative discontinuities across the centre of each element.  Define the integral operator to handle polynomials with sign functions, both indefinite ($\int_0^\xi d\xi$) and definite to $\xi=\verb|q|=\pm 1$ ($\int_0^qd\xi$).
+\begin{reduce}
+let df(sign(~x),~y)=>0;
+operator intx; linear intx;
+let { intx(xi^~~p,xi)=>xi^(p+1)/(p+1)
+    , intx(1,xi)=>xi
+    , intx(sign(xi)*xi^~~p,xi)=>sign(xi)*xi^(p+1)/(p+1)
+    , intx(sign(xi),xi)=>sign(xi)*xi
+    , intx(xi^~~p,xi,~q)=>q^(p+1)/(p+1)
+    , intx(1,xi,~q)=>q
+    , intx(sign(xi)*xi^~~p,xi,~q)=>sign(q)*q^(p+1)/(p+1)
+    , intx(sign(xi),xi,~q)=>sign(q)*q
+    };
+\end{reduce}
+Do I need this? Do not seem to need the sign function.
+
+
+
+\paragraph{Introduce subgrid variable}
+Introduced above is the subgrid variable $\xi=(x-X_j)/D$, $|\xi|<1$\,, in which the fields are described.
+\begin{reduce}
+depend xi,x;  let df(xi,x)=>1/dd;
+\end{reduce}
+
+\paragraph{Define evolving amplitudes}
+Amplitudes are as $U_j(t)=u'_j(X_j,t)$ and $H_j(t)=h'_j(X_j,t)$, 
+The difference here is that we take, say, even~$j$ to be the $u$-elements and odd~$j$ to be the $h$-elements.  Actually it should not matter which way around, or even if you regard the modelling as being of two disjoint systems (one one way and one the other).  The amplitudes depend upon time according to some approximation stored in \verb|gh|~and~\verb|gu|.
+\begin{reduce}
+operator hh; operator uu;
+depend hh,t; depend uu,t;
+let { df(hh(~k),t)=>sub(j=k,gh)
+    , df(uu(~k),t)=>sub(j=k,gu)
+    };
+\end{reduce}
+
+
+\paragraph{But solvability condition is coupled}
+Now the evolution equations are coupled together.  By some symmetry we decouple the equations using this operator~\verb|ginv|.  However, I expect that some problems will not decouple (look for non-cancelling pollution by~\verb|ginv| operators).  In which case we have to accept that the DEs for the amplitudes are \emph{implicit} DEs using the following operator.  Let's define $\cG=E+E^{-1}$ so that $\cG F_j=F_{j+1}+F_{j-1}$\,.  Take $\cG^{-1}$ of this equation to deduce $\cG^{-1} F_{j\pm1}=F_j-\cG^{-1} F_{j\mp1}$\,, and change subscripts, $j\mapsto k\mp1$\,, to deduce $\cG^{-1} F_k=F_{k\mp1}-\cG^{-1} F_{k\mp2}$\,.  That is, we change an inverse of~\cG\ to one with subscript closer to $k=j$\,, or otherwise if we desire. Have here coded some quadratic transformations so we can resolve quadratic terms in the model, but I guess we also might want cubic.
+
+The following causes a warning that \verb|~a| and \verb|~b| are declared operator, which is fine, but I cannot predefine them as operators so cannot avoid the warning.
+\begin{reduce}
+operator ginv; linear ginv;
+let { df(ginv(~a,t),t)=>ginv(df(a,t),t)
+    , ginv(~a(j+~k),t)=>a(j+k-1)-ginv(a(j+k-2),t) when k>1
+    , ginv(~a(j+~k),t)=>a(j+k+1)-ginv(a(j+k+2),t) when k<0
+    , ginv(~a(j+~k)^2,t)=>a(j+k-1)^2-ginv(a(j+k-2)^2,t) when k>1
+    , ginv(~a(j+~k)^2,t)=>a(j+k+1)^2-ginv(a(j+k+2)^2,t) when k<0
+    , ginv(~a(j+~~k)*~b(j+~~l),t)=> a(j+k-1)*b(j+l-1)
+      -ginv(a(j+k-2)*b(j+l-2),t) when k+l>2
+    , ginv(~a(j+~~k)*~b(j+~~l),t)=> a(j+k+1)*b(j+l+1)
+      -ginv(a(j+k+2)*b(j+l+2),t) when k+l<-1
+    };
+\end{reduce}
+
+\paragraph{Start with linear approximation}
+The linear approximation is the usual piecewise constant fields in each element.  Except that the dashed fields are (surprisingly sensible) averages of the surrounding elements.
+\begin{reduce}
+hj:=hh(j); hdj:=(hh(j+1)+hh(j-1))/2;
+uj:=uu(j); udj:=(uu(j+1)+uu(j-1))/2;
+gh:=gu:=0;
+let gam^2=>0; factor gam;
+gamma:=gam;
+let nu^2=>0; factor nu; 
+\end{reduce}
+
+\paragraph{Iterate to a slow manifold}
+Iterate to seek a solution, terminating only when residuals are zero to specified order.
+\begin{reduce}
+for it:=1:4 do begin
+write "ITERATION = ",it;
+\end{reduce}
+
+Choose this order of updating fields from residuals due to the pattern of communication.
+
+\paragraph{First} do the equations for the evolution of the dashed fields. {$j$ even}
+\begin{reduce}
+resud:=df(udj,t)+df(hj,x)+nu*udj;
+write lengthresud:=length(resud);
+reshb:=sub({j=j+1,xi=-1},hj)-sub({j=j-1,xi=+1},hj)
+    -(1-gamma)*(sub({j=j+1,xi=+1},hj)-sub({j=j-1,xi=-1},hj));
+write lengthreshb:=length(reshb);
+gu:=gu+(gud:=-ginv(ginv(reshb/dd,t)
+    +intx(resud,xi,1)-intx(resud,xi,-1),t));
+hj:=hj-dd*intx(resud+sub(j=j-1,gud)/2+sub(j=j+1,gud)/2,xi);
+\end{reduce}
+
+{$j$ odd}
+\begin{reduce}
+reshd:=df(hdj,t)+df(uj,x)+nu*hdj;
+write lengthreshd:=length(reshd);
+resub:=sub({j=j+1,xi=-1},uj)-sub({j=j-1,xi=+1},uj)
+    -(1-gamma)*(sub({j=j+1,xi=+1},uj)-sub({j=j-1,xi=-1},uj));
+write lengthresub:=length(resub);
+gh:=gh+(ghd:=-ginv(ginv(resub/dd,t)
+    +intx(reshd,xi,1)-intx(reshd,xi,-1),t));
+uj:=uj-dd*intx(reshd+sub(j=j-1,ghd)/2+sub(j=j+1,ghd)/2,xi);
+\end{reduce}
+
+\paragraph{Second} do the equations for the evolution of the undashed fields, to get spatial structure of dashed fields.
+{$j$ even}
+\begin{reduce}
+resh:=df(hj,t)+df(udj,x);
+write lengthresh:=length(resh);
+resua:=-sub(xi=0,udj)
+    +sub({j=j+1,xi=-1},uj)/2+sub({j=j-1,xi=+1},uj)/2;
+write lengthresua:=length(resua);
+udj:=udj+resua-dd*int(resh,xi);
+\end{reduce}
+
+{$j$ odd}
+\begin{reduce}
+resu:=df(uj,t)+df(hdj,x)+nu*uj;
+write lengthresu:=length(resu);
+resha:=-sub(xi=0,hdj)
+    +sub({j=j+1,xi=-1},hj)/2+sub({j=j-1,xi=+1},hj)/2;
+write lengthresha:=length(resha);
+hdj:=hdj+resha-dd*intx(resu,xi);
+\end{reduce}
+
+\paragraph{Terminate the loop}
+Exit the loop if all residuals are zero.
+\begin{reduce}
+  if {resh,reshd,resha,reshb,resu,resud,resua,resub}
+  ={0,0,0,0,0,0,0,0} then write it:=it+100000;
+  showtime;
+end;    
+\end{reduce}
+
+
+\end{document}\begin{reduce}end;\end{reduce}
+
+\paragraph{Equivalent PDEs}
+Finish by finding the equivalent \pde\ for the discretisation.  Since $\cG=E+E^{-1}=e^{dd\partial}+e^{-dd\partial}=2\cosh(dd\partial)$ so $\cG^{-1}=\rat12\sech(dd\partial)$.
+\begin{reduce}
+let dd^8=>0;
+depend uu,x; depend hh,x;
+rules:={uu(j)=>uu, uu(j+~p)=>uu+(for n:=1:8 sum 
+               df(uu,x,n)*(dd*p)^n/factorial(n))
+       ,hh(j)=>hh, hh(j+~p)=>hh+(for n:=1:8 sum 
+               df(hh,x,n)*(dd*p)^n/factorial(n)) 
+       ,ginv(~a,t)=>1/2*(a-1/2*dd^2*df(a,x,2) 
+       +5/24*dd^4*df(a,x,4) -61/720*dd^6*df(a,x,6)
+       +277/8064*dd^8*df(a,x,8) )
+       }$
+ghde:=(gh where rules);
+gude:=(gu where rules);
+\end{reduce}
+
+\paragraph{Draw graph of subgrid field}
+The first plot call is a dummy that appears needed on my system for some unknown reason.
+\begin{reduce}
+plot(sin(xi),terminal=aqua);
+u0:=(uj where {nu=>0,gam=>1,uu(j)=>1,uu(j+~k)=>0 when k neq 0});
+h0:=(hj where {nu=>0,gam=>1,hh(j)=>1,hh(j+~k)=>0 when k neq 0});
+plot({u0,h0},xi=(-2 .. 2),terminal=aqua);
+\end{reduce}
+
+\paragraph{Finish}
+\begin{reduce}
+end;
+\end{reduce}
+
+\section{Sample output}
+\begin{verbatim}
+
+\end{verbatim}
+\end{document}
