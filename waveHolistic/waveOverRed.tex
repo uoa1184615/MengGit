@@ -1,5 +1,5 @@
 \IfFileExists{ajr.sty}
-{\documentclass[12pt,a5paper]{article}}
+{\documentclass[11pt,a5paper]{article}}
 {\documentclass[12pt,a4paper]{refart}}
 
 \usepackage{amsmath,defns,reducecode}
@@ -45,19 +45,23 @@ j\text{ odd (even)}&&j\text{ even (odd)}
 \end{align*}
 
 
-Here I propose the coupling condition on the $h_j$~fields, $j$~even (odd), of
+Here I propose the coupling condition on the fields, $j$~even (odd), of
+\begin{align*}&
+(1-\rat12\gamma)\big[h_j(X\jp,t)-h_j(X\jm)\big]
+=\rat12\gamma\big[h\jpp(X\jp,t)-h\jmm(X\jm,t)\big], 
+\\&
+u'_j(X_j,t)=\rat12\big[u\jp(X_j,t)+u\jm(X_j,t)\big],
+\end{align*}
+and correspondingly couple the fields, $j$~odd (even), with
+\begin{align*}&
+(1-\rat12\gamma)\big[u_j(X\jp,t)-u_j(X\jm)\big]
+=\rat12\gamma\big[u\jpp(X\jp,t)-u\jmm(X\jm,t)\big], 
+\\&
+h'_j(X_j,t)=\rat12\big[h\jp(X_j,t)+h\jm(X_j,t)\big],
+\end{align*}
+Lastly, define the amplitudes to be 
 \begin{equation*}
-h\jpm(X_j)=h'_j(X_j)
-\pm(1-\gamma)\rat12\big[h\jp(X\jpp)-h\jm(X\jmm)\big], 
-\end{equation*}
-and correspondingly couple the $u_j$~fields, $j$~odd (even), with
-\begin{equation*}
-u\jpm(X_j)=u'_j(X_j)
-\pm(1-\gamma)\rat12\big[u\jp(X\jpp)-u\jm(X\jmm)\big]. 
-\end{equation*}
-Then define the amplitudes to be 
-\begin{equation*}
-H_j=h'_j(X_j) \qtq{and} U_j=u'_j(X_j),
+H_j=h_j(X_j) \qtq{and} U_j=u_j(X_j),
 \end{equation*}
 respectively for $j$~even and odd (odd and even).
 Be careful with the dashes.
@@ -72,26 +76,19 @@ Be careful with the dashes.
 \paragraph{Improve printing}
 \begin{reduce}
 on div; off allfac; on revpri;
-linelength(70)$ factor dd,df; 
+linelength(64)$ factor dd,df; 
 \end{reduce}
 
 \paragraph{Avoid slow integration with specific operator}
 Introduce the sign function to handle the derivative discontinuities across the centre of each element.  Define the integral operator to handle polynomials with sign functions, both indefinite ($\int_0^\xi d\xi$) and definite to $\xi=\verb|q|=\pm 1$ ($\int_0^qd\xi$).
 \begin{reduce}
-let df(sign(~x),~y)=>0;
 operator intx; linear intx;
 let { intx(xi^~~p,xi)=>xi^(p+1)/(p+1)
     , intx(1,xi)=>xi
-    , intx(sign(xi)*xi^~~p,xi)=>sign(xi)*xi^(p+1)/(p+1)
-    , intx(sign(xi),xi)=>sign(xi)*xi
     , intx(xi^~~p,xi,~q)=>q^(p+1)/(p+1)
     , intx(1,xi,~q)=>q
-    , intx(sign(xi)*xi^~~p,xi,~q)=>sign(q)*q^(p+1)/(p+1)
-    , intx(sign(xi),xi,~q)=>sign(q)*q
     };
 \end{reduce}
-Do I need this? Do not seem to need the sign function.
-
 
 
 \paragraph{Introduce subgrid variable}
@@ -136,15 +133,20 @@ The linear approximation is the usual piecewise constant fields in each element.
 hj:=hh(j); hdj:=(hh(j+1)+hh(j-1))/2;
 uj:=uu(j); udj:=(uu(j+1)+uu(j-1))/2;
 gh:=gu:=0;
-let gam^2=>0; factor gam;
+\end{reduce}
+
+Truncate the asymptotic series in coupling~$\gamma$ and any other parameter, such as~$\nu$.   The basic slow manifold model evolution only appears at odd powers of~$\gamma$, so choosing errors to be even power of~$\gamma$ is good.
+\begin{reduce}
+let gam^6=>0; factor gam;
 gamma:=gam;
 let nu^2=>0; factor nu; 
 \end{reduce}
 
+
 \paragraph{Iterate to a slow manifold}
 Iterate to seek a solution, terminating only when residuals are zero to specified order.
 \begin{reduce}
-for it:=1:4 do begin
+for it:=1:9 do begin
 write "ITERATION = ",it;
 \end{reduce}
 
@@ -152,25 +154,27 @@ Choose this order of updating fields from residuals due to the pattern of commun
 
 \paragraph{First} do the equations for the evolution of the dashed fields. {$j$ even}
 \begin{reduce}
-resud:=df(udj,t)+df(hj,x)+nu*udj;
+resud:=df(udj,t)+df(hj,x)+nu*udj-nu*df(udj,x,2);
 write lengthresud:=length(resud);
-reshb:=sub({j=j+1,xi=-1},hj)-sub({j=j-1,xi=+1},hj)
-    -(1-gamma)*(sub({j=j+1,xi=+1},hj)-sub({j=j-1,xi=-1},hj));
+reshb:=(1-gamma/2)*(sub(xi=+1,hj)-sub(xi=-1,hj))
+    -gamma/2*(sub({j=j+2,xi=-1},hj)-sub({j=j-2,xi=+1},hj));
 write lengthreshb:=length(reshb);
-gu:=gu+(gud:=-ginv(ginv(reshb/dd,t)
-    +intx(resud,xi,1)-intx(resud,xi,-1),t));
+write
+gu:=gu+(gud:=ginv(reshb/dd
+    -intx(resud,xi,1)+intx(resud,xi,-1),t));
 hj:=hj-dd*intx(resud+sub(j=j-1,gud)/2+sub(j=j+1,gud)/2,xi);
 \end{reduce}
 
 {$j$ odd}
 \begin{reduce}
-reshd:=df(hdj,t)+df(uj,x)+nu*hdj;
+reshd:=df(hdj,t)+df(uj,x);
 write lengthreshd:=length(reshd);
-resub:=sub({j=j+1,xi=-1},uj)-sub({j=j-1,xi=+1},uj)
-    -(1-gamma)*(sub({j=j+1,xi=+1},uj)-sub({j=j-1,xi=-1},uj));
+resub:=(1-gamma/2)*(sub(xi=+1,uj)-sub(xi=-1,uj))
+    -gamma/2*(sub({j=j+2,xi=-1},uj)-sub({j=j-2,xi=+1},uj));
 write lengthresub:=length(resub);
-gh:=gh+(ghd:=-ginv(ginv(resub/dd,t)
-    +intx(reshd,xi,1)-intx(reshd,xi,-1),t));
+write
+gh:=gh+(ghd:=ginv(resub/dd
+    -intx(reshd,xi,1)+intx(reshd,xi,-1),t));
 uj:=uj-dd*intx(reshd+sub(j=j-1,ghd)/2+sub(j=j+1,ghd)/2,xi);
 \end{reduce}
 
@@ -187,7 +191,7 @@ udj:=udj+resua-dd*int(resh,xi);
 
 {$j$ odd}
 \begin{reduce}
-resu:=df(uj,t)+df(hdj,x)+nu*uj;
+resu:=df(uj,t)+df(hdj,x)+nu*uj-nu*df(uj,x,2);
 write lengthresu:=length(resu);
 resha:=-sub(xi=0,hdj)
     +sub({j=j+1,xi=-1},hj)/2+sub({j=j-1,xi=+1},hj)/2;
@@ -205,10 +209,9 @@ end;
 \end{reduce}
 
 
-\end{document}\begin{reduce}end;\end{reduce}
 
 \paragraph{Equivalent PDEs}
-Finish by finding the equivalent \pde\ for the discretisation.  Since $\cG=E+E^{-1}=e^{dd\partial}+e^{-dd\partial}=2\cosh(dd\partial)$ so $\cG^{-1}=\rat12\sech(dd\partial)$.
+Finish by finding the equivalent \pde\ for the discretisation.  Since $\cG=E+E^{-1}=e^{D\partial}+e^{-D\partial}=2\cosh(D\partial)$ so $\cG^{-1}=\rat12\sech(D\partial)$.  Find the discretisation is consistent to an order in grid spacing~$D$ that increases with order of coupling~$\gamma$.
 \begin{reduce}
 let dd^8=>0;
 depend uu,x; depend hh,x;
@@ -224,22 +227,236 @@ ghde:=(gh where rules);
 gude:=(gu where rules);
 \end{reduce}
 
+
+
 \paragraph{Draw graph of subgrid field}
 The first plot call is a dummy that appears needed on my system for some unknown reason.
 \begin{reduce}
 plot(sin(xi),terminal=aqua);
-u0:=(uj where {nu=>0,gam=>1,uu(j)=>1,uu(j+~k)=>0 when k neq 0});
-h0:=(hj where {nu=>0,gam=>1,hh(j)=>1,hh(j+~k)=>0 when k neq 0});
-plot({u0,h0},xi=(-2 .. 2),terminal=aqua);
+u0:=sub(j=0,uj)$ u1:=sub(j=1,udj)$
+u0:=(u0 where {nu=>0,gam=>1,uu(0)=>1,uu(~k)=>0 when k neq 0});
+u1:=(u1 where {nu=>0,gam=>1,uu(0)=>1,uu(~k)=>0 when k neq 0});
+plot({u0,u1},xi=(-4 .. 4),terminal=aqua);
 \end{reduce}
 
-\paragraph{Finish}
-\begin{reduce}
-end;
-\end{reduce}
+\paragraph{Finish}\begin{reduce}end;\end{reduce}
 
 \section{Sample output}
 \begin{verbatim}
+1: in_tex "waveOverRed.tex"$
 
+*** ~a declared operator 
+
+*** ~b declared operator 
+
+hj := hh(j)
+
+        1               1
+hdj := ---*hh(1 + j) + ---*hh( - 1 + j)
+        2               2
+
+uj := uu(j)
+
+        1               1
+udj := ---*uu(1 + j) + ---*uu( - 1 + j)
+        2               2
+
+gh := gu := 0
+
+gamma := gam
+
+ITERATION = 1
+
+lengthresud := 3
+
+lengthreshb := 3
+
+        -1          1               1
+gu := dd  *gam*( - ---*hh(1 + j) + ---*hh( - 1 + j)) - nu*uu(j)
+                    2               2
+
+lengthreshd := 1
+
+lengthresub := 3
+
+        -1          1               1
+gh := dd  *gam*( - ---*uu(1 + j) + ---*uu( - 1 + j))
+                    2               2
+
+lengthresh := 7
+
+lengthresua := 5
+
+lengthresu := 7
+
+lengthresha := 5
+
+Time: 20 ms
+
+ITERATION = 2
+
+lengthresud := 12
+
+lengthreshb := 5
+
+        -1          1               1                    -1    3
+gu := dd  *gam*( - ---*hh(1 + j) + ---*hh( - 1 + j)) + dd  *gam
+                    2               2
+
+            1                1                1
+      *( - ----*hh(1 + j) + ----*hh(3 + j) + ----*hh( - 1 + j)
+            16               48               16
+
+            1
+         - ----*hh( - 3 + j)) - nu*uu(j)
+            48
+
+lengthreshd := 12
+
+lengthresub := 5
+
+        -1          1               1                    -1    3
+gh := dd  *gam*( - ---*uu(1 + j) + ---*uu( - 1 + j)) + dd  *gam
+                    2               2
+
+            1                1                1
+      *( - ----*uu(1 + j) + ----*uu(3 + j) + ----*uu( - 1 + j)
+            16               48               16
+
+            1
+         - ----*uu( - 3 + j))
+            48
+
+lengthresh := 15
+
+lengthresua := 5
+
+lengthresu := 15
+
+lengthresha := 5
+
+Time: 10 ms
+
+ITERATION = 3
+
+lengthresud := 7
+
+lengthreshb := 7
+
+        -1          1               1                    -1    3
+gu := dd  *gam*( - ---*hh(1 + j) + ---*hh( - 1 + j)) + dd  *gam
+                    2               2
+
+            1                1                1
+      *( - ----*hh(1 + j) + ----*hh(3 + j) + ----*hh( - 1 + j)
+            16               48               16
+
+            1
+         - ----*hh( - 3 + j)) - nu*uu(j)
+            48
+
+lengthreshd := 7
+
+lengthresub := 7
+
+        -1          1               1                    -1    3
+gh := dd  *gam*( - ---*uu(1 + j) + ---*uu( - 1 + j)) + dd  *gam
+                    2               2
+
+            1                1                1
+      *( - ----*uu(1 + j) + ----*uu(3 + j) + ----*uu( - 1 + j)
+            16               48               16
+
+            1
+         - ----*uu( - 3 + j))
+            48
+
+lengthresh := 1
+
+lengthresua := 9
+
+lengthresu := 1
+
+lengthresha := 9
+
+Time: 10 ms
+
+ITERATION = 4
+
+lengthresud := 1
+
+lengthreshb := 1
+
+        -1          1               1                    -1    3
+gu := dd  *gam*( - ---*hh(1 + j) + ---*hh( - 1 + j)) + dd  *gam
+                    2               2
+
+            1                1                1
+      *( - ----*hh(1 + j) + ----*hh(3 + j) + ----*hh( - 1 + j)
+            16               48               16
+
+            1
+         - ----*hh( - 3 + j)) - nu*uu(j)
+            48
+
+lengthreshd := 1
+
+lengthresub := 1
+
+        -1          1               1                    -1    3
+gh := dd  *gam*( - ---*uu(1 + j) + ---*uu( - 1 + j)) + dd  *gam
+                    2               2
+
+            1                1                1
+      *( - ----*uu(1 + j) + ----*uu(3 + j) + ----*uu( - 1 + j)
+            16               48               16
+
+            1
+         - ----*uu( - 3 + j))
+            48
+
+lengthresh := 1
+
+lengthresua := 1
+
+lengthresu := 1
+
+lengthresha := 1
+
+it := 100004
+
+Time: 10 ms
+
+                           1               2
+ghde :=  - df(uu,x)*gam - ---*df(uu,x,3)*dd *gam
+                           6
+
+            1               2    3     1                4
+         + ---*df(uu,x,3)*dd *gam  - -----*df(uu,x,5)*dd *gam
+            6                         120
+
+            1                4    3     1                 6
+         + ----*df(uu,x,5)*dd *gam  - ------*df(uu,x,7)*dd *gam
+            12                         5040
+
+            13                6    3
+         + -----*df(uu,x,7)*dd *gam
+            720
+
+                                   1               2
+gude :=  - nu*uu - df(hh,x)*gam - ---*df(hh,x,3)*dd *gam
+                                   6
+
+            1               2    3     1                4
+         + ---*df(hh,x,3)*dd *gam  - -----*df(hh,x,5)*dd *gam
+            6                         120
+
+            1                4    3     1                 6
+         + ----*df(hh,x,5)*dd *gam  - ------*df(hh,x,7)*dd *gam
+            12                         5040
+
+            13                6    3
+         + -----*df(hh,x,7)*dd *gam
+            720
 \end{verbatim}
 \end{document}
