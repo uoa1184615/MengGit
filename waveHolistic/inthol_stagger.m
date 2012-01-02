@@ -1,12 +1,13 @@
-global n m b gam dx ph pu qh qu qhl qhr qul qur qhc quc l
-n=19; %n=7,11,...
-m=12; % m=even
+global n m b gam dx ph pu qh qu qhl qhr qul qur qhc quc l nu
+n=15; %n=7,11,...
+m=6; % m=even
 b=(n+1)/2;
 l=n+1;
-L=2*pi;
+L=10;
 D=L/m;
 d=D/2;
 gam=d/D/2;
+nu=0.1;
 dx=d/(n-1);
 
 % define indexes into the dynamic variables
@@ -36,26 +37,30 @@ x(end-b+1:end)=L+D+(-b+1:0)*dx;
 
 % initial values
 hu=nan(m*(n-2),1);
-hu(ph)=1+0.1*sin(x(qh));
-hu(pu)=0*0.1*sin(x(qu)+pi/2);
+hu(ph)=1+0.1*sin(2*pi/L*x(qh));
+hu(pu)=0.1*sin(2*pi/L*x(qu)+pi/2);
 
-%ts0=linspace(0,10,4);
-[ts hus]=ode15s(@hol_stagger,[0 10],hu);
+ts0=linspace(0,20,100);
+[ts hus]=ode15s(@hol_stagger,ts0,hu);
 
 % plot the results
+for it=1:length(ts)
 hs=nan(length(ts),(m+1)*(n+1)+1);
-hs(:,qh)=hus(:,ph);
-%hs(:,1:2:b)=hus(:,end-b+1:2:end);
-%hs(:,end-b+1:2:end)=hus(:,1:2:b);
-%hs(:,qhr)=(1+gam)/2*hs(:,qhc)+(1-gam)/2*hs(:,quc-l);
-%hs(:,qhl)=(1-gam)/2*hs(:,qhc)+(1+gam)/2*hs(:,quc-l);
+hs(it,qh)=hus(it,ph);
 us=nan(length(ts),(m+1)*(n+1)+1);
-us(:,qu)=hus(:,pu);
-%us(qur)=(1+gam)/2*us(qhc+l)+(1-gam)/2*us(quc);
-%us(qul)=(1-gam)/2*us(qhc+l)+(1+gam)/2*us(quc);
-return
-subplot(2,1,1);plot(x,hs(end,:),'ko');
-clf();
-subplot(2,1,1);plot(x,hs,'o');xlabel('x');ylabel('h');
-subplot(2,1,2);plot(x,us,'o');xlabel('x');ylabel('u');
+us(it,qu)=hus(it,pu);
+figure(1);
+    subplot(2,1,1),plot(x,hs,'bo');
+       xlabel('x');ylabel('h');
+       axis([0 L+D 0.8 1.2]);
+    subplot(2,1,2),plot(x,us,'bo');
+       xlabel('x');ylabel('u');
+       axis([0 L+D -0.1 0.1]);
+       drawnow
+       %pause
+       M(:,it)=getframe(gcf);
+end
+%movie(M);
+map=colormap; 
+mpgwrite(M, map,'filename');
 
