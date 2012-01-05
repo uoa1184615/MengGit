@@ -1,5 +1,5 @@
 global n m b gam dx ph pu qh qu qhl qhr qul qur qhc quc l nu
-n=15; %n=7,11,...
+n=3; %n=3,7,11,...
 m=6; % m=even
 b=(n+1)/2;
 l=n+1;
@@ -57,10 +57,10 @@ figure(1);
        xlabel('x');ylabel('u');
        axis([0 L+D -0.1 0.1]);
        drawnow
-       %pause
-       M(:,it)=getframe(gcf);
+       pause(0.1)
+       %M(:,it)=getframe(gcf);
 end
 %movie(M);
 map=colormap; 
-mpgwrite(M, map,'filename');
+%mpgwrite(M, map,'filename');
 

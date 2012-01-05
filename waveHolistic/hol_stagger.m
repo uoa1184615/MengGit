@@ -24,7 +24,7 @@ dhudt=nan(length(hu),1);
 dhudt(ph)=-(uu(qh+1)-uu(qh-1))/dx/2;
 dhudt(pu)=-(uu(qu+1)-uu(qu-1))/dx/2-nu*uu(qu);
 %dhudt(pu)=-(uu(qu+1)-uu(qu-1))/dx/2-nu*uu(qu) ...
-                +nu*(uu(qu+2)-2*uu(qu)+uu(qu-2))/dx^2;
+%                +nu*(uu(qu+2)-2*uu(qu)+uu(qu-2))/dx^2;
 
 
 
