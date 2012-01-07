@@ -73,6 +73,76 @@ Be careful with the dashes.
 
 \section{Eigenvalue analysis}
 
+Assume~$\nu=0$, thus there is no bed drag term in the \textsc{pde}s. Seek solutions in exponential form
+\begin{eqnarray}
+&&u_j(x,t)=u(\xi)e^{\lambda t+ikj}\,,\label{sol:u}\\
+&&h_j(x,t)=h(\xi)e^{\lambda t+ikj}\,,\label{sol:h}\\
+&&u'_j(x,t)=u'(\xi)e^{\lambda t+ikj}\,,\label{sol:u'}\\
+&&h'_j(x,t)=h'(\xi)e^{\lambda t+ikj}\,,\label{sol:h'}
+\end{eqnarray}
+where $\xi=(x-X_j)/D$ such that~$\partial_x=\frac1D\partial_\xi$, and~$k$ is the lateral wavenumber.
+Substituting these exponential forms into the \textsc{pde}s gives
+\begin{equation}
+\lambda^2u(\xi)=\frac{1}{D^2}\frac{\partial^2u(\xi)}{\partial\xi^2}\,,\quad\text{and}\quad\lambda^2u'(\xi)=\frac{1}{D^2}\frac{\partial^2u'(\xi)}{\partial\xi^2}\,,
+\end{equation}
+which indicate solutions in the forms of 
+\begin{eqnarray}
+&&u(\xi)=A\cos\ell\xi+B\sin\ell\xi\,,\label{sol:uxi}\\
+&&u'(\xi)=A'\cos\ell\xi+B'\sin\ell\xi\,,\label{sol:u'xi}
+\end{eqnarray}
+where~$\ell$ is the wavenumber of subgrid structures.
+Take the above~$u(\xi)$ and~$u'(\xi)$ into the governing \textsc{pde}s again and obtain the solutions of~$h(\xi)$ and~$h'(\xi)$ in the forms of 
+\begin{eqnarray}
+&&h'(\xi)=\frac{\ell}{D\lambda}(A\sin\ell\xi-B\cos\ell\xi)\,,\label{sol:h'xi}\\
+&&h(\xi)=\frac{\ell}{D\lambda}(A'\sin\ell\xi-B'\cos\ell\xi)\,,\label{sol:hxi}
+\end{eqnarray}
+
+The coupling conditions proposed in the introduction indicate
+\begin{align}&
+(1-\frac12\gamma)\big[h(1)-h(-1)\big]
+=\frac12\gamma\big[h(-1)e^{2ik}-h(1)e^{-2ik}\big], \label{bc:h}
+\\&
+u'(0)=\frac12\big[u(1)+u(-1)\big],\label{bc:u'}
+\\&
+(1-\frac12\gamma)\big[u(1)-u(-1)\big]
+=\frac12\gamma\big[u(-1)e^{2ik}-u(1)e^{-2ik}\big], \label{bc:u}
+\\&
+h'(0)=\frac12\big[h(1)+h(-1)\big],\label{bc:h'}
+\end{align}
+Substitute the solutions forms of~$h(\xi)$,~$u(\xi)$,~$h'(\xi)$ and~$u'(\xi)$ into the above coupling conditions, rearrange and obtain
+\begin{eqnarray*}
+&&\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\, A+\gamma\cos\ell(e^{2ik}-e^{-2ik})\,B'=0\,,\\
+&&-\gamma\cos\ell(e^{2ik}-e^{-2ik})\,A+\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell \,B'=0\,,
+\end{eqnarray*}
+The determinant of the coefficient matrix equaling to zero gives
+\begin{equation}
+\left\{\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\right\}^2=\gamma^2\cos^2\ell(e^{2ik}-e^{-2ik})^2\,,
+\end{equation}
+by applying 
+\[
+e^{2ik}+e^{-2ik}=2\cos2k\quad \text{and}\quad(e^{2ik}-e^{-2ik})^2=-4\sin^22k\,,
+\]
+which becomes
+\begin{eqnarray}
+\big[(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k\big]\cos\ell=0\,.
+\end{eqnarray}
+
+Two cases arise. 
+\begin{enumerate}
+\item If~$\cos\ell=0$, then~$\ell=\pi/2,3\pi/2,5\pi/2,\ldots$, which demonstrate the subgrid structures are good.
+\item If~$(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k=0$, when~$\gamma=0$, obtain~$\sin\ell=0$, which indicates~$\ell=0,\pi,2\pi,\ldots$. When~$\gamma=1$, obtain 
+  \[
+     \sin\ell+\sin\ell\cos2k\pm\sin2k=0\,.        
+  \]
+Triangular transforms of above equation gives
+\begin{equation}
+(\sin\ell\cos k\pm\sin\ell)\cos k=0\,,
+\end{equation}
+ which indicates a special case of $\cos k=0$ such that~$k=\pi/2,3\pi/2,\ldots$, or $\sin\ell\cos k\pm\sin\ell=0$ such that 
+\begin{equation}
+\sin\ell=\pm\tan k\,.
+\end{equation}
+ \end{enumerate}
 
 
 
