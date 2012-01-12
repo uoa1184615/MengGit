@@ -73,31 +73,38 @@ Be careful with the dashes.
 
 \section{Eigenvalue analysis}
 
-Assume~$\nu=0$, thus there is no bed drag term in the \textsc{pde}s. Seek solutions in exponential form
+Assume~$\nu=0$\,, thus there is no dissipation (bed drag) in the \textsc{pde}s. Seek solutions in exponential form
 \begin{eqnarray}
 &&u_j(x,t)=u(\xi)e^{\lambda t+ikj}\,,\label{sol:u}\\
 &&h_j(x,t)=h(\xi)e^{\lambda t+ikj}\,,\label{sol:h}\\
 &&u'_j(x,t)=u'(\xi)e^{\lambda t+ikj}\,,\label{sol:u'}\\
 &&h'_j(x,t)=h'(\xi)e^{\lambda t+ikj}\,,\label{sol:h'}
 \end{eqnarray}
-where $\xi=(x-X_j)/D$ such that~$\partial_x=\frac1D\partial_\xi$, and~$k$ is the lateral wavenumber.
+where $\xi=(x-X_j)/D$ so that~$\partial_x=\frac1D\partial_\xi$\,, and~$k$ is the lateral wavenumber.
+In essence, $u(\xi),h(\xi),u'(\xi),h'(\xi)$ are Fourier transforms over the element index~$j$ of the corresponding fields.
 Substituting these exponential forms into the \textsc{pde}s gives
+\marginpar{Use my command \texttt{$\backslash$DD} to do second order partial derivatives, and \texttt{$\backslash$D} for first order partial derivative.}
 \begin{equation}
-\lambda^2u(\xi)=\frac{1}{D^2}\frac{\partial^2u(\xi)}{\partial\xi^2}\,,\quad\text{and}\quad\lambda^2u'(\xi)=\frac{1}{D^2}\frac{\partial^2u'(\xi)}{\partial\xi^2}\,,
+\lambda^2u(\xi)=\frac{1}{D^2}\frac{\partial^2u(\xi)}{\partial\xi^2}
+\quad\text{and}\quad
+\lambda^2u'(\xi)=\frac{1}{D^2}\frac{\partial^2u'(\xi)}{\partial\xi^2}\,.
+\label{eq:FTpde}
 \end{equation}
-which indicate solutions in the forms of 
-\begin{eqnarray}
-&&u(\xi)=A\cos\ell\xi+B\sin\ell\xi\,,\label{sol:uxi}\\
-&&u'(\xi)=A'\cos\ell\xi+B'\sin\ell\xi\,,\label{sol:u'xi}
-\end{eqnarray}
-where~$\ell$ is the wavenumber of subgrid structures.
-Take the above~$u(\xi)$ and~$u'(\xi)$ into the governing \textsc{pde}s again and obtain the solutions of~$h(\xi)$ and~$h'(\xi)$ in the forms of 
-\begin{eqnarray}
-&&h'(\xi)=\frac{\ell}{D\lambda}(A\sin\ell\xi-B\cos\ell\xi)\,,\label{sol:h'xi}\\
-&&h(\xi)=\frac{\ell}{D\lambda}(A'\sin\ell\xi-B'\cos\ell\xi)\,,\label{sol:hxi}
-\end{eqnarray}
+Being constant coefficient we try solutions for the subgrid structure in terms of trigonometric functions:\marginpar{Use one line if reasonable.} 
+\begin{equation}
+u(\xi)=A\cos\ell\xi+B\sin\ell\xi \label{sol:uxi}
+\quad\text{and}\quad
+u'(\xi)=A'\cos\ell\xi+B'\sin\ell\xi\,,
+\end{equation}
+where~$\ell$ is the wavenumber of the subgrid structures.
+Substitute the above~$u(\xi)$ and~$u'(\xi)$ into the \textsc{pde}s~\eqref{eq:FTpde}\marginpar{Always be more explicit: cross-reference precisely, not vaguely.} and obtain that the solutions $h(\xi)$~and~$h'(\xi)$ must take the forms 
+\begin{equation}
+h'(\xi)=\frac{\ell}{D\lambda}(A\sin\ell\xi-B\cos\ell\xi)
+\quad\text{and}\quad
+h(\xi)=\frac{\ell}{D\lambda}(A'\sin\ell\xi-B'\cos\ell\xi)\,.\label{sol:hxi}
+\end{equation}
 
-The coupling conditions proposed in the introduction indicate
+The coupling conditions~\eqref{??} proposed in the introduction indicate
 \begin{align}&
 (1-\frac12\gamma)\big[h(1)-h(-1)\big]
 =\frac12\gamma\big[h(-1)e^{2ik}-h(1)e^{-2ik}\big], \label{bc:h}
@@ -109,32 +116,36 @@ u'(0)=\frac12\big[u(1)+u(-1)\big],\label{bc:u'}
 \\&
 h'(0)=\frac12\big[h(1)+h(-1)\big],\label{bc:h'}
 \end{align}
-Substitute the solutions forms of~$h(\xi)$,~$u(\xi)$,~$h'(\xi)$ and~$u'(\xi)$ into the above coupling conditions, rearrange and obtain
+Substitute the solutions forms~\eqref{??} of~$h(\xi)$,~$u(\xi)$,~$h'(\xi)$ and~$u'(\xi)$ into the above coupling conditions, rearrange and obtain\marginpar{Give a couple of words to describe what is coming, namely, here two equations} the two equations\marginpar{You have missed out some steps here as $B$ and $A'$ have disappeared.  Describe.}
 \begin{eqnarray*}
 &&\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\, A+\gamma\cos\ell(e^{2ik}-e^{-2ik})\,B'=0\,,\\
 &&-\gamma\cos\ell(e^{2ik}-e^{-2ik})\,A+\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell \,B'=0\,,
 \end{eqnarray*}
-The determinant of the coefficient matrix equaling to zero gives
+Nontrivial solutions of these equations exist only when the coefficient matrix is singular.
+Setting the determinant of the coefficient matrix equaling to zero gives the characteristic equation\marginpar{Use more words.}
 \begin{equation}
-\left\{\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\right\}^2=\gamma^2\cos^2\ell(e^{2ik}-e^{-2ik})^2\,,
+\left\{\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\right\}^2=\gamma^2\cos^2\ell(e^{2ik}-e^{-2ik})^2\,.
 \end{equation}
-by applying 
+Invoking \marginpar{Avoid "$\backslash[\cdots\backslash]$, use either \texttt{displaymath} or \texttt{equation*} environments.}
 \[
 e^{2ik}+e^{-2ik}=2\cos2k\quad \text{and}\quad(e^{2ik}-e^{-2ik})^2=-4\sin^22k\,,
 \]
-which becomes
-\begin{eqnarray}
+the characteristic equation becomes
+\begin{equation}
 \big[(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k\big]\cos\ell=0\,.
-\end{eqnarray}
+\label{eq:chareqn}
+\end{equation}
 
-Two cases arise. 
+Two possibilities arise. 
 \begin{enumerate}
-\item If~$\cos\ell=0$, then~$\ell=\pi/2,3\pi/2,5\pi/2,\ldots$, which demonstrate the subgrid structures are good.
-\item If~$(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k=0$, when~$\gamma=0$, obtain~$\sin\ell=0$, which indicates~$\ell=0,\pi,2\pi,\ldots$. When~$\gamma=1$, obtain 
+\item If~$\cos\ell=0$\,, then~$\ell=\pi/2,3\pi/2,5\pi/2,\ldots$ for all coupling~$\gamma$.  ??\marginpar{Interpret more; justify a little why you say ``good''.} which demonstrate the subgrid structures are good.
+\item If~$(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k=0$\,, 
+in the decoupled case, $\gamma=0$\,, obtain~$\sin\ell=0$, which indicates~$\ell=0,\pi,2\pi,\ldots$. \marginpar{Interpret a little more.}
+In the case of full coupling, $\gamma=1$, obtain \marginpar{Avoid "$\backslash[\cdots\backslash]$.}
   \[
      \sin\ell+\sin\ell\cos2k\pm\sin2k=0\,.        
   \]
-Triangular transforms of above equation gives
+Triangular transforms of above equation gives\marginpar{Following is wrong because $\sin\ell$ factors: presume the second one is a $\sin k$??}
 \begin{equation}
 (\sin\ell\cos k\pm\sin\ell)\cos k=0\,,
 \end{equation}
@@ -142,8 +153,9 @@ Triangular transforms of above equation gives
 \begin{equation}
 \sin\ell=\pm\tan k\,.
 \end{equation}
- \end{enumerate}
+\end{enumerate}
 
+\marginpar{Now, as well as discussing the above further, the other thing to do here is to check that the expansion in small coupling~$\gamma$ of the characteristic equation~\eqref{eq:chareqn} agrees with my computer algebra of the next section??  May be best to update Reduce so that the command \texttt{in\_tex} works.}
 
 
 \section{Computer algebra constructs the slow manifold}
