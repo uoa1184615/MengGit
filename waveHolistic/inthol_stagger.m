@@ -1,13 +1,13 @@
 global n m b gam dx ph pu qh qu qhl qhr qul qur qhc quc l nu
-n=3; %n=3,7,11,...
-m=6; % m=even
+n=7; %n=3,7,11,...
+m=10; % m=even
 b=(n+1)/2;
 l=n+1;
-L=10;
+L=2*pi;
 D=L/m;
-d=D/2;
+d=D/4;
 gam=d/D/2;
-nu=0.1;
+nu=0.01;
 dx=d/(n-1);
 
 % define indexes into the dynamic variables
@@ -36,19 +36,22 @@ end
 x(end-b+1:end)=L+D+(-b+1:0)*dx;
 
 % initial values
+k=2*pi/L;
 hu=nan(m*(n-2),1);
-hu(ph)=1+0.1*sin(2*pi/L*x(qh));
-hu(pu)=0.1*sin(2*pi/L*x(qu)+pi/2);
+hu(ph)=1+0.1*sin(k*x(qh));
+hu(pu)=  0.1*sin(k*x(qu));
 
 ts0=linspace(0,20,100);
+if not(exist('OCTAVE_VERSION','builtin'))
 [ts hus]=ode15s(@hol_stagger,ts0,hu);
+end;
 
 % plot the results
 for it=1:length(ts)
-hs=nan(length(ts),(m+1)*(n+1)+1);
-hs(it,qh)=hus(it,ph);
-us=nan(length(ts),(m+1)*(n+1)+1);
-us(it,qu)=hus(it,pu);
+hs=nan(1,(m+1)*(n+1)+1);
+hs(qh)=hus(it,ph);
+us=nan(1,(m+1)*(n+1)+1);
+us(qu)=hus(it,pu);
 figure(1);
     subplot(2,1,1),plot(x,hs,'bo');
        xlabel('x');ylabel('h');
