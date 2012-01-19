@@ -1,0 +1,106 @@
+%Computer algebra of holistic discretisation of wave-like PDEs.
+
+on div; off allfac; on revpri;
+linelength(64)$ factor dd,df; 
+
+operator intx; linear intx;
+let { intx(xi^~~p,xi)=>xi^(p+1)/(p+1)
+    , intx(1,xi)=>xi
+    , intx(xi^~~p,xi,~q)=>q^(p+1)/(p+1)
+    , intx(1,xi,~q)=>q
+    };
+depend xi,x;
+let df(xi,x)=>1/dd;
+operator hh; operator uu;
+depend hh,t; depend uu,t;
+let { df(hh(~k),t)=>sub(j=k,gh)
+    , df(uu(~k),t)=>sub(j=k,gu)
+    };
+operator ginv; linear ginv;
+let { df(ginv(~a,t),t)=>ginv(df(a,t),t)
+    , ginv(~a(j+~k),t)=>a(j+k-1)-ginv(a(j+k-2),t) when k>1
+    , ginv(~a(j+~k),t)=>a(j+k+1)-ginv(a(j+k+2),t) when k<0
+    , ginv(~a(j+~k)^2,t)=>a(j+k-1)^2-ginv(a(j+k-2)^2,t) when k>1
+    , ginv(~a(j+~k)^2,t)=>a(j+k+1)^2-ginv(a(j+k+2)^2,t) when k<0
+    , ginv(~a(j+~~k)*~b(j+~~l),t)=> a(j+k-1)*b(j+l-1)
+      -ginv(a(j+k-2)*b(j+l-2),t) when k+l>2
+    , ginv(~a(j+~~k)*~b(j+~~l),t)=> a(j+k+1)*b(j+l+1)
+      -ginv(a(j+k+2)*b(j+l+2),t) when k+l<-1
+    };
+
+% initial conditions.
+hj:=hh(j); hdj:=(hh(j+1)+hh(j-1))/2;
+uj:=uu(j); udj:=(uu(j+1)+uu(j-1))/2;
+gh:=gu:=0;
+
+let gam^6=>0; factor gam;
+gamma:=gam;
+let nu^2=>0; factor nu;
+
+for it:=1:9 do begin
+write "ITERATION = ",it;
+
+% Do the equations for the evolution of the dashed fields.
+% j even.
+resud:=df(udj,t)+df(hj,x)+nu*udj-nu*df(udj,x,2);
+write lengthresud:=length(resud);
+reshb:=(1-gamma/2)*(sub(xi=+1,hj)-sub(xi=-1,hj))
+    -gamma/2*(sub({j=j+2,xi=-1},hj)-sub({j=j-2,xi=+1},hj));
+write lengthreshb:=length(reshb);
+write
+gu:=gu+(gud:=ginv(reshb/dd
+    -intx(resud,xi,1)+intx(resud,xi,-1),t));
+hj:=hj-dd*intx(resud+sub(j=j-1,gud)/2+sub(j=j+1,gud)/2,xi);
+% j odd.
+reshd:=df(hdj,t)+df(uj,x);
+write lengthreshd:=length(reshd);
+resub:=(1-gamma/2)*(sub(xi=+1,uj)-sub(xi=-1,uj))
+    -gamma/2*(sub({j=j+2,xi=-1},uj)-sub({j=j-2,xi=+1},uj));
+write lengthresub:=length(resub);
+write
+gh:=gh+(ghd:=ginv(resub/dd
+    -intx(reshd,xi,1)+intx(reshd,xi,-1),t));
+uj:=uj-dd*intx(reshd+sub(j=j-1,ghd)/2+sub(j=j+1,ghd)/2,xi);
+
+% Do the equations for the evolution of the undashed fields.
+% j even.
+resh:=df(hj,t)+df(udj,x);
+write lengthresh:=length(resh);
+resua:=-sub(xi=0,udj)
+    +sub({j=j+1,xi=-1},uj)/2+sub({j=j-1,xi=+1},uj)/2;
+write lengthresua:=length(resua);
+udj:=udj+resua-dd*int(resh,xi);
+
+% j odd.
+resu:=df(uj,t)+df(hdj,x)+nu*uj-nu*df(uj,x,2);
+write lengthresu:=length(resu);
+resha:=-sub(xi=0,hdj)
+    +sub({j=j+1,xi=-1},hj)/2+sub({j=j-1,xi=+1},hj)/2;
+write lengthresha:=length(resha);
+hdj:=hdj+resha-dd*intx(resu,xi);
+
+  if {resh,reshd,resha,reshb,resu,resud,resua,resub}
+  ={0,0,0,0,0,0,0,0} then write it:=it+100000;
+  showtime;
+end;  
+
+let dd^8=>0;
+depend uu,x; depend hh,x;
+rules:={uu(j)=>uu, uu(j+~p)=>uu+(for n:=1:8 sum 
+               df(uu,x,n)*(dd*p)^n/factorial(n))
+       ,hh(j)=>hh, hh(j+~p)=>hh+(for n:=1:8 sum 
+               df(hh,x,n)*(dd*p)^n/factorial(n)) 
+       ,ginv(~a,t)=>1/2*(a-1/2*dd^2*df(a,x,2) 
+       +5/24*dd^4*df(a,x,4) -61/720*dd^6*df(a,x,6)
+       +277/8064*dd^8*df(a,x,8) )
+       }$
+ghde:=(gh where rules);
+gude:=(gu where rules);
+
+plot(sin(xi),terminal=aqua);
+u0:=sub(j=0,uj)$ u1:=sub(j=1,udj)$
+u0:=(u0 where {nu=>0,gam=>1,uu(0)=>1,uu(~k)=>0 when k neq 0});
+u1:=(u1 where {nu=>0,gam=>1,uu(0)=>1,uu(~k)=>0 when k neq 0});
+plot({u0,u1},xi=(-4 .. 4),terminal=aqua);
+
+end;
