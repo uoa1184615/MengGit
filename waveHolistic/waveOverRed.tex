@@ -1,6 +1,7 @@
 \IfFileExists{ajr.sty}
-{\documentclass[11pt,a5paper]{article}}
-{\documentclass[12pt,a4paper]{article}}
+{\documentclass[12pt,a5paper]{article}}
+{\documentclass[12pt,a4paper]{article}
+ \addtolength{\marginparwidth}{5em}}
 
 \usepackage{amsmath,defns,reducecode}
 \IfFileExists{ajr.sty}{\usepackage{ajr}}{}
@@ -67,7 +68,307 @@ Lastly, define the amplitudes to be
 H_j=h_j(X_j) \qtq{and} U_j=u_j(X_j),
 \end{equation*}
 respectively for $j$~even and odd (odd and even).
-Be careful with the dashes.
+Be careful with the dashes---or maybe ditch dashes as in the following section.
+
+
+
+
+\section{ANZIAM talk}
+This section possibly provides some nice pictures to use.
+\setlength{\unitlength}{1ex}
+\newcounter{i}
+
+
+\subsection{Challenge: couple patches of simulations}
+
+See gapToothWave.mpg
+\begin{itemize}
+\item given some complicated microscale simulator,
+\item that is far too expensive to use over a large domain,
+\item simulate only on \emph{small} patches in space.
+\end{itemize}
+
+\paragraph{Challenge} how do we couple such patchy simulators across `empty' space?
+
+
+
+
+
+
+
+\subsection{Explore the wave equation}
+
+The microscale simulator could be complicated such as a model of interacting ice pieces on the surface of water (growlers or bergy bits), or a turbulent model of tsunamis and floods.
+
+The macroscale could be tides or long water waves, wavelength${}>100$\,m say.
+
+\paragraph{Challenge}   couple, across gaps, such  wave-like simulators? 
+
+\paragraph{Here} start with just the canonical wave equation for complementary fields $h(x,t)$~and~$u(x,t)$
+\begin{equation*}
+\D th=-\D xu\,,
+\qquad
+\D tu=-\D xh\,.
+\end{equation*}
+\emph{But aim for when we do not know the precise form of the \textsc{rhs}s.}
+
+
+
+\subsection{Staggered macroscale and microscale}
+\paragraph{Classic discrete approximation} for a wave equation is on a staggered grid and has lots of good properties:
+\begin{center}
+\begin{picture}(62,11)
+%\put(0,0){\framebox(62,11){}}
+\put(0,3){\vector(1,0){60}}
+\put(60.5,2.5){$x$}
+\setcounter{i}{0}
+\multiput(5,2.5)(12,0){5}{\line(0,1){1}%
+  \stepcounter{i}%
+  \put(-1,-2){$X_{\arabic{i}}$}
+  }
+\put(23,2){\vector(-1,0){6}
+  \put(6,0){\vector(1,0){6}}
+  \put(5,-2){$D$}
+  }
+\setcounter{i}{0}
+\multiput(5,7)(12,0){5}{%
+  \stepcounter{i}%
+  \ifodd\arabic{i}\color{blue}%
+    \put(0,2){%
+    \circle*{1}$H_{\arabic{i}}$
+    }
+  \else\color{magenta}%
+    \put(0,-2){%
+    \circle*{1}$U_{\arabic{i}}$
+    }
+  \fi
+}
+\end{picture}
+\end{center}
+\begin{align*}&
+\text{odd }j\quad
+\D t{H_j}=-\frac{U_{j+1}-U_{j-1}}{2D}\,,
+\\&
+\text{even }j\quad
+\D t{U_j}=-\frac{H_{j+1}-H_{j-1}}{2D}\,.
+\end{align*}
+But suppose we do not know the \textsc{rhs}s algebraically, only simulator.
+
+
+
+
+\paragraph{Simulations} used a staggered macroscale grid of patches.
+
+Each patch around a macroscale grid point $X_j$ executes a microscale simulator of the microscale $h_j(x,t)$ and $u_j(x,t)$:
+\begin{center}
+\begin{picture}(62,16)
+%\put(0,0){\framebox(62,16){}}
+\put(0,3){\vector(1,0){60}}
+\put(60.5,2.5){$x$}
+\setcounter{i}{0}
+\multiput(5,2.5)(12,0){5}{\line(0,1){1}%
+  \stepcounter{i}%
+  \put(-1,-2){$X_{\arabic{i}}$}
+  }
+\put(23,2){\vector(-1,0){6}
+  \put(6,0){\vector(1,0){6}}
+  \put(5,-2){$D$}
+  }
+\setcounter{i}{0}
+\multiput(5,9)(12,0){5}{%
+  \stepcounter{i}%
+  \ifodd\arabic{i}\color{blue}%
+    \def\myv{+}\def\myU{H}\def\myu{h}\def\myh{u}%
+  \else\color{magenta}%
+    \def\myv{-}\def\myU{U}\def\myu{u}\def\myh{h}%
+  \fi%
+  \put(0,\myv3){\circle*{1}}
+  \put(-1,\myv5){\put(0,-0.5){$\myU_{\arabic{i}}$}}
+  \put(-2,\myv3){\thicklines%
+    \line(1,0)4\,$\myu_{\arabic{i}}(x,t)$
+    }
+  \put(-2,\myv1.5){\circle{0.6}}
+  \put(+2,\myv1.5){\circle{0.6}}
+  \put(-2,\myv1.5){\thicklines%
+    \line(1,0)4\,$\myh_{\arabic{i}}(x,t)$
+    }
+  }
+\thinlines
+\setcounter{i}{0}
+\multiput(5,9)(12,0){5}{%
+  \stepcounter{i}%
+  \ifodd\arabic{i}\color{cyan}%
+    \def\myv{+}\def\myU{H}\def\myu{h}\def\myh{u}%
+  \else\color{green}%
+    \def\myv{-}\def\myU{U}\def\myu{u}\def\myh{h}%
+  \fi%
+  \put(0.5,\myv3){\vector(2,-\myv1){9}}
+  \put(0.5,\myv3){\vector(3,-\myv1){13}}
+  \put(-0.5,\myv3){\vector(-2,-\myv1){9}}
+  \put(-0.5,\myv3){\vector(-3,-\myv1){13}}
+  }
+\end{picture}
+\end{center}
+\begin{description}
+\item[odd $j$]  interpolating $U_{j\pm 1}$ gives BCs $u_j(x,t)$ gives $H_j(t)$;
+\item[even $j$]  interpolating $H_{j\pm 1}$ gives BCs $h_j(x,t)$ gives $U_j(t)$.
+\end{description}
+
+
+
+\paragraph{Microscale simulation} movie used a staggered microscale grid. 
+
+For example, zoom onto an even~$j$ patch around a macroscale grid point:
+\begin{center}
+\setlength{\unitlength}{0.7ex}
+\begin{picture}(86,11.5)
+%\put(0,0){\framebox(86,11.5){}}
+\put(0,3){\vector(1,0){84}}
+\put(84.5,2.5){$x$}
+\setcounter{i}{-4}
+\multiput(5,2.5)(12,0){7}{\line(0,1){1}%
+  \stepcounter{i}%
+  \put(-1,-2){$x_{j,\arabic{i}}
+  \ifnum\arabic{i}=0{=}X_j\fi$}
+  }
+\put(23,2){\vector(-1,0){6}
+  \put(6,0){\vector(1,0){6}}
+  \put(7,-2){$d$}
+  }
+\setcounter{i}{-4}
+\multiput(5,7)(12,0){7}{%
+  \stepcounter{i}%
+  \ifodd\arabic{i}\color{magenta}%
+    \put(0,2){%
+    \circle*{1}$h_{j,\arabic{i}}$
+    }
+  \else\color{magenta}%
+    \put(0,-2){%
+    \circle*{1}$u_{j,\arabic{i}}$
+    }
+  \fi
+}
+\end{picture}
+\end{center}
+\begin{itemize}
+\item odd $i$, $\D t{h_{j,i}}=-\frac{u_{j,i+1}-u_{j,i-1}}{2d}$\,,
+\item even $i$, $\D t{u_{j,i}}=-\frac{h_{j,i+1}-h_{j,i-1}}{2d}$\,,
+\item boundary $h_{j,\pm3}$ from interpolating $H_{j\pm1}$  (potential $H_{j\pm3}$, \ldots)
+\item define macroscale $U_j(t)=u_{j,0}(t)$.
+\end{itemize}
+
+This scheme generated the movie.
+
+
+
+\subsection{Slow manifold from overlapping elements!}
+Following beautiful modelling of parabolic reaction-advection-diffusion equations, interpolating macroscale values easiest when elements overlap!
+\begin{center}
+\begin{picture}(62,16)
+%\put(0,0){\framebox(62,16){}}
+\put(0,3){\vector(1,0){60}}
+\put(60.5,2.5){$x$}
+\setcounter{i}{0}
+\multiput(5,2.5)(12,0){5}{\line(0,1){1}%
+  \stepcounter{i}%
+  \put(-1,-2){$X_{\arabic{i}}$}
+  }
+\put(23,2){\vector(-1,0){6}
+  \put(6,0){\vector(1,0){6}}
+  \put(5,-2){$D$}
+  }
+\setcounter{i}{0}
+\multiput(5,9)(12,0){5}{%
+  \stepcounter{i}%
+  \ifodd\arabic{i}\color{blue}%
+    \def\myv{+}\def\myU{H}\def\myu{h}\def\myh{u}%
+  \else\color{magenta}%
+    \def\myv{-}\def\myU{U}\def\myu{u}\def\myh{h}%
+  \fi%
+  \put(0,\myv3){\circle*{1}}
+  \put(-1,\myv5){\put(0,-0.5){$\myU_{\arabic{i}}$}}
+  \put(-11.5,\myv3){\thicklines%
+    \line(1,0){23}%
+    }
+  \put(-11.5,\myv1.5){\circle{0.6}}
+  \put(+11.5,\myv1.5){\circle{0.6}}
+  \put(-11.5,\myv1.5){\thicklines%
+    \line(1,0){23}%
+    }
+  \put(3,\myv0.3){\put(0,-0.5){$\myh_{\arabic{i}}(x,t)$}}
+  \put(3,\myv4){\put(0,-0.5){$\myu_{\arabic{i}}(x,t)$}}
+}
+\thinlines
+\setcounter{i}{0}
+\multiput(5,9)(12,0){5}{%
+  \stepcounter{i}%
+  \ifodd\arabic{i}\color{cyan}%
+    \def\myv{+}\def\myU{H}\def\myu{h}\def\myh{u}%
+  \else\color{green}%
+    \def\myv{-}\def\myU{U}\def\myu{u}\def\myh{h}%
+  \fi%
+  \put(0,\myv3){\vector(0,-\myv1){4}}
+  \put(0,\myv3){\vector(0,-\myv1){4}}
+  }
+\end{picture}
+\end{center}
+No interpolation required!  Coupling boundary conditions are
+\begin{itemize}
+\item even~$j$, $h_j(X_{j\pm1},t)=H_{j\pm1}:=h_{j\pm1}(X_{j\pm1},t)$
+\item odd~$j$, $u_j(X_{j\pm1},t)=U_{j\pm1}:=u_{j\pm1}(X_{j\pm1},t)$
+\end{itemize}
+
+
+\paragraph{Embed the wave dynamics in a family}  introduce a coupling parameter~$\gamma$, $0\leq\gamma\leq1$\,, to range from uncoupled elements, $\gamma=0$\,, to fully coupled $\gamma=1$\,.
+\begin{itemize}
+\item even~$j$, $h_j(X_{j\pm1},t)=\gamma h_{j\pm1}(X_{j\pm1},t) +(1-\gamma)h_j(X_{j},t)$
+\item odd~$j$, $u_j(X_{j\pm1},t)=\gamma u_{j\pm1}(X_{j\pm1},t) +(1-\gamma)u_j(X_{j},t)$
+\end{itemize}
+
+
+\paragraph{Find a slow subspace} when decoupled, $\gamma=0$\,,  that is robust to perturbations and predicts slow manifold evolution when fully coupled, $\gamma=1$\,.
+
+The slow manifold is the macroscale modes.
+
+Fast oscillations about the slow manifold are microscale modes. 
+
+
+
+\paragraph{Find the slow manifold}
+Substitute fields $u_j,h_j\propto \exp[i(kj+\ell t/D)]$ for macroscale variations of wavenumber~$k$ and frequency~$\ell/D$.
+
+Microscale: seek solutions trigonometric in $\ell(x-X_j)/D$, microscale wavenumber~$\ell$, \ldots\ find the characteristic equation
+\begin{equation*}
+\big[(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k\big]\cos\ell=0\,.
+\end{equation*}
+Real frequency~$\ell(k,\gamma)$ implies no instability (as in movie).
+
+
+Small coupling~$\gamma$ asymptotics gives equivalent macroscale \pde:
+\begin{align*}
+&\D tH=-\gamma\D xU -\rat16(\gamma-\gamma^2)D^2\Dn x3U
+-\rat1{120}(\gamma-10\gamma^2)D^4\Dn x5U
++\Ord{\gamma^3}\\
+&\D tU=-\gamma\D xH -\rat16(\gamma-\gamma^2)D^2\Dn x3H
+-\rat1{120}(\gamma-10\gamma^2)D^4\Dn x5H
++\Ord{\gamma^3}
+\end{align*}
+
+
+
+
+\subsection{Conclusion}
+\begin{itemize}
+\item A macroscale staggered grid of microscale patches appears to be an efficient way to simulate wave-like systems.
+\item Linear analysis of overlapping patches supports the modelling as a slow, sub-centre, manifold.
+\item Future linear analysis will explore small patches, not overlapping, as seen in numerical simulations.
+\item Then support for modelling nonlinear dynamics automatically follows for future applications. 
+\end{itemize}
+
+
+
+
+
 
 
 

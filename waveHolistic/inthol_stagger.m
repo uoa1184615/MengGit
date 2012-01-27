@@ -61,9 +61,9 @@ figure(1);
        axis([0 L+D -0.1 0.1]);
        drawnow
        pause(0.1)
-       %M(:,it)=getframe(gcf);
+       M(:,it)=getframe(gcf);
 end
-%movie(M);
+movie(M);
 map=colormap; 
-%mpgwrite(M, map,'filename');
+mpgwrite(M, map,'filename');
 
