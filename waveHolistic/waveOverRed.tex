@@ -1,6 +1,6 @@
 \IfFileExists{ajr.sty}
 {\documentclass[11pt,a5paper]{article}}
-{\documentclass[12pt,a4paper]{refart}}
+{\documentclass[12pt,a4paper]{article}}
 
 \usepackage{amsmath,defns,reducecode}
 \IfFileExists{ajr.sty}{\usepackage{ajr}}{}
@@ -37,7 +37,7 @@ a staggered element approach. For `small' parameter~$\nu$, the \pde{}s for field
 To be solved on elements centred on~$X_j$, $X_j=jD$ say, with some coupling condition.  The difference here is that we let the elements overlap so the $j$th~element is the interval $E_j=(X\jm,X\jp)$.
 
 Because of even/odd symmetry I think it is more convenient to imagine two fields, each on overlapping elements, for each physical field: in element~$E_j$ introduce $h_j(x,t)$, $h'_j(x,t)$, $u_j(x,t)$ and~$u'_j(x,t)$.  I aim to eventuates that even-undashed fields interact with odd-undashed fields, and vice versa, but that the two sets of fields do not interact with the other.  The \pde{}s are then
-\begin{align*}&
+\begin{align}&
 j\text{ odd (even)}&&j\text{ even (odd)}
 \\&
 \D t{h'_j}=-\D x{u_j}\,,
@@ -45,23 +45,23 @@ j\text{ odd (even)}&&j\text{ even (odd)}
 \\&
 \D t{u_j}=-\D x{h'_j}-\nu u_j\,,
 &&\D t{u'_j}=-\D x{h_j}-\nu u'_j\,.
-\end{align*}
+\end{align}
 
 
 Here I propose the coupling condition on the fields, $j$~even (odd), of
-\begin{align*}&
+\begin{align}&
 (1-\rat12\gamma)\big[h_j(X\jp,t)-h_j(X\jm,t)\big]
-=\rat12\gamma\big[h\jpp(X\jp,t)-h\jmm(X\jm,t)\big], 
+=\rat12\gamma\big[h\jpp(X\jp,t)-h\jmm(X\jm,t)\big], \label{cp:h}
 \\&
-u'_j(X_j,t)=\rat12\big[u\jp(X_j,t)+u\jm(X_j,t)\big],
-\end{align*}
+u'_j(X_j,t)=\rat12\big[u\jp(X_j,t)+u\jm(X_j,t)\big],\label{cp:ud}
+\end{align}
 and correspondingly couple the fields, $j$~odd (even), with
-\begin{align*}&
+\begin{align}&
 (1-\rat12\gamma)\big[u_j(X\jp,t)-u_j(X\jm)\big]
-=\rat12\gamma\big[u\jpp(X\jp,t)-u\jmm(X\jm,t)\big], 
+=\rat12\gamma\big[u\jpp(X\jp,t)-u\jmm(X\jm,t)\big], \label{cp:u}
 \\&
-h'_j(X_j,t)=\rat12\big[h\jp(X_j,t)+h\jm(X_j,t)\big],
-\end{align*}
+h'_j(X_j,t)=\rat12\big[h\jp(X_j,t)+h\jm(X_j,t)\big],\label{cp:hd}
+\end{align}
 Lastly, define the amplitudes to be 
 \begin{equation*}
 H_j=h_j(X_j) \qtq{and} U_j=u_j(X_j),
@@ -74,37 +74,43 @@ Be careful with the dashes.
 \section{Eigenvalue analysis}
 
 Assume~$\nu=0$\,, thus there is no dissipation (bed drag) in the \textsc{pde}s. Seek solutions in exponential form
-\begin{eqnarray}
-&&u_j(x,t)=u(\xi)e^{\lambda t+ikj}\,,\label{sol:u}\\
-&&h_j(x,t)=h(\xi)e^{\lambda t+ikj}\,,\label{sol:h}\\
-&&u'_j(x,t)=u'(\xi)e^{\lambda t+ikj}\,,\label{sol:u'}\\
-&&h'_j(x,t)=h'(\xi)e^{\lambda t+ikj}\,,\label{sol:h'}
-\end{eqnarray}
+\begin{align}&
+u_j(x,t)=u(\xi)e^{\lambda t+ikj}\,,\label{sol:u}
+\\&
+h_j(x,t)=h(\xi)e^{\lambda t+ikj}\,,\label{sol:h}
+\\&
+u'_j(x,t)=u'(\xi)e^{\lambda t+ikj}\,,\label{sol:u'}
+\\&
+h'_j(x,t)=h'(\xi)e^{\lambda t+ikj}\,,\label{sol:h'}
+\end{align}
 where $\xi=(x-X_j)/D$ so that~$\partial_x=\frac1D\partial_\xi$\,, and~$k$ is the lateral wavenumber.
 In essence, $u(\xi),h(\xi),u'(\xi),h'(\xi)$ are Fourier transforms over the element index~$j$ of the corresponding fields.
 Substituting these exponential forms into the \textsc{pde}s gives
-\marginpar{Use my command \texttt{$\backslash$DD} to do second order partial derivatives, and \texttt{$\backslash$D} for first order partial derivative.}
 \begin{equation}
 \lambda^2u(\xi)=\frac{1}{D^2}\frac{\partial^2u(\xi)}{\partial\xi^2}
 \quad\text{and}\quad
 \lambda^2u'(\xi)=\frac{1}{D^2}\frac{\partial^2u'(\xi)}{\partial\xi^2}\,.
 \label{eq:FTpde}
 \end{equation}
-Being constant coefficient we try solutions for the subgrid structure in terms of trigonometric functions:\marginpar{Use one line if reasonable.} 
+Being constant coefficient we try solutions for the subgrid structure in terms of trigonometric functions: 
 \begin{equation}
 u(\xi)=A\cos\ell\xi+B\sin\ell\xi \label{sol:uxi}
 \quad\text{and}\quad
 u'(\xi)=A'\cos\ell\xi+B'\sin\ell\xi\,,
 \end{equation}
 where~$\ell$ is the wavenumber of the subgrid structures.
-Substitute the above~$u(\xi)$ and~$u'(\xi)$ into the \textsc{pde}s~\eqref{eq:FTpde}\marginpar{Always be more explicit: cross-reference precisely, not vaguely.} and obtain that the solutions $h(\xi)$~and~$h'(\xi)$ must take the forms 
+Substituting the above~$u(\xi)$ and~$u'(\xi)$ into the \textsc{pde}s~\eqref{eq:FTpde} indicates
+\begin{equation}
+\lambda^2=-\frac{\ell^2}{D^2}\,,\label{eq:lambda}
+\end{equation}
+and the solutions $h(\xi)$~and~$h'(\xi)$ must take the forms 
 \begin{equation}
 h'(\xi)=\frac{\ell}{D\lambda}(A\sin\ell\xi-B\cos\ell\xi)
 \quad\text{and}\quad
 h(\xi)=\frac{\ell}{D\lambda}(A'\sin\ell\xi-B'\cos\ell\xi)\,.\label{sol:hxi}
 \end{equation}
 
-The coupling conditions~\eqref{??} proposed in the introduction indicate
+The coupling conditions~\eqref{cp:h}$-$\eqref{cp:hd} proposed in the introduction indicate
 \begin{align}&
 (1-\frac12\gamma)\big[h(1)-h(-1)\big]
 =\frac12\gamma\big[h(-1)e^{2ik}-h(1)e^{-2ik}\big], \label{bc:h}
@@ -116,21 +122,47 @@ u'(0)=\frac12\big[u(1)+u(-1)\big],\label{bc:u'}
 \\&
 h'(0)=\frac12\big[h(1)+h(-1)\big],\label{bc:h'}
 \end{align}
-Substitute the solutions forms~\eqref{??} of~$h(\xi)$,~$u(\xi)$,~$h'(\xi)$ and~$u'(\xi)$ into the above coupling conditions, rearrange and obtain\marginpar{Give a couple of words to describe what is coming, namely, here two equations} the two equations\marginpar{You have missed out some steps here as $B$ and $A'$ have disappeared.  Describe.}
-\begin{eqnarray*}
-&&\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\, A+\gamma\cos\ell(e^{2ik}-e^{-2ik})\,B'=0\,,\\
-&&-\gamma\cos\ell(e^{2ik}-e^{-2ik})\,A+\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell \,B'=0\,,
-\end{eqnarray*}
+Substitute the solutions forms~\eqref{sol:uxi} and~\eqref{sol:hxi} of~$h(\xi)$,~$u(\xi)$,~$h'(\xi)$ and~$u'(\xi)$ into the above coupling conditions~\eqref{bc:h}$-$\eqref{bc:h'}, obtain
+\begin{align}&
+(1-\frac12\gamma)\left[\frac{\ell}{D\lambda}(A'\sin\ell-B'\cos\ell+A'\sin\ell+B'\cos\ell)\right]\nonumber
+\\&\quad\quad
+{}=\frac12\gamma\frac{\ell}{D\lambda}\left[(-A'\sin\ell-B'\cos\ell)e^{2ik}-(A'\sin\ell-B'\cos\ell)e^{-2ik}\right]\,,
+\\&
+A'=\frac12(A\cos\ell+B\sin\ell+A\cos\ell-B\sin\ell)\,,
+\\&
+(1-\frac12\gamma)(A\cos\ell+B\sin\ell-A\cos\ell+B\sin\ell)\nonumber
+\\&\quad\quad
+{}=\frac12\gamma\left[(A\cos\ell-B\sin\ell)e^{2ik}-(A\cos\ell+B\sin\ell)e^{-2ik}\right]\,,
+\\&
+B=\frac12(A'\sin\ell-B'\cos\ell-A'\sin\ell-B'\cos\ell)\,,
+\end{align}
+by replacing~$A'$ and~$B$, which gives the following two equations of
+\begin{align*}&
+\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\, A+\gamma\cos\ell(e^{2ik}-e^{-2ik})\,B'=0\,,
+\\&
+-\gamma\cos\ell(e^{2ik}-e^{-2ik})\,A+\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell \,B'=0\,.
+\end{align*}
 Nontrivial solutions of these equations exist only when the coefficient matrix is singular.
-Setting the determinant of the coefficient matrix equaling to zero gives the characteristic equation\marginpar{Use more words.}
+Setting the determinant of the coefficient matrix equaling to zero gives the characteristic equation
 \begin{equation}
-\left\{\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\right\}^2=\gamma^2\cos^2\ell(e^{2ik}-e^{-2ik})^2\,.
+\left\{\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\right\}^2=\gamma^2\cos^2\ell(e^{2ik}-e^{-2ik})^2\,.\label{eq:char}
 \end{equation}
-Invoking \marginpar{Avoid "$\backslash[\cdots\backslash]$, use either \texttt{displaymath} or \texttt{equation*} environments.}
-\[
-e^{2ik}+e^{-2ik}=2\cos2k\quad \text{and}\quad(e^{2ik}-e^{-2ik})^2=-4\sin^22k\,,
-\]
-the characteristic equation becomes
+Invoking 
+\begin{equation*}
+e^{2ik}+e^{-2ik}=2\cos2k
+\quad \text{and}\quad
+(e^{2ik}-e^{-2ik})^2=-4\sin^22k\,,
+\end{equation*}
+and rearranging, equation~\eqref{eq:char} gives
+\begin{equation*}
+\begin{split}&
+\left[(2-\gamma+\gamma\cos2k)\cos\ell\sin\ell-\gamma\cos\ell\sin2k\right]
+\\&\quad\quad
+\left[(2-\gamma+\gamma\cos2k)\cos\ell\sin\ell+\gamma\cos\ell\sin2k\right]=0\,,
+\end{split}
+\end{equation*}
+that is,
+
 \begin{equation}
 \big[(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k\big]\cos\ell=0\,.
 \label{eq:chareqn}
@@ -138,9 +170,9 @@ the characteristic equation becomes
 
 Two possibilities arise. 
 \begin{enumerate}
-\item If~$\cos\ell=0$\,, then~$\ell=\pi/2,3\pi/2,5\pi/2,\ldots$ for all coupling~$\gamma$. \marginpar{Need some interpretation.}
+\item If~$\cos\ell=0$\,, then~$\ell=\pi/2,3\pi/2,5\pi/2,\ldots$ for all coupling~$\gamma$. 
 \item If~$(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k=0$\,, 
-in the decoupled case, $\gamma=0$\,, obtain~$\sin\ell=0$, which indicates~$\ell=0,\pi,2\pi,\ldots$.  \marginpar{Need some interpretation.}
+in the decoupled case, $\gamma=0$\,, obtain~$\sin\ell=0$, which indicates~$\ell=0,\pi,2\pi,\ldots$.  \marginpar{How should we explain these special points in a better way?}
 In the case of full coupling, $\gamma=1$, obtain
   \begin{equation*}
      \sin\ell+\sin\ell\cos2k\pm\sin2k=0\,.        
