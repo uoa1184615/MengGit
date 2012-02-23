@@ -1,0 +1,95 @@
+\documentclass[12pt,a5paper]{article}
+\IfFileExists{ajr.sty}{\usepackage{ajr}}{}
+\usepackage{reducecode}
+\title{Factorize the characteristic equation for coupling patches of waves}
+\author{AJR}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+Make output pretty.
+\begin{reduce}
+on div; off allfac; on revpri;
+\end{reduce}
+
+Introduce variable $\xi=x/D$ to be the subgrid variable in each element.
+\begin{reduce}
+depend xi,x; let df(xi,x)=>1/dd;
+\end{reduce}
+
+Define operator \verb|cis| to represent $e^{i\theta}$.  Then define the exponential structure,~\verb|ee|, we expect from element to element, index~$j$, and its reciprocal,~\verb|ff|.
+\begin{reduce}
+operator cis; 
+let {cis(0)=>1, cis(~a)^2=>cis(2*a),
+     cis(~a)*cis(~b)=>cis(a+b),
+     df(cis(~a),~b)=>i*cis(a)*df(a,b)
+     };
+ee:=cis(ll*t/dd+k*j);
+ff:=cis(-ll*t/dd-k*j);
+\end{reduce}
+
+Define subgrid fields for even elements, say those labelled~0, and odd elements, labelled~1 (or vice versa). 
+\begin{reduce}
+u0:=  ( a0*cos(ll*xi)+b0*sin(ll*xi))*ee;
+h0:=i*(-a0*sin(ll*xi)+b0*cos(ll*xi))*ee;
+h1:=  ( a1*cos(ll*xi)+b1*sin(ll*xi))*ee;
+u1:=i*(-a1*sin(ll*xi)+b1*cos(ll*xi))*ee;
+\end{reduce}
+
+Check that the above subgrid fields satisfy the \textsc{pde} in each element.  Should get four zeros here.
+\begin{reduce}
+pde:={df(u0,t)+df(h0,x)
+     ,df(h0,t)+df(u0,x)
+     ,df(u1,t)+df(h1,x)
+     ,df(h1,t)+df(u1,x)};
+\end{reduce}
+
+Code the coupling relations.
+\begin{reduce}
+chl:=((1-gam/2)*(sub(xi=+1,h0)-sub(xi=-1,h0))
+    -gam/2*(sub({j=j+2,xi=-1},h0)-sub({j=j-2,xi=+1},h0))
+    )*ff;
+chr:=(1/2*(sub({xi=-1,j=j+1},h0)+sub({xi=1,j=j-1},h0))
+    -sub(xi=0,h1)
+    )*ff;
+cul:=(1/2*(sub({xi=-1,j=j+1},u1)+sub({xi=1,j=j-1},u1))
+    -sub(xi=0,u0)
+    )*ff;
+cur:=((1-gam/2)*(sub(xi=+1,u1)-sub(xi=-1,u1))
+    -gam/2*(sub({j=j+2,xi=-1},u1)-sub({j=j-2,xi=+1},u1))
+    )*ff;
+\end{reduce}
+
+Form the matrix that multiplies each of the unknown coefficients.
+\begin{reduce}
+a:=mat((df(chl,a0),df(chl,b0),df(chl,a1),df(chl,b1))
+      ,(df(chr,a0),df(chr,b0),df(chr,a1),df(chr,b1))
+      ,(df(cul,a0),df(cul,b0),df(cul,a1),df(cul,b1))
+      ,(df(cur,a0),df(cur,b0),df(cur,a1),df(cur,b1))
+      );
+\end{reduce}
+
+Get non-trivial solutions only when the determinant is zero, so find determinant and factorize.
+\begin{reduce}
+chareqn:=(det(a) where cis(~q)=>cos(q)+i*sin(q));
+chareqn:=trigsimp(chareqn,expand);
+chareqn:=factorize(chareqn);
+\end{reduce}
+
+Finished. \begin{reduce} end; \end{reduce}
+
+
+The output finishes with the following which seems different to what Meng generated.  Check.
+\begin{verbatim}
+chareqn := {{4,1},
+            {sin(ll) + sin(k)*gam,1},
+            { - sin(ll) + sin(k)*gam,1},
+            {1 + sin(k),1},
+            { - 1 + sin(k),1},
+            {1 + sin(ll),1},
+            { - 1 + sin(ll),1}}
+\end{verbatim}
+
+\end{document}
