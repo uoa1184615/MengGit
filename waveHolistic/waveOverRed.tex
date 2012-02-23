@@ -416,12 +416,12 @@ The coupling conditions~\eqref{cp:h}$-$\eqref{cp:hd} proposed in the introductio
 (1-\frac12\gamma)\big[h(1)-h(-1)\big]
 =\frac12\gamma\big[h(-1)e^{2ik}-h(1)e^{-2ik}\big], \label{bc:h}
 \\&
-u'(0)=\frac12\big[u(1)+u(-1)\big],\label{bc:u'}
+u'(0)=\frac12\big[u(0)e^{ik}+u(0)e^{-ik}\big],\label{bc:u'}
 \\&
 (1-\frac12\gamma)\big[u(1)-u(-1)\big]
 =\frac12\gamma\big[u(-1)e^{2ik}-u(1)e^{-2ik}\big], \label{bc:u}
 \\&
-h'(0)=\frac12\big[h(1)+h(-1)\big],\label{bc:h'}
+h'(0)=\frac12\big[h(0)e^{ik}+h(0)e^{-ik}\big],\label{bc:h'}
 \end{align}
 Substitute the solutions forms~\eqref{sol:uxi} and~\eqref{sol:hxi} of~$h(\xi)$,~$u(\xi)$,~$h'(\xi)$ and~$u'(\xi)$ into the above coupling conditions~\eqref{bc:h}$-$\eqref{bc:h'}, obtain
 \begin{align}&
@@ -429,64 +429,57 @@ Substitute the solutions forms~\eqref{sol:uxi} and~\eqref{sol:hxi} of~$h(\xi)$,~
 \\&\quad\quad
 {}=\frac12\gamma\frac{\ell}{D\lambda}\left[(-A'\sin\ell-B'\cos\ell)e^{2ik}-(A'\sin\ell-B'\cos\ell)e^{-2ik}\right]\,,
 \\&
-A'=\frac12(A\cos\ell+B\sin\ell+A\cos\ell-B\sin\ell)\,,
+A'=\frac12A(e^{ik}+e^{-ik})\,,
 \\&
 (1-\frac12\gamma)(A\cos\ell+B\sin\ell-A\cos\ell+B\sin\ell)\nonumber
 \\&\quad\quad
 {}=\frac12\gamma\left[(A\cos\ell-B\sin\ell)e^{2ik}-(A\cos\ell+B\sin\ell)e^{-2ik}\right]\,,
 \\&
-B=\frac12(A'\sin\ell-B'\cos\ell-A'\sin\ell-B'\cos\ell)\,,
+B=\frac12B'(e^{ik}+e^{-ik})\,,
 \end{align}
-by replacing~$A'$ and~$B$, which gives the following two equations of
+by replacing~$A'$ and~$B$ and applying~$e^{ik}+e^{-ik}=2\cos k$, which gives the following two equations of
 \begin{align*}&
-\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\, A+\gamma\cos\ell(e^{2ik}-e^{-2ik})\,B'=0\,,
+\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\sin\ell\cos k\,A+\gamma\cos\ell(e^{2ik}-e^{-2ik})\,B'=0\,,
 \\&
--\gamma\cos\ell(e^{2ik}-e^{-2ik})\,A+\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell \,B'=0\,.
+-\gamma\cos\ell(e^{2ik}-e^{-2ik})\,A+\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\sin\ell\cos k \,B'=0\,.
 \end{align*}
 Nontrivial solutions of these equations exist only when the coefficient matrix is singular.
 Setting the determinant of the coefficient matrix equaling to zero gives the characteristic equation
 \begin{equation}
-\left\{\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\cos\ell\sin\ell\right\}^2=\gamma^2\cos^2\ell(e^{2ik}-e^{-2ik})^2\,.\label{eq:char}
+\big[(4-2\gamma)+\gamma(e^{2ik}+e^{-2ik})\big]\sin^2\ell\cos^2 k+\gamma^2\cos^2\ell(e^{2ik}-e^{-2ik})^2=0\,.\label{eq:char}
 \end{equation}
 Invoking 
-\begin{equation*}
+\begin{align*}&
 e^{2ik}+e^{-2ik}=2\cos2k
 \quad \text{and}\quad
 (e^{2ik}-e^{-2ik})^2=-4\sin^22k\,,
-\end{equation*}
+\\&
+\cos2k=1-2\sin^2k
+\quad \text{and}\quad
+\sin^22k=4\sin^k\cos^2k\,,
+\end{align*}
 and rearranging, equation~\eqref{eq:char} gives
 \begin{equation*}
-\begin{split}&
-\left[(2-\gamma+\gamma\cos2k)\cos\ell\sin\ell-\gamma\cos\ell\sin2k\right]
-\\&\quad\quad
-\left[(2-\gamma+\gamma\cos2k)\cos\ell\sin\ell+\gamma\cos\ell\sin2k\right]=0\,,
-\end{split}
+(2-\gamma\sin^2k)^2\sin^2\ell\cos^2k-\gamma^2\cos^2\ell\sin^2k\cos^2k=0\,,
 \end{equation*}
-that is,
-
+which implies
 \begin{equation}
-\big[(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k\big]\cos\ell=0\,.
+\big[(2-\gamma\sin^2k)\sin\ell\pm\gamma\sin k\cos\ell\big]\cos k=0\,.
 \label{eq:chareqn}
 \end{equation}
-
-Two possibilities arise. 
-\begin{enumerate}
-\item If~$\cos\ell=0$\,, then~$\ell=\pi/2,3\pi/2,5\pi/2,\ldots$ for all coupling~$\gamma$. 
-\item If~$(2-\gamma)\sin\ell+\gamma\sin\ell\cos2k\pm\gamma\sin2k=0$\,, 
-in the decoupled case, $\gamma=0$\,, obtain~$\sin\ell=0$, which indicates~$\ell=0,\pi,2\pi,\ldots$.  \marginpar{How should we explain these special points in a better way?}
+If we consider~$k<\pi/2$, the term of~$\cos k\neq0$. Thus, we have
+\begin{equation*}
+(2-\gamma\sin^2k)\sin\ell\pm\gamma\sin k\cos\ell=0\,.
+\end{equation*}
+In the decoupled case, $\gamma=0$\,, obtain~$\sin\ell=0$, which indicates~$\ell=0,\pi,2\pi,\ldots$. 
 In the case of full coupling, $\gamma=1$, obtain
-  \begin{equation*}
-     \sin\ell+\sin\ell\cos2k\pm\sin2k=0\,.        
-  \end{equation*}
-Triangular transforms of above equation gives
 \begin{equation}
-(\sin\ell\cos k\pm\sin k)\cos k=0\,,
+(2-\sin^2k)\sin\ell\pm\sin k\cos\ell=0\,,
 \end{equation}
- which indicates a special case of $\cos k=0$ such that~$k=\pi/2,3\pi/2,\ldots$, or $\sin\ell\cos k\pm\sin\ell=0$ such that 
+ which gives 
 \begin{equation}
-\sin\ell=\pm\tan k\,.
+\tan\ell=\mp\frac{\sin k}{2-\sin^2k}\,.
 \end{equation}
-\end{enumerate}
 
 \marginpar{Now, as well as discussing the above further, the other thing to do here is to check that the expansion in small coupling~$\gamma$ of the characteristic equation~\eqref{eq:chareqn} agrees with my computer algebra of the next section??  May be best to update Reduce so that the command \texttt{in\_tex} works.}
 
