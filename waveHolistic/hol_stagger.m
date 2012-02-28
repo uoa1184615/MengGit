@@ -1,31 +1,35 @@
-function dhudt=hol_stagger(t,hu)
-global n m b gam dx ph pu qh qu qhl qhr qul qur qhc quc l nu
+function dhudt=hol_stagger(t,hu) 
+global n m r dx nu0 nu2
 
-uu=nan((n+1)*(m+1)+1,1);
-uu(qh)=hu(ph);
-uu(qu)=hu(pu);
+% uu(i,j)=ith microgrid value in jth macropatch
+uu=nan(n+2,m);
+i=2:n+1; j=1:m;
+uu(i,j)=reshape(hu,n,m);
 
-%periodic boundary condition.
-uu(1:b)=uu(end-l:end-b-1);
-uu(end-b+1:end)=uu(b+2:n+2);
+%periodic boundary condition from wrapping patch index
+jp=[2:m, 1]; jm=[m, 1:m-1];
 
-% insert couple boundary conditions on each tooth by 
-% applying periodic bcs
-uu(qhr)=(1+gam)/2*uu(qhc)+(1-gam)/2*uu(quc-l);
-uu(qhl)=(1-gam)/2*uu(qhc)+(1+gam)/2*uu(quc-l);
-uu(qur)=(1+gam)/2*uu(qhc+l)+(1-gam)/2*uu(quc);
-uu(qul)=(1-gam)/2*uu(qhc+l)+(1+gam)/2*uu(quc);
+% coupling edge conditions on each tooth, h and u are the same 
+imid=(n+3)/2;
+uu(1,j)  =(1+r)/2*uu(imid,jm)+(1-r)/2*uu(imid,jp);
+uu(n+2,j)=(1+r)/2*uu(imid,jp)+(1-r)/2*uu(imid,jm);
 
-% insert values for the second derivative
-uu(quc-b)=0;
-uu(quc+b)=0;
+% wave part of rhs is very easy by symmetry
+dhudt(i,j)=-(uu(i+1,j)-uu(i-1,j))/(dx*2);
 
-dhudt=nan(length(hu),1);
-dhudt(ph)=-(uu(qh+1)-uu(qh-1))/dx/2;
-dhudt(pu)=-(uu(qu+1)-uu(qu-1))/dx/2-nu*uu(qu);
-%dhudt(pu)=-(uu(qu+1)-uu(qu-1))/dx/2-nu*uu(qu) ...
-%                +nu*(uu(qu+2)-2*uu(qu)+uu(qu-2))/dx^2;
+% other parts of equations require more craft: 
+% h is when both same; u is when both different;
+i0=2:2:n+1; i1=3:2:n+1; % even and odd within a patch
+j0=1:2:m; j1=2:2:m; % corresponding even and odd patches
 
+% first some bed drag
+dhudt(i1,j0)-=nu0*uu(i1,j0);
+dhudt(i0,j1)-=nu0*uu(i0,j1);
 
+% now viscous drag, perhaps only works for n>=5 ??
+dhudt(i1,j0)+=nu2/(4*dx^2)*(uu(i1-2,j0)-2*uu(i1,j0)+uu(i1+2,j0));
+uuxx=uu(i0(1:end-2),j1)-2*uu(i0(2:end-1),j1)+uu(i0(3:end),j1);
+dhudt(i0,j1)+=nu2/(4*dx^2)*[uuxx(1,:);uuxx;uuxx(end,:)];
 
-
+% form time derivative into a vector
+dhudt=reshape(dhudt(i,j),n*m,1);  
