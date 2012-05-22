@@ -12,7 +12,7 @@ u0:= ( a0*cos(ll*xi)+b0*sin(ll*xi))*ee;
 h0:=(-a0*sin(ll*xi)+b0*cos(ll*xi))*ee; 
 u1:= ( a1*cos(ll*xi)+b1*sin(ll*xi))*ee;
 h1:=(-a1*sin(ll*xi)+b1*cos(ll*xi))*ee;
-%%% the coupled PDEs
+%%% the coupled PDEs, the solutions confirms the pdes equal to zeros
 pde:={df(u0,t)+df(h0,x) 
     ,df(h0,t)+df(u0,x) 
     ,df(u1,t)+df(h1,x)
