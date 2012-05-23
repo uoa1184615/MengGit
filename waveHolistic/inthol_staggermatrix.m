@@ -6,8 +6,8 @@ L=2*pi; % length of domain
 D=L/m;
 d=2*r*D;
 dx=d/(n+1); % patch size includes edges, to give microgrid size
-nu0=0;
-nu2=1;
+nu0=0.1;
+nu2=0.03;
 gam=1;
 
 % define the x-coords, omit patch edges

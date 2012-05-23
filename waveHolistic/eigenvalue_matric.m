@@ -6,8 +6,8 @@ L=2*pi; % length of domain
 D=L/m;
 d=2*r*D;
 dx=d/(n+1); % patch size includes edges, to give microgrid size
-nu0=0;
-nu2=1;
+nu0=0.1;
+nu2=0.03;
 gam=1;
 eps=1e-5; % order parameter
 
@@ -16,7 +16,6 @@ eps=1e-5; % order parameter
 x=x+hu;
 
 % check the equilibrium
-k=2*pi/L;
 hu(1:2:end)=1;
 hu(2:2:end)=0;
 equil=norm(hol_staggermatrix(0,hu))
