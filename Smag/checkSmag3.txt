@@ -35,16 +35,19 @@
     , qq^2=>(uu(0,0)^2+vv(0,0)^2)
     , df(qq,~aa)=>(uu(0,0)*df(uu(0,0),aa)+vv(0,0)*df(vv(0,0),aa))*rqq
     };
+
  
- 
-  let r2^2=>2$ % r2=sqrt2
+  d:=eps; 
+  grz:=gz; 
+  grx:=eps*gx;
+  gry:=0;
+  gamm:=eps*gam; 
+  let eps^3=>0;
+  let r2^2=>2; 
+  r2:=sqrt(2)$
 
   in "smag3Asym.txt"$
-  let eps^3=>0;
-
-  resc:=df(u,x)+df(v,y)+df(w,z);
-  resgh:=sub(zz=1,w-u*etax-v*etay)-gh;
-
+  
   exx:=df(u,x)$
   eyy:=df(v,y)$
   ezz:=df(w,z)$
@@ -61,20 +64,26 @@
 
   resw:=df(w,t)+u*df(w,x)+v*df(w,y)+w*df(w,z)+df(p,z)+grz-df(txz,x)
          -df(txy,y)-df(tzz,z);
-  restn:=sub(zz=1,-p*(1+etax^2+etay^2)+tzz-2*etax*txz-2*etay*tyz+etax^2*txx
-         +2*etax*etay*txy+etay^2*tyy);
-
-
   resu:=df(u,t)+u*df(u,x)+v*df(u,y)+w*df(u,z)+df(p,x)-grx
          -df(txx,x)-df(txy,y)-df(txz,z);
   resv:=df(v,t)+u*df(v,x)+v*df(v,y)+w*df(v,z)+df(p,y)-gry
          -df(tyy,y)-df(txy,x)-df(tyz,z);
+  restn:=sub(zz=1,-p*(1+etax^2+etay^2)+tzz-2*etax*txz-2*etay*tyz+etax^2*txx
+         +2*etax*etay*txy+etay^2*tyy);
+  resc:=df(u,x)+df(v,y)+df(w,z);
+  resgh:=sub(zz=1,w-u*etax-v*etay)-gh;
   resbu:=sub(zz=0,-u+cu*eta*df(u,z));
   resbv:=sub(zz=0,-v+cu*eta*df(v,z));
-
   resttu:=-sub(zz=1,(1-0*gamm)*((1-etax^2)*txz+etax*(tzz-txx)
           -etay*(txy+etax*tyz))-(1-gamm)*r2*ct/(cu+1)/(2*cu+1)*u*qq);
   resttv:=-sub(zz=1, (1-0*gamm)*((1-etay^2)*tyz+etay*(tzz-tyy)
           -etax*(txy+etay*txz))-(1-gamm)*r2*ct/(cu+1)/(2*cu+1)*v*qq);
+  operator mean; linear mean; 
+  let { mean(zz^~~n,zz) => 1/(n+1)
+      , mean(1,zz) => 1 }; 
+  mean_resu:=mean(resu,zz);
+  mean_resv:=mean(resv,zz);
+  mean_resw:=mean(resw,zz);
 
 end;
+
