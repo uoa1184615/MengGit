@@ -1,6 +1,6 @@
 
  on div; off allfac; on revpri; %on gcd; % avoid gcd unless necessary
- factor uu,h,ct,gx,gz,gam,r2,vv,qq,rqq;
+ factor eps,uu,h,ct,gx,gz,gam,r2,vv,qq,rqq;
  
  operator h; operator uu; operator vv;
  eta:=h(0,0); etax:=h(1,0)*d$ etay:=h(0,1)*d$ 
@@ -42,8 +42,10 @@
   in "smag3Asym.txt"$
   let eps^3=>0;
 
-  resc:=df(u,x)+df(v,y)+df(w,z);
-  resgh:=sub(zz=1,w-u*etax-v*etay)-gh;
+lengthresc:=length(
+  resc:=df(u,x)+df(v,y)+df(w,z));
+lengthresgh:=length(
+  resgh:=sub(zz=1,w-u*etax-v*etay)-gh);
 
   exx:=df(u,x)$
   eyy:=df(v,y)$
@@ -51,30 +53,38 @@
   exz:=(df(u,z)+df(w,x))/2$
   exy:=(df(u,y)+df(v,x))/2$
   eyz:=(df(v,z)+df(w,y))/2$
-  rese:=exx^2+ezz^2+eyy^2+2*exz^2+2*exy^2+2*eyz^2-ros^2;
+lengthrese:=length(
+  rese:=exx^2+ezz^2+eyy^2+2*exz^2+2*exy^2+2*eyz^2-ros^2);
   txx:=2*ct*eta^2*ros*exx$
   tyy:=2*ct*eta^2*ros*eyy$
   tzz:=2*ct*eta^2*ros*ezz$
   txz:=2*ct*eta^2*ros*exz$
   txy:=2*ct*eta^2*ros*exy$
   tyz:=2*ct*eta^2*ros*eyz$
-
+  
+lengthresw:=length(
   resw:=df(w,t)+u*df(w,x)+v*df(w,y)+w*df(w,z)+df(p,z)+grz-df(txz,x)
-         -df(txy,y)-df(tzz,z);
+         -df(txy,y)-df(tzz,z));
+lengthrestn:=length(
   restn:=sub(zz=1,-p*(1+etax^2+etay^2)+tzz-2*etax*txz-2*etay*tyz+etax^2*txx
-         +2*etax*etay*txy+etay^2*tyy);
+         +2*etax*etay*txy+etay^2*tyy));
 
-
+lengthresu:=length(
   resu:=df(u,t)+u*df(u,x)+v*df(u,y)+w*df(u,z)+df(p,x)-grx
-         -df(txx,x)-df(txy,y)-df(txz,z);
+         -df(txx,x)-df(txy,y)-df(txz,z));
+lengthresv:=length(
   resv:=df(v,t)+u*df(v,x)+v*df(v,y)+w*df(v,z)+df(p,y)-gry
-         -df(tyy,y)-df(txy,x)-df(tyz,z);
-  resbu:=sub(zz=0,-u+cu*eta*df(u,z));
-  resbv:=sub(zz=0,-v+cu*eta*df(v,z));
+         -df(tyy,y)-df(txy,x)-df(tyz,z));
+lengthresbu:=length(
+  resbu:=sub(zz=0,-u+cu*eta*df(u,z)));
+lengthresbv:=length(
+  resbv:=sub(zz=0,-v+cu*eta*df(v,z)));
 
+lengthresttu:=length(
   resttu:=-sub(zz=1,(1-0*gamm)*((1-etax^2)*txz+etax*(tzz-txx)
-          -etay*(txy+etax*tyz))-(1-gamm)*r2*ct/(cu+1)/(2*cu+1)*u*qq);
+          -etay*(txy+etax*tyz))-(1-gamm)*r2*ct/(cu+1)/(2*cu+1)*u*qq));
+lengthresttv:=length(
   resttv:=-sub(zz=1, (1-0*gamm)*((1-etay^2)*tyz+etay*(tzz-tyy)
-          -etax*(txy+etay*txz))-(1-gamm)*r2*ct/(cu+1)/(2*cu+1)*v*qq);
+          -etax*(txy+etay*txz))-(1-gamm)*r2*ct/(cu+1)/(2*cu+1)*v*qq));
 
 end;

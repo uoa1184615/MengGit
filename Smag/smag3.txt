@@ -54,14 +54,14 @@
  let r2^2=>2; % r2=sqrt2
  operator uk,vk,wk,pk,ghk,guk,gvk,rosk; 
   
- u:=uu(0,0)*(cu+zz)/(cu+1/2)+for k:=1:o sum eps^k*uk(k); 
- v:=vv(0,0)*(cu+zz)/(cu+1/2)+for k:=1:o sum eps^k*vk(k);
- w:=+for k:=1:o sum eps^k*wk(k); 
- p:=grz*h(0,0)*(1-zz)+for k:=1:o sum eps^k*pk(k);  
- gh:=+for k:=1:o sum eps^k*ghk(k); 
- gu:=+for k:=1:o sum eps^k*guk(k);
- gv:=+for k:=1:o sum eps^k*gvk(k);
- ros:=qq*r2/eta/(1+2*cu)+for k:=1:o sum eps^k*rosk(k);
+ u:=uu(0,0)*(cu+zz)/(cu+1/2)+for k:=1:o-1 sum eps^k*uk(k); 
+ v:=vv(0,0)*(cu+zz)/(cu+1/2)+for k:=1:o-1 sum eps^k*vk(k);
+ w:=+for k:=1:o-1 sum eps^k*wk(k); 
+ p:=grz*h(0,0)*(1-zz)+for k:=1:o-1 sum eps^k*pk(k);  
+ gh:=+for k:=1:o-1 sum eps^k*ghk(k); 
+ gu:=+for k:=1:o-1 sum eps^k*guk(k);
+ gv:=+for k:=1:o-1 sum eps^k*gvk(k);
+ ros:=qq*r2/eta/(1+2*cu)+for k:=1:o-1 sum eps^k*rosk(k);
 
  % specific to at most o:=3 ??? 
  depend uk,zz,xx,yy,uu(0,0),vv(0,0),h(0,0),
@@ -136,11 +136,11 @@
 Comment can change the relative magnitide of some of these
 scalings in order to achieve different truncations of the
 model;
-  d:=eps; 
-  grz:=gz; 
-  grx:=eps*gx;
+  d:=eps^3; 
+  grz:=gz*eps^3; 
+  grx:=gx*eps;
   gry:=0;
-  gamm:=eps*gam; 
+  gamm:=gam*eps^3; 
   factor eps; 
   for i:=o:o do let eps^i=>0;
   
@@ -181,17 +181,17 @@ model;
  Comment function rest() omits the first element, here omits
  the zeroth power term so that part(res,k) now refers to the
  terms of eps^k;
-  resc:=coeff(resc,eps); 
-  resgh:=coeff(resgh,eps); 
-  resw:=coeff(resw,eps); 
-  restn:=coeff(restn,eps); 
-  rese:=coeff(rese,eps); 
-  resu:=coeff(resu,eps);
-  resv:=coeff(resv,eps); 
-  resttu:=coeff(resttu,eps); 
-  resttv:=coeff(resttv,eps);
-  resbu:=coeff(resbu,eps);
-  resbv:=coeff(resbv,eps);
+  resc:=rest(coeff(resc,eps)); 
+  resgh:=rest(coeff(resgh,eps)); 
+  resw:=rest(coeff(resw,eps)); 
+  restn:=rest(coeff(restn,eps)); 
+  rese:=rest(coeff(rese,eps)); 
+  resu:=rest(coeff(resu,eps));
+  resv:=rest(coeff(resv,eps)); 
+  resttu:=rest(coeff(resttu,eps)); 
+  resttv:=rest(coeff(resttv,eps));
+  resbu:=rest(coeff(resbu,eps));
+  resbv:=rest(coeff(resbv,eps));
   
   array aw(o),agh(o),ap(o),au(o),av(o),aros(o),agu(o),agv(o);
   for k:=1:o-1 do begin %%%%%%%%%%%%%%
@@ -214,9 +214,8 @@ model;
    
   ros1:=sub(rosk(k)=0,part(rese,k))*(cu+1/2)/r2*eta*rqq;
   
-
-  res1:=sub({uk(k)=0,vk(k)=0},sub(rosk(k)=ros1,part(resu,k)));
-  res2:=sub({uk(k)=0,vk(k)=0},sub(rosk(k)=ros1,part(resv,k)));
+  res1:=sub(rosk(k)=ros1,part(resu,k)); res1:=sub({uk(k)=0,vk(k)=0},res1);
+  res2:=sub(rosk(k)=ros1,part(resv,k)); res2:=sub({uk(k)=0,vk(k)=0},res2);
   au(k):=eta*rqq^3*(cu+1/2)/ct/r2*usolv(
          (uu(0,0)^2+2*vv(0,0)^2)*res1
          -uu(0,0)*vv(0,0)*res2  ,zz);
@@ -225,7 +224,7 @@ model;
          -uu(0,0)*vv(0,0)*res1  ,zz);
 
   let { uk(k)=>au(k)
-      , vk(k)=>av(k)};
+      , vk(k)=>av(k) };
 
   aros(k):=ros1;
   let rosk(k)=>aros(k); 
@@ -246,7 +245,7 @@ model;
       *(((1+5*cu+8*cu^2)*vv(0,0)^2*rqq^2-(9+45*cu+80*cu^2+48*cu^3))*res2
         +(1+5*cu+8*cu^2)*uu(0,0)*vv(0,0)*rqq^2*res1);
  let { guk(k)=>agu(k)
-      , gvk(k)=>agv(k)}; 
+     , gvk(k)=>agv(k) }; 
   res1:=part(resttu,k)$ res2:=part(resttv,k)$
   write err:={sub(zz=1,res1),sub(zz=1,res2)};
   
@@ -254,10 +253,10 @@ model;
 end; %%%%%%%%%%%%%
   
 out "smag3Asym.txt"$ off nat;
-   r2:=sqrt(2)$ 
    d:=d;
    grz:=grz;
    grx:=grx;
+   gry:=gry;
    gamm:=gamm;
    cu:=cu;
    ct:=ct;
