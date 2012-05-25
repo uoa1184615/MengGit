@@ -4,20 +4,22 @@ operator cis;
 let {cis(0)=>1, cis(~a)^2=>cis(2*a),
       cis(~a)*cis(~b)=>cis(a+b), 
       df(cis(~a),~b)=>i*cis(a)*df(a,b) };
-ee:=cis(ll*t/dd+k*j); 
-ff:=cis(-ll*t/dd-k*j);
+ee:=cis(lam*t+k*j); 
+ff:=cis(-lam*t-k*j);
 
 %%% define the forms of the solutions
-u0:= ( a0*cos(ll*xi)+b0*sin(ll*xi))*ee;
-h0:=(-a0*sin(ll*xi)+b0*cos(ll*xi))*ee; 
+nu:=nu0;
+u0:= ( a0*cis(ll*xi)+b0*cis(-ll*xi))*ee;
+h0:= (-(lam-i*nu)*dd/ll*a0*cis(ll*xi)+(lam-i*nu)*dd/ll*b0*cis(-ll*xi))*ee; 
 u1:= ( a1*cos(ll*xi)+b1*sin(ll*xi))*ee;
-h1:=(-a1*sin(ll*xi)+b1*cos(ll*xi))*ee;
+h1:=i*(-a1*sin(ll*xi)+b1*cos(ll*xi))*ee;
 %%% the coupled PDEs, the solutions confirms the pdes equal to zeros
-pde:={df(u0,t)+df(h0,x) 
-    ,df(h0,t)+df(u0,x) 
-    ,df(u1,t)+df(h1,x)
-    ,df(h1,t)+df(u1,x)};
-
+let lam^2=>ll^2/dd^2+i*nu*lam;
+pde:={ff*(df(u0,t)+df(h0,x)+nu0*u0)
+    ,ff*(df(h0,t)+df(u0,x))
+    ,ff*(df(u1,t)+df(h1,x)+nu0*u1)
+    ,ff*(df(h1,t)+df(u1,x))};
+end;
 %%% the coupling conditions with the order O(gam^3)
 eehp1:=sub({j=j+1,xi=0},h1);
 eehp3:=sub({j=j+3,xi=0},h1);
