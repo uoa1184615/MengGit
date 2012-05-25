@@ -35,10 +35,15 @@
     , qq^2=>(uu(0,0)^2+vv(0,0)^2)
     , df(qq,~aa)=>(uu(0,0)*df(uu(0,0),aa)+vv(0,0)*df(vv(0,0),aa))*rqq
     };
- 
- 
-  let r2^2=>2$ % r2=sqrt2
 
+ 
+  d:=eps; 
+  grz:=gz; 
+  grx:=eps*gx;
+  gry:=0;
+  gamm:=eps*gam; 
+  let eps^3=>0;
+  let r2^2=>2; 
   in "smag3Asym.txt"$
   let eps^3=>0;
 
@@ -88,3 +93,4 @@ lengthresttv:=length(
           -etax*(txy+etay*txz))-(1-gamm)*r2*ct/(cu+1)/(2*cu+1)*v*qq));
 
 end;
+

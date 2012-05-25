@@ -1,6 +1,5 @@
  o:=3; % order of error
- 
- on div; off allfac; on revpri; %on gcd; % avoid gcd unless necessary
+ on div; off allfac; on revpri; 
  factor uu,h,ct,gx,gz,gam,r2,vv,qq,rqq;
  
  operator h; operator uu; operator vv;
@@ -36,7 +35,7 @@
     , qq^2=>(uu(0,0)^2+vv(0,0)^2)
     , df(qq,~aa)=>(uu(0,0)*df(uu(0,0),aa)+vv(0,0)*df(vv(0,0),aa))*rqq
     };
-
+ 
  
  operator wsolv; linear wsolv; 
  let { wsolv(zz^~~n,zz) => zz^(n+1)/(n+1)
@@ -51,7 +50,8 @@
  let { usolv(zz^~~n,zz) => (zz^(n+2)-(cu+zz)/(n+3)/(cu+1/2) )/(n+2)/(n+1)
      , usolv(1,zz) => (zz^2 -(cu+zz)/3/(cu+1/2) )/2 };
 
- let r2^2=>2; % r2=sqrt2
+ let r2^2=>2; 
+ r2=sqrt(2);
  operator uk,vk,wk,pk,ghk,guk,gvk,rosk; 
   
  u:=uu(0,0)*(cu+zz)/(cu+1/2)+for k:=1:o-1 sum eps^k*uk(k); 
@@ -63,7 +63,6 @@
  gv:=+for k:=1:o-1 sum eps^k*gvk(k);
  ros:=qq*r2/eta/(1+2*cu)+for k:=1:o-1 sum eps^k*rosk(k);
 
- % specific to at most o:=3 ??? 
  depend uk,zz,xx,yy,uu(0,0),vv(0,0),h(0,0),
         uu(1,0),uu(0,1),vv(1,0),vv(0,1),h(1,0),h(0,1),
         uu(1,1),vv(1,1),h(1,1),
@@ -194,7 +193,7 @@ model;
   resbv:=rest(coeff(resbv,eps));
   
   array aw(o),agh(o),ap(o),au(o),av(o),aros(o),agu(o),agv(o);
-  for k:=1:o-1 do begin %%%%%%%%%%%%%%
+  for k:=1:o-1 do begin 
   write "ORDER = ",k;
   
   res1:=sub(wk(k)=0,part(resc,k)); 
@@ -225,7 +224,6 @@ model;
 
   let { uk(k)=>au(k)
       , vk(k)=>av(k) };
-
   aros(k):=ros1;
   let rosk(k)=>aros(k); 
   write err:={part(resu,k),part(resv,k),part(rese,k)
@@ -247,10 +245,10 @@ model;
  let { guk(k)=>agu(k)
      , gvk(k)=>agv(k) }; 
   res1:=part(resttu,k)$ res2:=part(resttv,k)$
-  write err:={sub(zz=1,res1),sub(zz=1,res2)};
-  
+  write err:={sub(zz=1,res1),sub(zz=1,res2)};  
 
-end; %%%%%%%%%%%%%
+  
+end; 
   
 out "smag3Asym.txt"$ off nat;
    d:=d;
