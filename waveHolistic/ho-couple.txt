@@ -1,4 +1,4 @@
-on div; off allfac; on revpri;
+on div; off allfac; on revpri; on gcd;
 depend xi,x; let df(xi,x)=>1/dd;
 operator cis; 
 let {cis(0)=>1, cis(~a)^2=>cis(2*a),
@@ -8,18 +8,22 @@ ee:=cis(lam*t+k*j);
 ff:=cis(-lam*t-k*j);
 
 %%% define the forms of the solutions
-nu:=nu0;
+nu:=nu0+nu2*ll^2/dd^2;
 u0:= ( a0*cis(ll*xi)+b0*cis(-ll*xi))*ee;
 h0:= (-(lam-i*nu)*dd/ll*a0*cis(ll*xi)+(lam-i*nu)*dd/ll*b0*cis(-ll*xi))*ee; 
-u1:= ( a1*cos(ll*xi)+b1*sin(ll*xi))*ee;
-h1:=i*(-a1*sin(ll*xi)+b1*cos(ll*xi))*ee;
+u1:= ( a1*cis(ll*xi)+b1*cis(-ll*xi))*ee;
+h1:=(-(lam-i*nu)*dd/ll*a1*cis(ll*xi)+(lam-i*nu)*dd/ll*b1*cis(-ll*xi))*ee;
 %%% the coupled PDEs, the solutions confirms the pdes equal to zeros
 let lam^2=>ll^2/dd^2+i*nu*lam;
-pde:={ff*(df(u0,t)+df(h0,x)+nu0*u0)
-    ,ff*(df(h0,t)+df(u0,x))
-    ,ff*(df(u1,t)+df(h1,x)+nu0*u1)
-    ,ff*(df(h1,t)+df(u1,x))};
-end;
+pde:={(df(u0,t)+df(h0,x)+nu0*u0-nu2*df(u0,x,2))
+    ,(df(h0,t)+df(u0,x))
+    ,(df(u1,t)+df(h1,x)+nu0*u1-nu2*df(u1,x,2))
+    ,(df(h1,t)+df(u1,x))};
+
+%%% use gam control the output orders
+factor i;
+let gam^5=>0;
+
 %%% the coupling conditions with the order O(gam^3)
 eehp1:=sub({j=j+1,xi=0},h1);
 eehp3:=sub({j=j+3,xi=0},h1);
@@ -78,6 +82,7 @@ a:=mat((df(chl,a0),df(chl,b0),df(chl,a1),df(chl,b1))
        
 chareqn:=(det(a) where cis(~q)=>cos(q)+i*sin(q)); 
 chareqn:=trigsimp(chareqn,expand);
-chareqn:=factorize(chareqn);
+imag:=-i*part(chareqn,1)/lam/nu/dd^2*ll^2;
+re:=-i*part(i*chareqn,1)/(1-dd^2/ll^2*nu^2);
 
 end;

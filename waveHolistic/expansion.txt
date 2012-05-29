@@ -1,0 +1,17 @@
+on div; off allfac; on revpri;
+fp:=1/r*asin(sin(k)*gam*r*(1+gam*sin(k)^2/3
+   -gam*r^2*sin(k)^2/3
+   +8/45*gam^2*sin(k)^4-2/9*gam^2*r^2*sin(k)^4
+   +2/45*gam^2*r^4*sin(k)^4)^(1/2));
+fm:=-1/r*asin(sin(k)*gam*r*(1+gam*sin(k)^2/3
+   -gam*r^2*sin(k)^2/3
+   +8/45*gam^2*sin(k)^4-2/9*gam^2*r^2*sin(k)^4
+   +2/45*gam^2*r^4*sin(k)^4)^(1/2));
+ellp:=taylor(fp,k,0,5);
+ellm:=taylor(fm,k,0,5);
+ellp:=taylortostandard(ellp);
+ellm:=taylortostandard(ellm);
+factor k,r; 
+ellp:=ellp;
+ellm:=ellm;
+end;
