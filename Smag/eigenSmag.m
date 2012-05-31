@@ -6,9 +6,9 @@ Lx=30;
 Ly=20;
 dx=Lx/nx;
 dy=Ly/ny;
-c=0.1;
-theta=0.003;
-mag=0.7;
+c=0;
+theta=0.005;
+mag=0.8;
 alpha=9;
 beta=3;
 i=1:nx;
@@ -30,14 +30,14 @@ km0=km0(:);
 k0p=k0p(:);
 k0m=k0m(:);
 % description of curved bed
-A=0.7;
+A=0.8;
 f=A*cos(2*pi/Lx*x);
 b1=1-max(0,1-(y-f-alpha).^2/beta^2).^2;
  b=mag*b1;
 
 % check the equilibrium
 h=ones(nx,ny)-b;
-u=sqrt(0.985*sin(theta).*h/0.0029);
+u=sqrt(0.985*g*sin(theta).*h/0.0029);
 v=zeros(nx,ny);
 huv=[h(:)';u(:)';v(:)'];
 huv=huv(:);
@@ -57,5 +57,5 @@ d=diag(d);
 d=d(j), v=v(:,j);
 % plot eigenvalues
 figure(1), clf()
-horiz=1*asinh(real(d));
-vert=1*asinh(imag(d));
+horiz=1*asinh(real(d(1:3:end)));
+vert=1*asinh(imag(d(1:3:end)));
