@@ -27,22 +27,24 @@
      , df(~a,z) => df(a,zz)/eta 
      };
     
- depend qq,xx,yy,tt; %%rqq=1/qq;
- depend rqq,qq;
- let{ df(rqq,~aa)=>-rqq^2*df(qq,aa)
-    , rqq*qq=>1
-    , vv(0,0)^2*rqq=>qq-uu(0,0)^2*rqq
-    , qq^2=>(uu(0,0)^2+vv(0,0)^2)
+depend qq,uu(0,0),vv(0,0);
+let { qq^2=>uu(0,0)^2+vv(0,0)^2
     , df(qq,~aa)=>(uu(0,0)*df(uu(0,0),aa)+vv(0,0)*df(vv(0,0),aa))*rqq
+    };
+depend rqq,qq;
+let { df(rqq,~aa)=>-rqq^2*df(qq,aa)
+    , rqq*qq=>1
+    , qq^2=>(uu(0,0)^2+vv(0,0)^2)
+    , vv(0,0)^2*rqq=>qq-uu(0,0)^2*rqq 
+%    , uu(0,0)^2*rqq=>qq-vv(0,0)^2*rqq
     };
 
  
-  d:=eps; 
-  grz:=gz; 
+  d:=eps;
+  grz:=gz;
   grx:=eps*gx;
   gry:=0;
-  gamm:=eps*gam; 
-  let eps^3=>0;
+  gamm:=eps*gam;
   let r2^2=>2; 
   in "smag3Asym.txt"$
   let eps^3=>0;
