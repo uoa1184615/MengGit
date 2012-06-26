@@ -10,3 +10,8 @@ waveHolistic/.DS_Store
 *.toc
 *.trc
 *.xref
+
+.DS_Store
+*.stc*
+*.mtc*
+*.maf

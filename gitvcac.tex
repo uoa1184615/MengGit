@@ -1,7 +1,8 @@
 \IfFileExists{ajr.sty}
 {\documentclass[11pt,a5paper]{article}}
 {\documentclass[11pt,a4paper]{refart}}
-\usepackage{url,versions,verbatim,defns}
+\usepackage{url,versions,verbatim,defns,minitoc}
+\dosecttoc
 \IfFileExists{ajr.sty}{\usepackage{ajr}}{}
 
 \excludeversion{gitx}
@@ -14,10 +15,13 @@
 
 \begin{document}
 
+
 \maketitle
 
 
 The software package git empowers you to easily maintain a history of a project, so you can recover old information for example, and additionally to collaborate with others on the project, so you can all work in parallel for example.  These two aspects are introduced separately: Section~\ref{sec:mypl} introduces how to maintain a local history;\footnote{I base this introduction on \emph{Git for the lazy}, \url{http://www.spheredev.org/wiki/Git_for_the_lazy} [Nov~2011].} and Section~\ref{sec:coti} introduces collaboration over the internet.
+
+\tableofcontents
 
 \section{Installation and initialisation}
 
@@ -40,9 +44,11 @@ git config --global --list
 \paragraph{Perhaps use a graphical user interface}  
 Many people want a graphical user interface to git.  The web has many suggestions, and differing opinions.  
 \begin{github}
-I tentatively suggest using GitHub for the Mac (requires OS~10.6 or later), but use another \textsc{gui} if you prefer.\footnote{Another \textsc{gui} is git gui which comes with git; type the command \texttt{git~gui} in a terminal window.}
+I tentatively suggest using GitHub for the Mac (requires OS~10.6 or later), but use another \textsc{gui} if you prefer. 
+\footnote{Another \textsc{gui} is git gui which comes with git; type the command \texttt{git~gui} in a terminal window.  Or perhaps use \texttt{gitx}.}
 
 Download GitHub from \url{http://mac.github.com/}, and drag into your application folder, and perhaps your Dock.
+\footnote{For some unknown reason GitHub once suddenly stopped working for me.  It just would not start-up.  The solution was to upgrade to MacOSX~10.6.8.}
 \end{github}
 \begin{gitx}
 I tentatively suggest using GitX (for the Mac), but use another \textsc{gui} if you prefer.\footnote{Another \textsc{gui} is git gui which comes with git; type the command \texttt{git~gui} in a terminal window.}
@@ -54,17 +60,25 @@ I tentatively suggest using `git-gui', but use another \textsc{gui} if you prefe
 %(If not already done as above, set your git name and email via the \texttt{Preferences} for git-gui.)
 \end{gitgui}
 
+
+
+
+
 \section{Manage your project locally}
 \label{sec:mypl}
 
+
+
 With git there are \emph{three} places for storage of your files, there is:
 \begin{itemize}
-\item  your working area, directory, where you work, edit and refine files in your project as usual;
+\item  your working area, directory\slash folder, where you work, edit and refine files in your project as usual;
 \item  a local store of history of the project and all its stages that is managed by git; and
 \item possibly an online repository, also managed by git, where you and collaborators merge independent progress on the project.
 \end{itemize}
 This second section only addresses the first two aspects of you working alone, with git, in your local working and storage area.  Section~\ref{sec:coti} discusses collaboration over the internet.
 
+
+\secttoc
 
 \subsection{Start your project}
 
@@ -81,7 +95,14 @@ Make your working directory for the project as usual, say called  \texttt{myproj
 \begin{itemize}
 \item Initialise an existing directory for git by dragging the folder icon onto the GitHub application or its window.  Click \texttt{Yes}.
 \item In \texttt{Repositories} view, double click on the entry for \texttt{myproject}.
-\item Click on \texttt{Settings} in the left-hand tabs: then type lines \texttt{.DS\_Store} into the \texttt{Ignored files} window and click \texttt{Save Changes} on bottom-right.\footnote{You may also want to ignore other files including \texttt{*.aux}, \texttt{*.log}, \texttt{*.out}, \texttt{*.synctex.gz} and \texttt{*.blg}.  The asterisk matches all files with that extension.}
+\item Click on \texttt{Settings} in the left-hand tabs: then type lines \texttt{.DS\_Store} into the \texttt{Ignored files} window and click \texttt{Save Changes} on bottom-right.\footnote{You may also want to ignore other files including \texttt{*.aux}, \texttt{*.log}, \texttt{*.out}, \texttt{*.synctex.gz}, \texttt{*.blg}, 
+\texttt{*.toc},
+\texttt{*.trc}, 
+\texttt{*.xref},
+\texttt{*.stc*},
+\texttt{*.mtc*},
+\texttt{*.maf},
+and \texttt{*\~}.  The asterisk matches all files with that extension.}
 \item To add files to be managed, click on the \texttt{Changes} tab on the left: by default GitHub adds all files to management, change if you wish; files managed but unchanged are not shown; the contents of shown files are displayed in the right-hand pane.
 \item To commit: enter a message such as ``Initial version'' in the single line in the top-left, and enter more detail if you wish just below; and finally click \texttt{Commit Changes} button near top-left.
 \end{itemize}
@@ -105,7 +126,8 @@ Make your working directory for the project as usual, say called  \texttt{myproj
 
 \subsection{Work in small stages}
 \label{sec:wiss}
-It is best to work in small stages: remember, if you cannot summarise the work in the last stage in a one line sentence, then you have gone too long without committing.  Typically work according to the following cycle, repeat as much as you like but ensure you end with the \texttt{add} and \texttt{commit}.
+It is best to work in small stages: remember, if you cannot summarise the work of the last stage in a one line sentence, then you have gone too long without committing.  
+Typically work according to the following cycle, repeat as much as you like but ensure you end with the \texttt{add} and \texttt{commit}.
 
 \begin{description}
 \item[Working]  Work, edit and refine files in your project as usual.
@@ -126,7 +148,7 @@ It is best to work in small stages: remember, if you cannot summarise the work i
 \item By default, all new files (even in a new directory) and all changed files will get committed; change if you wish.
 \item To commit: enter a message such as ``Initial version'' in the single line in the top-left, and more detail if you wish just below; and finally click \texttt{Commit Changes} button near top-left.
 \end{itemize}
-When you have two or more Git projects, change between them in GitHub by choosing \texttt{Repositories} from the \texttt{View} menu, and then double clicking on the one for action.
+When you have two or more Git projects, change between them in GitHub by choosing \texttt{Repositories} from either the \texttt{View} menu or top-left of the bar, and then double clicking on the one for action.
 \end{github}
 \begin{gitx}
 \paragraph{Equivalent GitX GUI}
@@ -161,7 +183,8 @@ If git-gui is already executing, then click \texttt{Rescan} to update git-gui's 
 \item[\texttt{git log}] To overview history so far of the project.
 
 \begin{github}
-In the GitHub \textsc{gui}, just click on the \texttt{History} tab on the top-left.
+\emph{Github:}
+just click on the \texttt{History} tab on the top-left.
 \end{github}
 \begin{gitx}
 In the GitX \textsc{gui}, just click on the \texttt{History View} button on the top-left.
@@ -184,6 +207,7 @@ In git-gui, click on the \texttt{Amend Last Commit} box on the middle-right.
 \item[\texttt{git reset --hard}] If you have not committed, but realised that you have messed up your local files, then use this to recover the files as at the last commit.
 
 \begin{github}
+\emph{Github:}
 In GitHub's history view, click \texttt{Rollback to this commit} button.
 \end{github}
 
@@ -191,16 +215,25 @@ In GitHub's history view, click \texttt{Rollback to this commit} button.
 
 \item[\texttt{git mv oldname newname}] Version control requires a little discipline.  One is that files under version control must only be renamed/moved via git using this command.
 
+\begin{github}
+\emph{Github:}
+allows one to be undisciplined in moving and deleting files.
+\end{github}
+
 \item[\texttt{git rm filename}] Similarly delete/remove files under version control only via git using this command.
 
 \end{description}
 
 
 
+
+
 \section{Collaborate over the internet}
 \label{sec:coti}
 
-To share and collaborate we need an information store on the internet.  
+To share and collaborate we need an information store on the internet. \footnote{Git is completely egalitarian in that no repository has any distinguished status.  Nonetheless, most collaborative projects invoke one repository to be the `main' store.}   
+I describe two alternatives: one is via an open service on the web by github; and the other is to use our Maths web server.
+
 \begin{gitx}
 Yet to do.
 \end{gitx}
@@ -208,14 +241,23 @@ Yet to do.
 Yet to do.  git-gui seems to have problems.
 \end{gitgui}
 \begin{github}
-The company GiHub provides some free storage (as well as a commercial service).  To \emph{start}, let's use GitHub.
+\paragraph{Create a account with GitHub}  The company GiHub provides some free storage (as well as a commercial service).
+Go to \url{https://github.com/plans} and click on \texttt{Create a free account}.   
+Follow the instructions which involves: registering; generating an ssh key to give to GitHub; saving the \textsc{api}-token from GitHub into your git preference; and setting git config.  
+GitHub's instructions lead you through the process. 
 
-\paragraph{Create an account} Go to \url{https://github.com/plans} and click on \texttt{Create a free account}.   Follow the instructions which involves: registering; generating an ssh key to give to GitHub; saving the \textsc{api}-token from GitHub into your git preference; and setting git config.  GitHub's instructions lead you through the process. 
+The advantage of GitHub is that you can collaborate with anybody, and the security of their storage.  The disadvantage of GitHub is that the world can read your project (in minute detail).
 \end{github}
+
+\paragraph{Ensure ssh access to server}
+Ensure you have an account on our server\footnote{Currently \url{www.maths.adelaide.edu.au}}.  Then configure, using public key cryptography, so that you can \verb|ssh| to the server without entering your password.
+
+\secttoc
 
 
 \subsection{Clone a collaborative existing project}
 \begin{github}
+\paragraph{Using GitHub server}
 Assume that a collaborator, say~\texttt{username}, has established a repository, say~\texttt{ourproject}: they must give you collaboration rights by web browsing to the repository, clicking \texttt{Admin}, clicking \texttt{Collaborators} on the left menu, then entering  your GitHub name and \texttt{Add}ing.
 \begin{itemize}
 \item Use a web browser to connect to GitHub \url{https://github.com}, and login (top-right).
@@ -225,9 +267,38 @@ Assume that a collaborator, say~\texttt{username}, has established a repository,
 \item On your computer, drag that new folder onto GitHub for GitHub to manage the local repository.  
 \item Thereafter, work and commit as in Sections~\ref{sec:wiss}--\ref{sec:ryw}, but additionally occasionally \emph{Click the \texttt{Sync} button on the \texttt{Changes} window}.%
 %\footnote{I believe the \texttt{Sync} operation not only copies information to the remote repository, but also merges into your local repository any changes made there by collaborators in parallel to you.}
-\item Checking and downloading, `pulling', any changes by your collaborators is one additional step you might do before starting work each session: from menu \texttt{Repository} select \texttt{Pull}; alternatively, from the very right of the top menu bar, click on \texttt{Branch in Sync}.
+\item Checking and downloading, `pulling', any changes by your collaborators is one additional step you should do before starting work each session: from menu \texttt{Repository} select \texttt{Pull}; alternatively, from the very right of the top menu bar, click on \texttt{Branch in Sync}.
 \end{itemize}
 \end{github}
+
+
+\paragraph{Using our Maths server}
+Assume that a collaborator, say~\texttt{username}, has established a repository, say~\texttt{ourproject.git} (they must have configured it for sharing).
+\begin{itemize}
+\item Perhaps the simplest is to issue the command
+\begin{verbatim}
+git clone a1234567@www.maths.adelaide.edu.au:\
+/home/username/ourproject.git
+\end{verbatim}
+where \verb|a1234567| is your username on the server.  
+\begin{itemize}
+\item Within your current local directory\slash folder, this command creates a new folder called \verb|ourproject| (the \verb|.git| gets dropped) which is a `copy' of the repository.
+\item Further, in the local git configuration it stores the location information about the remote repository.  The remote repository then is the default. 
+\end{itemize}
+
+\item To use the GitHub application to manage the local and remote storage, just drag your clone of \verb|ourproject| onto GitHub.  Thereafter, work and commit as in Sections~\ref{sec:wiss}--\ref{sec:ryw}, but additionally occasionally \emph{Click the \texttt{Sync} button on the \texttt{Changes} window}.
+Before starting work each session get any changes by your collaborators: from menu \texttt{Repository} select \texttt{Pull}; alternatively, from the very right of the top menu bar, click on \texttt{Branch in Sync}.
+
+\item Alternatively, manage via a terminal window. 
+\begin{itemize}
+\item \verb|git pull| gets any updates your collaborators have uploaded to the repository---conflicts will need to be resolved.
+\item Work and commit as in Sections~\ref{sec:wiss}--\ref{sec:ryw}.
+\item \verb|git push| puts your commits onto the remote repository for others to get.
+\end{itemize}
+ 
+\end{itemize}
+
+
 
 
 \subsection{Create a new external repository}
@@ -241,14 +312,52 @@ Yet to do.
 Yet to do.  git-gui seems to have problems.
 \end{gitgui}
 \begin{github}
-Perhaps use the free service operated by GitHub.
+\paragraph{Perhaps use the free service operated by GitHub}
 Ensure you have, and with a web browser login to, a GitHub account as described above.
 \begin{itemize}
 \item Click on either \texttt{Create a repository} or \texttt{New repository} in the web interface to \texttt{github.com}.
 \item Follow the route flagged \texttt{Existing Git Repository} and connect the web storage to your existing local git folder.
 \item Thereafter work as described previously. 
 \end{itemize}
-
 \end{github}
+
+\paragraph{Establish a repository on the Maths server}
+One creates an empty repository, and then fills it with information.\begin{itemize}
+\item Login to the maths server.
+\item \verb|mkdir ourproject.git|
+\item \verb|cd ourproject.git|
+\item \verb|git init --bare --shared| for access and modification only by those in your unix Group.  Alternatively, \verb|git init --bare --shared=0666| for access and modification by all who can login to the server.
+\item Then check to remove group and other write permissions from your home directory \verb|/home/a1234567| (so that ssh will permit public key access).
+\end{itemize}
+Then back on your own computer, it is probably easiest to simply clone the empty repository; then into the folder that is created drag the content you want to be managed by git.
+
+However, if the content is already in a folder locally managed by git, then do the following.
+\begin{description}
+\begin{github}
+\item[Github] Go to the repository managing in GitHub, click on \verb|Settings|, enter into the \verb|Primary remote repository| box the remote address
+\begin{verbatim}
+a1234567@www.maths.adelaide.edu.au:/home/username/ourproject.git
+\end{verbatim}
+Then push/pull/sync.
+\end{github}
+
+\item[Commands] I think one simply types, from within the local git folder,
+\begin{verbatim}
+git remote add a1234567@www.maths.adelaide.edu.au:/home/username/ourproject.git
+\end{verbatim}
+Then push and pull as needed.
+\end{description}
+
+
+
+
+\subsection{Resolving conflicts with others}
+
+Mostly git will successfully merge edits by multiple people on the one file.  However, if the edits are in the same region, then git is likely to flag the edits as conflicting and require you to resolve the conflict.
+
+As yet unclear to me how one proceeds.
+
+
+
 
 \end{document}
