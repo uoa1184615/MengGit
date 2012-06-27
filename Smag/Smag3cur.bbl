@@ -1,0 +1,64 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Bijvelds et~al.]{Bijvelds, Kranenburg \harvardand\
+  Stelling}{1999}{Bijvelds99}
+Bijvelds, M. D.~J.~P., Kranenburg, C. \harvardand\ Stelling, G.~S.
+  \harvardyearleft 1999\harvardyearright , `3d numerical simulation of
+  turbulent shallow-water in square harbor', {\em Journal of Hydraulic
+  Engineering} {\bf 125}(1),~26--31.
+\newblock \doi{10.1061/(ASCE)0733-9429(1999)125:1(26)}.
+
+\harvarditem[Janosi et~al.]{Janosi, Jan, Szabo \harvardand\
+  Tel}{2004}{Janosi04}
+Janosi, I.~M., Jan, D., Szabo, K.~G. \harvardand\ Tel, T.  \harvardyearleft
+  2004\harvardyearright , `Turbulent drag reduction in dam-break flows', {\em
+  Experiments in Fluids} {\bf 37},~219--229.
+\newblock \doi{10.1007/s00348-004-0804-4}.
+
+\harvarditem{Kim}{2002}{Kim02}
+Kim, T.~K.  \harvardyearleft 2002\harvardyearright , A Modified Smagorinsky
+  Subgrid Scale Model for the Large Eddy Simulation of Turbulent Flow, PhD
+  thesis, Univeristy of California, Davis.
+\newblock [\url{http://arXiv.org/abs/math.sc/0209377}].
+
+\harvarditem{Marstop}{2006}{Marstop06}
+Marstop, L.  \harvardyearleft 2006\harvardyearright , Subgrid-scale modelling
+  for large-eddy simulation including scalar mixing in rotating turbulent shear
+  flows, PhD thesis, Royal Institute of Technology KTH Mechanics SE-100 44
+  Stockholm, Sweden.
+
+\harvarditem{Nezu}{2005}{Nezu05}
+Nezu, I.  \harvardyearleft 2005\harvardyearright , `Open-channel flow
+  turbulence and its research prospect in the 21st century', {\em J.~Hydraulic
+  Engineering} p.~229.
+\newblock \doi{10.1061/(ASCE)0733-9429(2005)131:4(229)}.
+
+\harvarditem[\"Ozg\"okmen et~al.]{\"Ozg\"okmen, Iliescu, Fischer, Srinivasan
+  \harvardand\ Duan}{2007}{Ozgokmen07}
+\"Ozg\"okmen, T.~M., Iliescu, T., Fischer, P.~F., Srinivasan, A. \harvardand\
+  Duan, J.  \harvardyearleft 2007\harvardyearright , `Large eddy simulation of
+  stratified mixing and two-dimensional dam-break problem in a rectagular
+  enclosed domain', {\em Ocean Modelling} {\bf 16},~106--140.
+\newblock \doi{10.1016/j.ocemod.3006.08.006}.
+
+\harvarditem{Roberts}{2007{\em a}}{Roberts07a}
+Roberts, A.~J.  \harvardyearleft 2007{\em a}\harvardyearright , Computer
+  algebra models the inertial dynamics of a thin film flow of power law fluids
+  and other generalised newtonian fluids, Technical report, University of
+  Southern Queensland.
+\newblock \url{http://eprints.usq.edu.au/archive/00002010/}.
+\newline\harvardurl{http://eprints.usq.edu.au/archive/00002010/}
+
+\harvarditem{Roberts}{2007{\em b}}{Roberts07b}
+Roberts, A.~J.  \harvardyearleft 2007{\em b}\harvardyearright , `The inertial
+  dynamics of thin film flow of non-newtonian fluids', {\em Physics Letters~A}
+  {\bf 372},~1607--1611.
+\newblock \doi{10.1016/j.physleta.2007.10.014}.
+
+\harvarditem[Roberts et~al.]{Roberts, Georgiev \harvardand\
+  Strunin}{2008}{Roberts08f}
+Roberts, A.~J., Georgiev, D.~J. \harvardand\ Strunin, D.~V.  \harvardyearleft
+  2008\harvardyearright , Model turbulent floods with the {Smagorinski} large
+  eddy closure, Technical report, \url{http://arxiv.org/abs/0805.3192}.
+
+\end{thebibliography}
