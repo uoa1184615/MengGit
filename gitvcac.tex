@@ -289,6 +289,8 @@ where \verb|a1234567| is your username on the server.
 \item To use the GitHub application to manage the local and remote storage, just drag your clone of \verb|ourproject| onto GitHub.  Thereafter, work and commit as in Sections~\ref{sec:wiss}--\ref{sec:ryw}, but additionally occasionally \emph{Click the \texttt{Sync} button on the \texttt{Changes} window}.
 Before starting work each session get any changes by your collaborators: from menu \texttt{Repository} select \texttt{Pull}; alternatively, from the very right of the top menu bar, click on \texttt{Branch in Sync}.
 
+
+
 \item Alternatively, manage via a terminal window. 
 \begin{itemize}
 \item \verb|git pull| gets any updates your collaborators have uploaded to the repository---conflicts will need to be resolved.
@@ -296,6 +298,15 @@ Before starting work each session get any changes by your collaborators: from me
 \item \verb|git push| puts your commits onto the remote repository for others to get.
 \end{itemize}
  
+ 
+\item In any event, one can inspect what is in the maths server repository by the following.
+\begin{itemize}
+\item 
+\verb|ssh -X www.maths.adelaide.edu.au| to login to the server with X-windows enabled.
+\item Navigate to the git directory.
+\item \verb|git instaweb --httpd=webrick| will start up a browser (firefox) view of the contents and history of the repository (and any others that it finds).
+\end{itemize}
+
 \end{itemize}
 
 
