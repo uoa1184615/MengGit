@@ -38,7 +38,7 @@ University of Adelaide, South Australia 5005.  \protect\url{mailto:anthony.rober
 Meng Cao\thanks{School of Mathematical Sciences,
 University of Adelaide, South Australia 5005.  \protect\url{mailto:meng.cao@adelaide.edu.au}}}
 
-\date{31 May 2012}
+%\date{31 May 2012}
 
 \begin{document}
     
@@ -185,8 +185,8 @@ let{ df(h(~m,~n),xx)=>h(m+1,n)
     , df(vv(~m,~n),xx)=>vv(m+1,n)
     , df(vv(~m,~n),yy)=>vv(m,n+1)
     , df(vv(~m,~n),tt)=>df(gv,xx,m,yy,n) 
-    , df(b,xx)=>b(1,0)*d
-    , df(b,yy)=>b(0,1)*d
+    , df(b,xx)=>b(1,0)
+    , df(b,yy)=>b(0,1)
     , df(b(~m,~n),xx)=>b(m+1,n)
     , df(b(~m,~n),yy)=>b(m,n+1)  
  };
@@ -646,10 +646,12 @@ ok:=if {resu,resv,resbu,resbv}={0,0,0,0} then ok else 0;
 Update the lateral fields using an as yet unknown change in the evolution for the lateral mean velocities.  The lateral fields are coupled by the nonlinear stress-strain relation of the Smagorinski turbulent flow.
 
 \begin{reduce}
-u:=u+(du:=eta*(1+2*cu)*r2/(4*ct)*rqq^3*usolv(
+u:=u+(du:=resbu
+    +eta*(1+2*cu)*r2/(4*ct)*rqq^3*usolv(
     +(qq^2+vv(0,0)^2)*resu
     -uu(0,0)*vv(0,0)*resv ,zz));
-v:=v+(dv:=eta*(1+2*cu)*r2/(4*ct)*rqq^3*usolv(
+v:=v+(dv:=resbv
+    +eta*(1+2*cu)*r2/(4*ct)*rqq^3*usolv(
     +(qq^2+uu(0,0)^2)*resv
     -uu(0,0)*vv(0,0)*resu ,zz));
 ros:=ros+(uu(0,0)*df(du,zz)+vv(0,0)*df(dv,zz))/(r2*eta)*rqq;
