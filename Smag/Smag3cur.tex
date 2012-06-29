@@ -640,17 +640,26 @@ ok:=if {resu,resv,resbu,resbv}={0,0,0,0} then ok else 0;
 \end{reduce}
 
 
+\begin{reduce}
+resuamp:=mean(u,zz)-uu(0,0);
+resvamp:=mean(v,zz)-vv(0,0);
+write length_resuamp:=mylength(resuamp);
+write length_resvamp:=mylength(resvamp);
+ok:=if {resuamp,resvamp}={0,0} then ok else 0;
+\end{reduce}
+
+
 
 \subsection{Solve for updates to lateral velocity and rate-of-strain}
 
 Update the lateral fields using an as yet unknown change in the evolution for the lateral mean velocities.  The lateral fields are coupled by the nonlinear stress-strain relation of the Smagorinski turbulent flow.
 
 \begin{reduce}
-u:=u+(du:=resbu
+u:=u+(du:=resbu*(1-2*zz)/(1+2*cu)
     +eta*(1+2*cu)*r2/(4*ct)*rqq^3*usolv(
     +(qq^2+vv(0,0)^2)*resu
     -uu(0,0)*vv(0,0)*resv ,zz));
-v:=v+(dv:=resbv
+v:=v+(dv:=resbv*(1-2*zz)/(1+2*cu)
     +eta*(1+2*cu)*r2/(4*ct)*rqq^3*usolv(
     +(qq^2+uu(0,0)^2)*resv
     -uu(0,0)*vv(0,0)*resu ,zz));
