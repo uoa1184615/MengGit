@@ -638,8 +638,7 @@ write length_resbu:=mylength(resbu);
 write length_resbv:=mylength(resbv);
 ok:=if {resu,resv,resbu,resbv}={0,0,0,0} then ok else 0;
 \end{reduce}
-
-
+Check the mean velocities of~$\bar u$ and~$\bar v$.
 \begin{reduce}
 resuamp:=mean(u,zz)-uu(0,0);
 resvamp:=mean(v,zz)-vv(0,0);
@@ -770,77 +769,89 @@ length_resc := 9
 
 length_resa := 3
 
-length_resw := 74
+length_resw := 118
 
 length_restn := 3
 
-length_rese := 51
+length_rese := 80
 
-length_resu := 93
+length_resu := 113
 
-length_resv := 88
+length_resv := 110
 
-length_resbu := 0
+length_resbu := 6
 
-length_resbv := 0
+length_resbv := 6
 
-length_resttu := 153
+length_resuamp := 0
 
-length_resttv := 134
+length_resvamp := 0
 
-Time: 250 ms
+length_resttu := 227
+
+length_resttv := 195
+
+Time: 370 ms  plus GC time: 10 ms
 
 ITERATION 2
 
-length_resc := 377
+length_resc := 548
 
-length_resa := 0
+length_resa := 35
 
-length_resw := 337
+length_resw := 491
 
-length_restn := 94
+length_restn := 145
 
-length_rese := 249
+length_rese := 345
 
-length_resu := 780
+length_resu := 1069
 
-length_resv := 818
+length_resv := 1118
 
 length_resbu := 0
 
 length_resbv := 0
 
-length_resttu := 143
+length_resuamp := 0
 
-length_resttv := 152
+length_resvamp := 0
 
-Time: 5039 ms  plus GC time: 150 ms
+length_resttu := 196
+
+length_resttv := 207
+
+Time: 10729 ms  plus GC time: 390 ms
 
 ITERATION 3
 
-length_resc := 380
+length_resc := 578
 
-length_resa := 0
+length_resa := 37
 
-length_resw := 317
+length_resw := 470
 
-length_restn := 99
+length_restn := 152
 
-length_rese := 268
+length_rese := 400
 
-length_resu := 682
+length_resu := 926
 
-length_resv := 728
+length_resv := 982
 
 length_resbu := 0
 
 length_resbv := 0
 
-length_resttu := 143
+length_resuamp := 0
 
-length_resttv := 152
+length_resvamp := 0
 
-Time: 11660 ms  plus GC time: 410 ms
+length_resttu := 196
+
+length_resttv := 207
+
+Time: 26941 ms  plus GC time: 1130 ms
 
 ITERATION 4
 
@@ -848,25 +859,29 @@ length_resc := 0
 
 length_resa := 0
 
-length_resw := 125
+length_resw := 204
 
-length_restn := 43
+length_restn := 78
 
 length_rese := 0
 
-length_resu := 285
+length_resu := 391
 
-length_resv := 303
+length_resv := 413
 
 length_resbu := 0
 
 length_resbv := 0
 
+length_resuamp := 0
+
+length_resvamp := 0
+
 length_resttu := 0
 
 length_resttv := 0
 
-Time: 14591 ms  plus GC time: 550 ms
+Time: 32159 ms  plus GC time: 1449 ms
 
 ITERATION 5
 
@@ -888,19 +903,24 @@ length_resbu := 0
 
 length_resbv := 0
 
+length_resuamp := 0
+
+length_resvamp := 0
+
 length_resttu := 0
 
 length_resttv := 0
 
-Time: 14489 ms  plus GC time: 550 ms
+Time: 33311 ms  plus GC time: 1450 ms
 
 iter := 100005
 
 dhdt := 4
 
-dudt := 175
+dudt := 261
 
-dvdt := 175
+dvdt := 264
+
 \end{verbatim}
 
 

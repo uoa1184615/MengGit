@@ -1,6 +1,6 @@
-global n m r dx nu0 nu2 gam
+global n m r dx nu0 nu2 gam c1 c2 theta g
 n=9;  % 5,9,... number of microscale grid points, not incl edges
-m=6; % even number of patches
+m=10; % even number of patches
 r=1/6 ;% ratio of patch size to macrogrid size
 L=2*pi; % length of domain
 D=L/m;
@@ -8,6 +8,10 @@ d=2*r*D;
 dx=d/(n+1); % patch size includes edges, to give microgrid size
 nu0=0.1;
 nu2=0.03;
+c1=1;
+c2=1;
+theta=0.001;
+g=1;
 gam=1;
 eps=1e-5; % order parameter
 
@@ -17,7 +21,7 @@ x=x+hu;
 
 % check the equilibrium
 hu(1:2:end)=1;
-hu(2:2:end)=0;
+hu(2:2:end)=c2*g*sin(theta)/nu0;
 equil=norm(hol_staggermatrix(0,hu))
 
 J=nan(n*m,n*m);
@@ -32,16 +36,25 @@ d=diag(d);
 [dd,j]=sort(abs(d)); 
 d=d(j), v=v(:,j);
 % plot eigenvalues
-figure(1), clf()
+%figure(1), clf()
 horiz=1*asinh(real(d));
 vert=1*asinh(imag(d));
 %horiz=asinh(real(d))+1e-4*(2*rand(size(asinh(real(d))))-1);
 %vert=asinh(imag(d))+1e-4*(2*rand(size(asinh(imag(d))))-1);
 %plot(horiz,vert,'o');xlabel('asinh(Re)');ylabel('asinh(Im)');
-plot(horiz,imag(d),'o');xlabel('asinh(Re)');ylabel('Im');
-% plot eigenvectors
-return
+%plot(horiz,imag(d),'o');xlabel('asinh(Re)');ylabel('Im');
 
+% plot exact eigenvalues
+N=m;
+llp=(0:1:N)*D;
+%llm=(-N:1:0)*D;
+lam1=(-(nu0+nu2*llp.^2/D^2) ...
++sqrt((nu0+nu2*llp.^2/D^2).^2-4*llp.^2/D^2))/2;
+lam2=(-(nu0+nu2*llp.^2/D^2) ...
+-sqrt((nu0+nu2*llp.^2/D^2).^2-4*llp.^2/D^2))/2;
+lam=[lam1';lam2'];
+return
+% plot eigenvectors
 hus=v';
 maxv=max(abs(v(:)));
 for it=2:2:min(10,size(hus,2))

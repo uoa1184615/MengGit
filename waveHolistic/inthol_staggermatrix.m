@@ -1,4 +1,4 @@
-global n m r dx nu0 nu2 gam
+global n m r dx nu0 nu2 gam c1 c2 theta g
 n=9;  % 1,5,9,... number of microscale grid points, not incl edges
 m=6; % even number of patches
 r=1/6 ;% ratio of patch size to macrogrid size
@@ -8,6 +8,10 @@ d=2*r*D;
 dx=d/(n+1); % patch size includes edges, to give microgrid size
 nu0=0.1;
 nu2=0.03;
+c1=1;
+c2=0.5;
+theta=0.05;
+g=1;
 gam=1;
 
 % define the x-coords, omit patch edges
@@ -19,7 +23,7 @@ k=2*pi/L;
 hu(1:2:end)=0.2+0.1*sin(k*x(1:2:end));
 hu(2:2:end)=   +0.1*sin(k*x(2:2:end));
 
-ts=linspace(0,60,160); 
+ts=linspace(0,160,320); 
 hu0=hu(:);
 [ts hus]=ode15s(@hol_staggermatrix,ts,hu);
 
