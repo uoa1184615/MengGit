@@ -3,7 +3,7 @@
 %{\documentclass[12pt,a5paper]{refart}}
 %\IfFileExists{ajr.sty}{\usepackage{ajr}}{}
 \usepackage[margin=6mm,bottom=15mm]{geometry}
-\usepackage{amsmath,defns,reducecode}
+\usepackage{amsmath,defns}
 
 \usepackage{euler,natbib,amsmath}
 \usepackage{url}
@@ -195,7 +195,7 @@ This section focusses on interpreting the application of centre manifold theory 
 Instead of depth-averaging equations, we apply the centre manifold theory to deal with the turbulent dynamics across the fluid layer. \cite{Roberts2008,Georgiev2008} detailed similar approaches by introducing a parameter~$\gamma$ to the boundary conditions~\eqref{bc:ttx} and~\eqref{bc:tty}, where~$\gamma=0$ provides analytic analysis and~$\gamma=1$ recovers the physical case. Centre manifold theory assures that there exist a slow manifold for the evolution of equations~\eqref{eq:cont},~\eqref{eq:mom} and~\eqref{eq:stress}.
  
 \cite{Roberts:2008fk} described the algebra of constructing the existed slow manifold. Developed computer algebra program derives the evolutions of the depth field $h(x,y,t)$ and the mean lateral velocities~$\bar u(x,y,t)$ and~$\bar v(x,y,t)$ in the~$x$ and~$y$ directions. The evolution of~$h(x,y,t)$, $\bar u(x,y,t)$ and~$\bar v(x,y,t)$ are described by the conservation equation and momentum equations,
-\footnote{Introduce a symbol for $\sqrt{\uu^2+\vv^2}$ and use it.}
+\footnote{Introduce a symbol for $\sqrt{\uu^2+\vv^2}$ and use it: $\qq$ springs to mind.}
 \begin{align}
 \frac{\partial h}{\partial t}&
 \approx-\frac{\partial h\bar u}{\partial x}-\frac{\partial h\bar v}{\partial y}\,,\label{smag:h}
@@ -239,7 +239,8 @@ Instead of depth-averaging equations, we apply the centre manifold theory to dea
 -0.72\frac{h\uu^2}{\sqrt{\uu^2+\vv^2}}\D x\uu\D y\uu+0.235\frac{h\uu\vv}{\sqrt{\uu^2+\vv^2}}\DD x\uu
 \,,\label{smag:v}
 \end{align}
-The equations~\eqref{smag:h}$-$\eqref{smag:v} come as a result of taking into account the relatively slow variations in the lateral directions~$x$ and~$y$, and small but non-zero~$\partial_x$ and~$\partial_y$, thus these equations are smooth and slow in~$x$ and~$y$.  The momentum equations~\eqref{smag:u} and~\eqref{smag:v} incorporate the inertial terms~$\bq_t$, self-advection terms~$\bq\frac{\partial x}{\partial\bq}$, bed drag terms~$\bq\sqrt{\uu^2+\vv^2}/h$, gravitational forcing~$g_x-g_z\frac{\partial(h+b)}{\partial x_i}$, and other terms related to the turbulent mixing, where~$\bq=(\uu,\vv)$ and~$i=1,3$. Note that although the equations~\eqref{smag:h}$-$\eqref{smag:v} are expressed by the depth averaged lateral velocities, they are derived not by depth-averaging, but instead by systematically accounting for interaction between vertical profiles of velocitiy/stress and bed drag and lateral space variations. The coefficients in equations~\eqref{smag:h}$-$\eqref{smag:v} are supported by centre manifold theory. When the parameter~$\gamma=1$, the model would describe the physical dynamics.
+The equations~\eqref{smag:h}$-$\eqref{smag:v} come as a result of taking into account the relatively slow variations in the lateral directions~$x$ and~$y$, and small but non-zero~$\partial_x$ and~$\partial_y$, thus these equations are smooth and slow in~$x$ and~$y$.  The momentum equations~\eqref{smag:u} and~\eqref{smag:v} incorporate the inertial terms~$\bq_t$, self-advection terms~$\bq\frac{\partial x}{\partial\bq}$, bed drag terms~$\bq\sqrt{\uu^2+\vv^2}/h$, gravitational forcing~$g_x-g_z\frac{\partial(h+b)}{\partial x_i}$, and other terms related to the turbulent mixing, where~$\bq=(\uu,\vv)$ and~$i=1,3$. 
+Although equations~\eqref{smag:h}$-$\eqref{smag:v} are expressed in terms of depth averaged lateral velocities, they are derived not by depth averaging, but instead by systematically accounting for interaction between vertical profiles of velocitiy/stress and bed drag and lateral space variations. The coefficients in equations~\eqref{smag:h}$-$\eqref{smag:v} are supported by centre manifold theory. When the parameter~$\gamma=1$, the model would describe the physical dynamics.
 
 
 \section{Modelling flows over straight channels}
