@@ -1,0 +1,30 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Bousmar}{2002}{Bousmar2002}
+Bousmar, D.  \harvardyearleft 2002\harvardyearright , Flow modelling in compund
+  channels: momentum trans- fer between main channel and prismatic and
+  non-prismatic floodplains, PhD thesis, Universitie Catholique de Louvain.
+
+\harvarditem[Georgiev et~al.]{Georgiev, Roberts \harvardand\
+  Strunin}{2008}{Georgiev2008}
+Georgiev, D.~J., Roberts, A.~J. \harvardand\ Strunin, D.~V.  \harvardyearleft
+  2008\harvardyearright , `Modelling turbulent flow from dam break using slow
+  manifold', {\em ANZIAM J. 50} pp.~1033--1051.
+\newblock \url{
+  http://anziamj.austms.org.au/ojs/index.php/ANZIAMJ/article/viewFile/1466/1264}.
+
+\harvarditem[Liu et~al.]{Liu, Zhou \harvardand\ Burrows}{2009}{Liu2009}
+Liu, H., Zhou, G.~J. \harvardand\ Burrows, R.  \harvardyearleft
+  2009\harvardyearright , `Lattice boltzmann model for shallow water flows in
+  curved and meandering channels', {\em International Journal of Computational
+  Fluid Dynamics} {\bf 23},~209--220.
+\newblock \url{doi:10.1080/10618560902754924}.
+
+\harvarditem[Roberts et~al.]{Roberts, Georgiev \harvardand\
+  Strunin}{2008}{Roberts2008}
+Roberts, A.~J., Georgiev, D.~J. \harvardand\ Strunin, D.~V.  \harvardyearleft
+  2008\harvardyearright , Model turbulent floods with the {Smagorinsky} large
+  eddy closure, Technical report.
+\newblock \url{http://arxiv.org/abs/0805.3192}.
+
+\end{thebibliography}

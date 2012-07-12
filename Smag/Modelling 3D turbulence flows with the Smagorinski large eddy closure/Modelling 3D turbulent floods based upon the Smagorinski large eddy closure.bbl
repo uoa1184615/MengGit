@@ -1,0 +1,73 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Bousmar}{2002}{Bousmar2002}
+Bousmar, D.  \harvardyearleft 2002\harvardyearright , Flow modelling in compund
+  channels: momentum trans- fer between main channel and prismatic and
+  non-prismatic floodplains, PhD thesis, Universitie Catholique de Louvain.
+
+\harvarditem{Bousmar \harvardand\ Zech}{2003}{Bousmar2003a}
+Bousmar, D. \harvardand\ Zech, Y.  \harvardyearleft 2003\harvardyearright ,
+  Large-scale coherent structures in com- pound channels, Technical report,
+  Universitie Catholique de Louvain.
+\newblock \url{doi:10.1201/9780203027325.ch44}.
+
+\harvarditem{Demuren}{1993}{Demuren1993}
+Demuren, A.~O.  \harvardyearleft 1993\harvardyearright , `A numerical model for
+  flow in meandering channels with natural bed topography', {\em Water} {\bf
+  29}(4),~1269.
+\newblock \url{doi:10.1029/92WR02907}.
+
+\harvarditem[Georgiev et~al.]{Georgiev, Roberts \harvardand\
+  Strunin}{2008}{Georgiev2008}
+Georgiev, D.~J., Roberts, A.~J. \harvardand\ Strunin, D.~V.  \harvardyearleft
+  2008\harvardyearright , `Modelling turbulent flow from dam break using slow
+  manifold', {\em ANZIAM J. 50} pp.~1033--1051.
+\newblock \url{
+  http://anziamj.austms.org.au/ojs/index.php/ANZIAMJ/article/viewFile/1466/1264}.
+
+\harvarditem[Liu et~al.]{Liu, Zhou \harvardand\ Burrows}{2009}{Liu2009}
+Liu, H., Zhou, G.~J. \harvardand\ Burrows, R.  \harvardyearleft
+  2009\harvardyearright , `Lattice boltzmann model for shallow water flows in
+  curved and meandering channels', {\em International Journal of Computational
+  Fluid Dynamics} {\bf 23},~209--220.
+\newblock \url{doi:10.1080/10618560902754924}.
+
+\harvarditem{Nezu}{2005}{Nezu2005}
+Nezu, I.  \harvardyearleft 2005\harvardyearright , `Open-channel flow
+  turbulence and its research prospect in the 21st century', {\em J. Hydraulic
+  Engineering} {\bf 131},~229--246.
+\newblock \url{doi:10.1061/(ASCE)0733-9429(2005)131:4(229)}.
+
+\harvarditem[Ozgokmen et~al.]{Ozgokmen, Iliescu, Fisher, Srinivasan
+  \harvardand\ Duan}{2007}{Ozgokmen2007a}
+Ozgokmen, T.~M., Iliescu, T., Fisher, P.~F., Srinivasan, A. \harvardand\ Duan,
+  J.  \harvardyearleft 2007\harvardyearright , `Large eddy simulation of
+  stratified mixing in two-dimensional dam-break problem in a rectangular
+  enclosed domain', {\em Ocean Modelling} {\bf 16},~106--140.
+\newblock \url{http://www.rsmas.miami.edu/personal/tamay/ftp-pub/omod07.pdf}.
+
+\harvarditem{Roberts}{1997}{Roberts1996}
+Roberts, A.~J.  \harvardyearleft 1997\harvardyearright , `Low-dimensional
+  models of thin film fluid dynamics', {\em Phys. Letts.~A} {\bf 212},~63--72.
+\newblock doi:10.1016/0375-9601(96)00040-0.
+
+\harvarditem{Roberts}{2008}{Roberts:2008fk}
+Roberts, A.~J.  \harvardyearleft 2008\harvardyearright , Computer algebra
+  describes flow of turbulent floods via the smagorinski large eddy closure,
+  Technical report.
+\newblock \url{ http://eprints. usq.edu.au/4008/}.
+
+\harvarditem[Roberts et~al.]{Roberts, Georgiev \harvardand\
+  Strunin}{2008}{Roberts2008}
+Roberts, A.~J., Georgiev, D.~J. \harvardand\ Strunin, D.~V.  \harvardyearleft
+  2008\harvardyearright , Model turbulent floods with the {Smagorinsky} large
+  eddy closure, Technical report.
+\newblock \url{http://arxiv.org/abs/0805.3192}.
+
+\harvarditem{Roberts \harvardand\ Li}{2006}{Robertsli2006}
+Roberts, A.~J. \harvardand\ Li, Z.  \harvardyearleft 2006\harvardyearright ,
+  `An accurate and comprehensive model of thin fluid flows with inertia on
+  curved substrates', {\em Fluid Mechanics} {\bf 553(1)},~33--73.
+\newblock \url{doi:10.1017/S0022112006008640}.
+
+\end{thebibliography}

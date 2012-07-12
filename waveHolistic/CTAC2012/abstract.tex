@@ -1,0 +1,64 @@
+\documentclass[12pt,a5paper]{article}
+\usepackage[margin=6mm,bottom=15mm]{geometry}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{natbib}
+\def\harvardurl#{}
+\usepackage{hyperref} 
+\hypersetup{pdftex,
+            backref=true,
+            hyperindex=true,
+            colorlinks=true,
+            citecolor=blue,
+            bookmarks=true,
+            breaklinks=true}
+%\pagestyle{headings}
+
+\newcommand{\D}{\partial}
+\newcommand{\B}{\textbf}
+
+\title{Multiscale modelling couples patches of wave-like simulations}
+\author{Meng Cao}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Abstract}
+
+A multiscale model is proposed to reduce the expensive numerical simulations of complicated waves over large spatial domains.
+The multiscale model is built from given microscale simulations of complicated physical processes such as sea ice or turbulent shallow water. 
+Our long term aim is to enable macroscale simulations obtained by coupling small patches of simulations together over large physical distances. 
+This initial work explores the coupling of patch simulations of wave-like~\textsc{pde}s.
+With the line of development being to water waves we discuss the dynamics of two complementary fields called the `depth'~$h$ and `velocity'~$u$.
+A staggered grid is used for the microscale simulation of the depth~$h$ and velocity~$u$. 
+We introduce a macroscale staggered grid to couple the microscale patches. 
+Linear or quadratic interpolation provides boundary conditions on the field in each patch.
+Linear analysis of the whole coupled multiscale system establishes that the resultant macroscale dynamics is appropriate.
+Numerical simulations support the linear analysis.
+This multiscale method should empower the feasible computation of large scale simulations of wave-like dynamics with complicated underlying physics.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\bibliographystyle{agsm}
+\bibliography{Turbulence}
+\end{document}

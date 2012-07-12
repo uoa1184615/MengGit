@@ -1,0 +1,51 @@
+\documentclass[12pt,a5paper]{article}
+\usepackage[margin=6mm,bottom=15mm]{geometry}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{natbib}
+\def\harvardurl#{}
+\usepackage{hyperref} 
+\hypersetup{pdftex,
+            backref=true,
+            hyperindex=true,
+            colorlinks=true,
+            citecolor=blue,
+            bookmarks=true,
+            breaklinks=true}
+%\pagestyle{headings}
+
+\newcommand{\D}{\partial}
+\newcommand{\B}{\textbf}
+
+\title{Model 3D turbulent floods based upon the Smagorinski large eddy closure}
+%\author{Meng Cao}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Abstract}
+
+
+Rivers, floods and tsunamis are often very turbulent. Conventional models of such environmental fluids are typically based on depth-averaged inviscid irrotational flow equations. We explore changing such a base to the turbulent Smagorinski large eddy closure. The aim is to more appropriately model the fluid dynamics of such complex environmental fluids by using such a turbulent closure. Large changes in fluid depth are allowed. Computer algebra constructs the slow manifold of the flow in terms of the fluid depth~$h$ and the mean turbulent lateral velocities~$\bar u$ and~$\bar v$. The major challenge is to deal with the nonlinear stress tensor in the Smagorinski closure. The model integrates the effects of inertia, self-advection, bed drag, gravitational forcing and turbulent dissipation with minimal assumptions. Although the resultant model is close to established models, the real outcome is creating a sound basis for the modelling so others, in their modelling of more complex situations, can systematically include more complex physical processes.
+
+\paragraph{Keywords} turbulent flood, tsunami, Smagorinski closure, channel flows
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\bibliographystyle{agsm}
+\bibliography{Turbulence}
+\end{document}
