@@ -1,6 +1,4 @@
 .DS_Store
-Smag/.DS_Store
-waveHolistic/.DS_Store
 *.aux
 *.log
 *.synctex.gz
@@ -10,8 +8,7 @@ waveHolistic/.DS_Store
 *.toc
 *.trc
 *.xref
-
-.DS_Store
+*.DS_Store
 *.stc*
 *.mtc*
 *.maf
