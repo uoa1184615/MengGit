@@ -1,36 +1,27 @@
-% Every document must have at least a title, author and date.
-% Supply them.
+% Patches simulation for nonlinear problem.
+% Meng Cao, 18 Jul 2012
+
+% define a function to contain the nonlinear problem.
 function dhudt=hol_staggermatrix(t,hu) 
 global n m r dx nu0 nu2 gam c1 theta g interOrd
 
-% uu(i,j)=ith microgrid value in jth macropatch
-% what is the following two lines?? the same??
-%uu=nan(n+2,m); % linear interpolation
-uu=nan(n+2,m); % quadratic interpolation
+% uu(i,j)=ith microgrid value in jth macropatch.
+% uu(1,j) and uu(n+2,j) are the boundaries on every patch.
+uu=nan(n+2,m); 
 i=2:n+1; j=1:m;
 uu(i,j)=reshape(hu,n,m);
 
-%periodic boundary condition from wrapping patch index
+% periodic boundary condition from wrapping patch index
 jp=[2:m, 1]; jm=[m, 1:m-1]; 
 % sometimes it is more convenient to generate these as
 % jpp=jp(jp(jp)); jppp=jp(jp(jpp)); and so on
 jpp=[4:m, 1:3]; jmm=[m-2:m, 1:m-3]; 
 jppp=[6:m,1:5]; jmmm=[m-4:m,1:m-5];
 
-% coupling edge conditions on each tooth, h and u are the same
-% linear interpolation
+% coupling edge conditions on each tooth, h and u are the same.
+% linear interpolation when gam^2=0  
+% quadratic interpolation when gam^3=0
 imid=(n+3)/2;
-%uu(1,j)  =((1+r)/2*uu(imid,jm)+(1-r)/2*uu(imid,jp))*gam ...
-%                +(1-gam)*uu(imid,j);
-%uu(n+2,j)=(1+r)/2*uu(imid,jp)+(1-r)/2*uu(imid,jm)*gam ...
-%               +(1-gam)*uu(imid,j);
-
-% quadratic interpolartion
-% how can this be quadratic, it has gamma cubed terms in it??
-% But the interpolation just does not seem to be correct
-% in the graphical output: I expect the micro and macro scale
-% to agree better about the overall shape of the fields.
-% Need to check somehow??
 uubv=[gam*(uu(imid,jp)+uu(imid,jm))/2 
      +gam*r*(uu(imid,jp)-uu(imid,jm))/2 
     +(-1+r^2)*gam^2*(uu(imid,jpp)-uu(imid,jp)-uu(imid,jm)+uu(imid,jmm))/16
