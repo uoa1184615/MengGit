@@ -6,36 +6,27 @@ operator cis;
 let {cis(0)=>1, cis(~a)^2=>cis(2*a),
       cis(~a)*cis(~b)=>cis(a+b), 
       df(cis(~a),~b)=>i*cis(a)*df(a,b) };
-ee:=cis(lam*t+k*j); 
-ff:=cis(-lam*t-k*j);
+ee:=eps*cis(lam*t+k*j); 
+ff:=eps*cis(-lam*t-k*j);
+let{eps^2=>0};
 
 %%% define the forms of the solutions
 nu:=nu0+nu2*ll^2/dd^2;
-u0:= ( a0*cis(ll*xi)+b0*cis(-ll*xi))*ee;
-h0:= (-(lam-i*nu)*dd/ll*a0*cis(ll*xi)
-     +(lam-i*nu)*dd/ll*b0*cis(-ll*xi))*ee
-     -1/2*nu1*( a0^2*cis(2*ll*xi)+b0^2*cis(-2*ll*xi))*ee^2;
-%h0:= (-(lam-i*nu)*dd/ll*a0*cis(ll*xi)+(lam-i*nu)*dd/ll*b0*cis(-ll*xi))*ee; 
-u1:= ( a1*cis(ll*xi)+b1*cis(-ll*xi))*ee;
-h1:= (-(lam-i*nu)*dd/ll*a1*cis(ll*xi)
-     +(lam-i*nu)*dd/ll*b1*cis(-ll*xi))*ee
-     -1/2*nu1*( a1^2*cis(2*ll*xi)+b1^2*cis(-2*ll*xi))*ee^2;
-%h1:=(-(lam-i*nu)*dd/ll*a1*cis(ll*xi)+(lam-i*nu)*dd/ll*b1*cis(-ll*xi))*ee;
+u0:= uu+( a0*cis(ll*xi)+b0*cis(-ll*xi))*ee;
+h0:= hh+((-(lam-i*nu)*dd/ll-c1*uu)*a0*cis(ll*xi)
+     +((lam-i*nu)*dd/ll-c1*uu)*b0*cis(-ll*xi))*ee;
+u1:= uu+( a1*cis(ll*xi)+b1*cis(-ll*xi))*ee;
+h1:= hh+((-(lam-i*nu)*dd/ll-c1*uu)*a1*cis(ll*xi)
+     +((lam-i*nu)*dd/ll-c1*uu)*b1*cis(-ll*xi))*ee;
 %%% the coupled PDEs, the solutions confirms the pdes equal to zeros
-%let lam^2=>ll^2/dd^2+i*nu*lam+a0*nu1*lam*ll/dd*cis(ll*xi)*ee;
-let{ a0^2*cis(2*ll*xi)*ee^2=>
-       -(lam*dd/ll-i*nu*dd/ll-ll/dd/lam)/nu1*a0*ee
-   , b0^2*cis(2*ll*xi)*ee^2=>
-       -(lam*dd/ll-i*nu*dd/ll-ll/dd/lam)/nu1*b0*ee
-   , a1^2*cis(2*ll*xi)*ee^2=>
-       -(lam*dd/ll-i*nu*dd/ll-ll/dd/lam)/nu1*a1*ee
-   , b1^2*cis(2*ll*xi)*ee^2=>
-       -(lam*dd/ll-i*nu*dd/ll-ll/dd/lam)/nu1*b1*ee
-};
-
-pde:={(df(u0,t)+df(h0,x)+nu0*u0-nu2*df(u0,x,2)+nu1*u0*df(u0,x))
+let {lam^2=>ll^2/dd^2+i*nu*lam-c1*uu*ll/dd*lam
+    ,uu=>c2*g*sin(theta)/nu0
+ };
+pde:={(df(u0,t)+df(h0,x)+nu0*u0-nu2*df(u0,x,2)
+       +c1*u0*df(u0,x)-c2*g*sin(theta))
     ,(df(h0,t)+df(u0,x))
-    ,(df(u1,t)+df(h1,x)+nu0*u1-nu2*df(u1,x,2)+nu1*u1*df(u1,x))
+    ,(df(u1,t)+df(h1,x)+nu0*u1-nu2*df(u1,x,2)
+       +c1*u1*df(u1,x)-c2*g*sin(theta))
     ,(df(h1,t)+df(u1,x))};
 end;
 %%% use gam control the output orders
