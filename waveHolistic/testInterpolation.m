@@ -42,7 +42,7 @@ uubv=[gam*(uu(imid,jp)+uu(imid,jm))/2
     +(9-10*r^2+r^4)*gam^3*(uu(imid,jppp)+uu(imid,jpp)-2*uu(imid,jp)-2*uu(imid,jm)+uu(imid,jmm)+uu(imid,jmmm))/768
     +(9*r-10*r^3+r^5)*gam^3*(uu(imid,jppp)-5*uu(imid,jpp)+10*uu(imid,jp)-10*uu(imid,jm)+5*uu(imid,jmm)-uu(imid,jmmm))/3840
     ];
-uu(1,j)=sum(uubv(1:2*interOrd,:));
+uu(n+2,j)=sum(uubv(1:2*interOrd,:));
 uubv=[gam*(uu(imid,jp)+uu(imid,jm))/2 
      -gam*r*(uu(imid,jp)-uu(imid,jm))/2 
     +(-1+r^2)*gam^2*(uu(imid,jpp)-uu(imid,jp)-uu(imid,jm)+uu(imid,jmm))/16 
@@ -50,7 +50,7 @@ uubv=[gam*(uu(imid,jp)+uu(imid,jm))/2
     +(9-10*r^2+r^4)*gam^3*(uu(imid,jppp)+uu(imid,jpp)-2*uu(imid,jp)-2*uu(imid,jm)+uu(imid,jmm)+uu(imid,jmmm))/768 
     -(9*r-10*r^3+r^5)*gam^3*(uu(imid,jppp)-5*uu(imid,jpp)+10*uu(imid,jp)-10*uu(imid,jm)+5*uu(imid,jmm)-uu(imid,jmmm))/3840
     ];
-uu(n+2,j)=sum(uubv(1:2*interOrd,:))    
+uu(1,j)=sum(uubv(1:2*interOrd,:))    
 
 % plot the picture
     plot(x(1:2:end,:),uu(1:2:end,:),'o' ...
