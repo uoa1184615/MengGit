@@ -53,12 +53,12 @@
     
 \maketitle
 
-\section{abstract}
+\section{Abstract}
 Rivers, floods and tsunamis are often very turbulent. Conventional models of such environmental fluids are typically based on depth-averaged inviscid irrotational flow equations. We explore changing such a base to the turbulent Smagorinski large eddy closure. The aim is to more appropriately model the fluid dynamics of such complex environmental fluids by using such a turbulent closure. Large changes in fluid depth are allowed. Computer algebra constructs the slow manifold of the flow in terms of the fluid depth~$h$ and the mean turbulent lateral velocities~$\bar u$ and~$\bar v$. The major challenge is to deal with the nonlinear stress tensor in the Smagorinski closure. The model integrates the effects of inertia, self-advection, bed drag, gravitational forcing and turbulent dissipation with minimal assumptions. Although the resultant model is close to established models, the real outcome is creating a sound basis for the modelling so others, in their modelling of more complex situations, can systematically include more complex physical processes.
 
-\paragraph{Keywords} turbulent flood, tsunami, Smagorinski closure, channel flows
+\textbf{Keywords}\quad turbulent flood, tsunami, Smagorinski closure, channel flows
 
-\section{Intoduction}
+\section{Introduction}
 
 Environmental turbulent fluids have large wave length compared with the fluid depth.
 Large eddy viscosity model is always used to account for the turbulence.
@@ -216,12 +216,12 @@ When the parameter $\gamma=1$, the model describes the physical dynamics.
 
 \section{Modelling flows over straight channels}
 
- \begin{figure}[b]
-\vspace{2mm}
+\begin{figure}
+%\vspace{2mm}
 \centering
 \begin{tabular}{c@{}c}
 \rotatebox{90}{\hspace{4ex}mean~velocity~$\bq$} &
-\includegraphics{history}\\
+\includegraphics[scale=0.8]{history}\\
 & time~$t$
 \end{tabular}
 \caption{The histories of the mean velocity $\bq$ for the flow over the straight channel~(blue) and meandering channel~(red) at three reasonable observed stations. 
@@ -230,12 +230,12 @@ Zero slopes of these curves indicate the fluid converges to steady state. }
 \label{history}
 \end{figure}%
 
-\begin{figure}[b]
-\vspace{2mm}
+\begin{figure}
+%\vspace{2mm}
 \centering
 \begin{tabular}{c@{}c}
 \rotatebox{90}{\hspace{8ex} mean~$\uu$} &
-\includegraphics{straight-velocity-u}\\
+\includegraphics[scale=0.8]{straight-velocity-u}\\
 & cross-section~$y$
 \end{tabular}
 \caption{Plot of the mean downstream velocity~$\uu$ in the cross-section at the point $x=20$ and the time $t=800$ with parameters $2\beta=8$, $B=0.9$ and $\theta=0.01$. 
@@ -243,10 +243,10 @@ The channel is nine times as deep in the middle as in the surrounding shallow re
 \label{straight-velocity-u}
 \end{figure}%
 
-\begin{figure}[b]
-\vspace{2mm}
+\begin{figure}
+%\vspace{2mm}
 \centering
-\includegraphics{straight-velocity-vc}
+\includegraphics[scale=0.8]{straight-velocity-vc}
 \caption{Contours of the mean transverse velocity~$\vv$ at time $t=800$ with parameters $2\beta=8$, $B=0.9$ and $\theta=0.01$. 
 The high value curves~(red) and low value curves~(blue) indicate travelling vortices on the shear near the interactions between the channel and shallow regions. }
 \label{straight-velocity-vc}
@@ -282,12 +282,12 @@ For example, for the slope~$\theta=0.001$, the equilibrium downstream velocity o
 Figure~\ref{straight-velocity-vc} displays the contour of the mean transverse velocity~$\vv(x,y,t)$ at time~$t=800$, which indicates that weak horizontal vortices grow on the shear near the interactions between the channel and shallow regions, and travel downstream. 
 Similar vortices were observed by~\cite{Robertsli2006} for the small viscous open channel flow and by~\cite{Bousmar2003a} for the turbulent flows over a flume. 
 
-\begin{figure}[b]
-\vspace{2mm}
+\begin{figure}
+%\vspace{2mm}
 \centering
 \begin{tabular}{c@{}c}
 \rotatebox{90}{\hspace{12ex}$y$}&
-\includegraphics{meander-velocity-cont}\\
+\includegraphics[scale=0.8]{meander-velocity-cont}\\
 &$x$
 \end{tabular}
 \caption{Contours of the mean downstream velocity $\uu$~(top) and mean transverse velocity $\vv$~(bottom) at time $t=800$ with parameters $2\beta=8$, $B=0.9$, $\theta=0.01$, $\kappa_1=1$ and $\kappa_2=4\pi/L_x$. 
@@ -309,11 +309,11 @@ b(x,y)=-1+B-B\left[1-\left(\frac{y-\kappa_1\cos(\kappa_2x)}{\beta}\right)^2\righ
 where the parameter~$\kappa_1$ and~$\kappa_2$ determine the curvature of the meandering channel, and the parameters $\beta$ and~$B$ are the width and mid-depth of the meandering channel.
 Simulate the turbulent flow over such channel by the equations~\eqref{smag:h}$--$\eqref{smag:v} with periodic boundary conditions in both~$x$ and~$y$ directions for both the flow and channel. 
 
-\begin{figure}[b]
+\begin{figure}
 \centering
 \begin{tabular}{c@{}c}
 \rotatebox{90}{\hspace{8ex}depth~$h$} &
-\includegraphics{meander-depth}\\
+\includegraphics[scale=0.8]{meander-depth}\\
 & channel~cross-section~$y$
 \end{tabular}
 \caption{Plot of the fluid depth $h(x,y,t)$ in the cross-section of the channel at stations~$x=10$~(blue) and~$x=20$~(red). 
@@ -331,15 +331,15 @@ Figure~\ref{meander-depth} and~\ref{meander-velocity} show the plots of the dept
 The depth, downstream velocity and transverse velocity are bigger in the outer bank than in the inner bank, which correspond to the computations by Demuren~\cite{Demuren1993}. 
 
 
-\begin{figure}[b]
-\vspace{2mm}
+\begin{figure}
+%\vspace{2mm}
 \centering
 \begin{tabular}{c@{}c}
 \rotatebox{90}{\hspace{7ex}mean lateral velocities~$\uu$~and~$\vv$} &
-\includegraphics{meander-velocity}\\
-& channel~cross-section~$y$\\
+\includegraphics[scale=0.8]{meander-velocity}\\
+& channel~cross-section~$y$
 \end{tabular}
-\caption{Plots of the mean downstream velocity $\uu(x,y,t)$~(blue) and the mean transverse velocity $\vv(x,y,t)$~(red) in the cross-section of the channel at the bend $x=10$~(top) and $x=20$~(bottom). 
+\caption{The mean downstream velocity $\uu(x,y,t)$~(blue) and the mean transverse velocity $\vv(x,y,t)$~(red) in the cross-section of the channel at the bend $x=10$~(top) and $x=20$~(bottom). 
 The relevant parameters $2\beta=8$, $B=0.9$, $\theta=0.01$, $\kappa_1=1$ and $\kappa_2=4\pi/L_x$.}
 \label{meander-velocity}
 \end{figure}%
