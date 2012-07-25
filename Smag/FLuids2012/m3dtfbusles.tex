@@ -15,14 +15,6 @@
             citecolor=blue,
             bookmarks=true,
             breaklinks=true}
-\newcommand{\zs}{\zeta}
-\newcommand{\uu}{{\bar u}}
-\newcommand{\vv}{{\bar v}}
-\newcommand{\bq}{{\bar q}}
-\newcommand{\qq}{{\bar{\vec q}}}
-\newcommand{\ee}{\textsc{e}}
-\newcommand{\rnu}{R_\nu}
-\newcommand{\ros}{{\dot\varepsilon}}
 %
 %%%  Fill in following information.
 %
@@ -36,7 +28,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%  Put your definitions (if any) here
-%
+\newcommand{\zs}{\zeta}
+\newcommand{\uu}{{\bar u}}
+\newcommand{\vv}{{\bar v}}
+\newcommand{\bq}{{\bar q}}
+\newcommand{\qq}{{\bar{\vec q}}}
+\newcommand{\ee}{\textsc{e}}
+\newcommand{\rnu}{R_\nu}
+\newcommand{\ros}{{\dot\varepsilon}}
 %
 %%%  Title goes here - do not force a line-break unless ABSOLUTELY necessary
 %
@@ -234,7 +233,7 @@ Zero slopes of these curves indicate the fluid converges to steady state. }
 %\vspace{2mm}
 \centering
 \begin{tabular}{c@{}c}
-\rotatebox{90}{\hspace{8ex} mean~$\uu$} &
+\rotatebox{90}{\hspace{8ex}mean~$\uu$}&
 \includegraphics[scale=0.8]{straight-velocity-u}\\
 & cross-section~$y$
 \end{tabular}
@@ -246,7 +245,11 @@ The channel is nine times as deep in the middle as in the surrounding shallow re
 \begin{figure}
 %\vspace{2mm}
 \centering
-\includegraphics[scale=0.8]{straight-velocity-vc}
+\begin{tabular}{c@{}c}
+\rotatebox{90}{\hspace{8ex}$y$}&
+\includegraphics[scale=0.8]{straight-velocity-vc}\\
+&$x$
+\end{tabular}
 \caption{Contours of the mean transverse velocity~$\vv$ at time $t=800$ with parameters $2\beta=8$, $B=0.9$ and $\theta=0.01$. 
 The high value curves~(red) and low value curves~(blue) indicate travelling vortices on the shear near the interactions between the channel and shallow regions. }
 \label{straight-velocity-vc}
