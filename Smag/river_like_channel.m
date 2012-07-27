@@ -27,12 +27,14 @@ n=length(xk);
 xk=xk(:); yk=yk(:); fk=fk(:);
 pk=exp(i*2*pi*xk);
 qk=exp(i*2*pi*yk);
+% basis function(interpoint distances)
+basisfn=@(d) log(d+1e-9).*d.^2;
 % find coefficients
 [ppk,pp]=meshgrid(pk,pk);
 [qqk,qq]=meshgrid(qk,qk);
 dist=sqrt(abs(pp-ppk).^2+abs(qq-qqk).^2);
 a=[zeros(3,3) [ones(n,1) pk qk]'
-      ones(n,1) pk qk dist.^3];
+      ones(n,1) pk qk basisfn(dist)];
 abc=a\[zeros(3,1);fk];
 conda=cond(a);
 % evaluate at the following points
@@ -43,7 +45,7 @@ q=exp(i*2*pi*y);
 [ppk,pp]=meshgrid(pk,p(:));
 [qqk,qq]=meshgrid(qk,q(:));
 dist=sqrt(abs(pp-ppk).^2+abs(qq-qqk).^2);
-z=abc(1)+abc(2)*p(:)+abc(3)*q(:)+(dist.^3)*abc(4:n+3);
+z=abc(1)+abc(2)*p(:)+abc(3)*q(:)+basisfn(dist)*abc(4:n+3);
 z=reshape(real(z),m,m);
 clf()
 %subplot(1.7,1.7,1);

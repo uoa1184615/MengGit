@@ -1,9 +1,9 @@
 % Patches simulation of nonlinear problem. 
 % MC and AJR, 18 Jul 2012
-
+clear
 global n m r dx nu0 nu2 gam c1 theta g interOrd
-tEnd=800; % the end time
-nTime=240; % time grids
+tEnd=100; % the end time
+nTime=200; % time grids
 n=9;  % 1,5,9,... number of microscale grid points, not incl edges
 m=10; % even number of patches
 r=1/6 ;% ratio of patch size to macrogrid size
@@ -11,9 +11,9 @@ L=2*pi; % length of domain
 D=L/m; % distance between neighbouring patches
 d=2*r*D; % length of each patch
 dx=d/(n+1); % patch size includes edges, to give microgrid size
-nu0=0.1; % coefficient of bed drag
+nu0=0.01; % coefficient of bed drag
 nu2=0.03; % coefficient of disspation
-c1=0; % coefficient of nonlinear advection
+c1=1; % coefficient of nonlinear advection
 theta=0.001; % the slope in the x-direction
 g=1; % gravity
 gam=1; % introduced coupling parameter
