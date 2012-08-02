@@ -65,8 +65,8 @@ dhudt(i0,j1)=dhudt(i0,j1) ...
 
 % nonlinear advection terms
 dhudt(i1,j0)=dhudt(i1,j0) ...
-    -c1*uu(i1,j0).*(uu(i1+2,j0)-uu(i1-2,j0))/2/dx;
-uux=(uu(i0(1:end-2),j1)-uu(i0(3:end),j1))/2/dx;
+    -c1*uu(i1,j0).*(uu(i1+2,j0)-uu(i1-2,j0))/4/dx;
+uux=(uu(i0(1:end-2),j1)-uu(i0(3:end),j1))/4/dx;
 dhudt(i0,j1)=dhudt(i0,j1) ...
     -c1*uu(i0,j1).*[uux(1,:);uux;uux(end,:)];
 

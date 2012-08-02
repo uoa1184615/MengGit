@@ -13,19 +13,19 @@ ff:=eps*cis(-omega*t-k*j);
 let{eps^2=>0};
 
 %%% define the forms of the solutions
-nu:=nu0+nu2*llp^2/dd^2;
+nup:=nu0+nu2*llp^2/dd^2;
+num:=nu0+nu2*llm^2/dd^2;
 u0:= uu+( a0*cis(llp*xi)+b0*cis(-llm*xi))*ee;
-h0:= hh+((-(omega-i*nu)*dd/llp-c1*uu)*a0*cis(llp*xi)
-     +((omega-i*nu)*dd/llm-c1*uu)*b0*cis(-llm*xi))*ee;
+h0:= hh+((-(omega-i*nup)*dd/llp-c1*uu)*a0*cis(llp*xi)
+     +((omega-i*num)*dd/llm-c1*uu)*b0*cis(-llm*xi))*ee;
 u1:= uu+( a1*cis(llp*xi)+b1*cis(-llm*xi))*ee;
-h1:= hh+((-(omega-i*nu)*dd/llp-c1*uu)*a1*cis(llp*xi)
-     +((omega-i*nu)*dd/llm-c1*uu)*b1*cis(-llm*xi))*ee;
+h1:= hh+((-(omega-i*nup)*dd/llp-c1*uu)*a1*cis(llp*xi)
+     +((omega-i*num)*dd/llm-c1*uu)*b1*cis(-llm*xi))*ee;
 %%% the coupled PDEs, the solutions confirms the pdes equal to zeros
-let {omega^2=>-ll^2/dd^2+i*nu*omega-c1*uu*llp/dd*omega
+let {llp=>ll+c1*uu*dd*omega/(i*nu2*omega+1)/2
+    ,llm=>ll-c1*uu*dd*omega/(i*nu2*omega+1)/2
+    ,omega^2=>ll^2/dd^2+i*omega*(nu0+nu2*ll^2/dd^2)-c1^2*uu^2*omega^2/(i*nu28omega+1)/4
     ,uu=>c2*g*sin(theta)/nu0
-    ,llp^2=>ll^2
-    ,llm^2=>ll^2
-    ,llm=>2*ll^2/dd/c1/uu/omega-llp
  };
 pde:={(df(u0,t)+df(h0,x)+nu0*u0-nu2*df(u0,x,2)
        +c1*u0*df(u0,x)-c2*g*sin(theta))
