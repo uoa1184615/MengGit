@@ -93,20 +93,20 @@ The resulting model is then used to simulate flows over straight and meandering 
 
 \section{Description of the turbulence model}
 
-Assume three dimensional incompressible and irrotational turbulent fluid flowing down a slightly sloping ground. 
-Define the Cartesian coordinates with the lateral directions $x_1=x$ and $x_2=y$ and the normal direction $x_3=z$. 
-Let the turbulent fluid have thickness~$h(x,y,t)$ over the ground~$b(x,y)$ with a slope~$\theta$, turbulent mean velocity field $\vec q=(u,v,w)=(u_1,u_2,u_3)$, and turbulent mean pressure field~$p$.
-Nondimensionalising the defined variables with respect to some velocity scale, typical fluid thickness and fluid density, the non-dimensional governing partial differential equations for the incompressible, irrotational, three dimensional, turbulent mean fluid are the continuity equation
+Let's consider three dimensional incompressible and irrotational turbulent fluid flowing down a slightly sloping ground. 
+Define Cartesian coordinates with the lateral directions $x_1=x$ and $x_2=y$ and the normal direction $x_3=z$. 
+Let the turbulent fluid have thickness~$h(x,y,t)$ over the ground located at $z=b(x,y)$ with a mean slope~$\theta$ in the $x=x_1$ direction, denote the turbulent mean velocity field by $\vec q(x,y,z,t)=(u,v,w)=(u_1,u_2,u_3)$, and the turbulent mean pressure field by~$p(x,y,z,t)$.
+After non-dimensionalising the variables with respect to a velocity scale, typical fluid thickness, and fluid density, the non-dimensional governing partial differential equations for the incompressible, irrotational, three dimensional, turbulent mean fluid fields are the continuity equation
 \begin{equation}
     \divv\vec q=\D xu+\D yv+\D zw=0\,,\label{eq:cont}
 \end{equation}
 and the momentum equation
 \begin{equation}
     \D t{\vec q} +\vec q\cdot\grad\vec q
-    =-\grad p +\divv\vec\tau +\vec{g}\,,\label{eq:mom}
+    =-\grad p +\divv\tau +\vec{g}\,,\label{eq:mom}
 \end{equation}
-where~$\tau$ is the turbulent mean stress tensor and $\vec g=(g_1,0,g_3)$ is the nondimensional forcing from gravity.
-The effects of turbulence are modelled by the eddy viscosity~$\nu$, which is related to the mean shear stress through the equation of
+where~$\tau$ is the turbulent mean stress tensor, and $\vec g=(g_1,0,g_3)$ is the non-dimensional forcing from gravity.
+In the Smagorinski model the effects of turbulence are modelled by via an eddy viscosity~$\nu$, which is related to the mean shear stress through the mean stress-strain equation of
 \begin{equation}
 \tau_{ij}=2\nu\ros_{ij}\,,\label{eq:tau}
 \end{equation}
@@ -115,57 +115,56 @@ Define the turbulent mean strain-rate tensor~\cite[e.g.]{Roberts2008,Georgiev200
 \begin{equation}
 	\ros_{ij} =\frac12\left( \D{x_j}{u_i} +\D{x_i}{u_j}\right) \,,\label{eq:strainrate}
 \end{equation}
-and then the turbulent mean stress tensor for the turbulent fluid is
+and then the non-dimensional turbulent mean stress tensor for the turbulent fluid is
 \begin{equation}
-\sigma_{ij}=-p\delta_{ij}+2\rho\nu\ros_{ij}\,.\label{eq:sigma}
+\sigma_{ij}=-p\delta_{ij}+2\nu\ros_{ij}\,.\label{eq:sigma}
 \end{equation}
 When the eddy viscosity~$\nu$ is constant, equation~\eqref{eq:sigma} models a Newtonian fluid.
 In the Smagorinski model~\cite[e.g.]{Ozgokmen2007a}, the eddy viscosity~$\nu$ varies linearly with the magnitude~$\ros$ of the second invariant of the strain-rate tensor,
 \begin{equation}
   \nu=c_th^2\ros\quad\text{where}\quad |\ros|^2=\sum_{i,j}\ros_{ij}^2\,.\label{eq:nu}
 \end{equation}
-Roberts et al.~\cite{Roberts2008} considered the proportionality $c_t\approx0.02$ for the turbulent environmental flows by comparison with established channel flow experiments~\cite[e.g.]{Nezu2005}.
-Thus, the equations~\eqref{eq:tau}$-$\eqref{eq:nu} give the turbulent mean stress tensor
+Roberts et al.~\cite{Roberts2008} recommended the proportionality constant $c_t\approx0.02$ for turbulent environmental flows through comparison with established channel flow experiments~\cite[e.g.]{Nezu2005}.
+Thus, equations~\eqref{eq:tau}$-$\eqref{eq:nu} give the turbulent mean stress tensor
 \begin{equation}
 \tau_{ij}=2\nu(\ros)\ros_{ij}=c_th^2\ros\left( \D{x_j}{u_i} +\D{x_i}{u_j}\right) \,.\label{eq:stress}
 \end{equation}
-Formulate boundary conditions on the ground $b(x,y)$ and free surface $\eta(x,y,t)=h(x,y,t)+b(x,y)$ in terms of the turbulent mean velocity field $\vec q(x,y,t)$ and the fluid depth $h(x,y,t)$. 
-On the ground, no flow penetrating the ground indicates $\vec q\cdot\vec n=0$, that is,
+We formulate boundary conditions on the ground $z=b(x,y)$ and free surface $z=\eta(x,y,t)=h(x,y,t)+b(x,y)$ in terms of the turbulent mean velocity field~$\vec q(x,y,z,t)$ and the fluid depth~$h(x,y,t)$. 
+On the ground, no flow penetrating the ground requires $\vec q\cdot\vec n=0$, that is,
 \begin{equation}
-w=ub_x+vb_y \text{ on } z=b\,,
+w=ub_x+vb_y \quad\text{on } z=b\,,
 \label{eq:nopen}
 \end{equation}
-where the vector
+where the unit normal vector to the ground is
 \begin{equation}
-\vec n=\frac{1}{\sqrt{1+b_x^2+b_y^2}}(-b_x,-b_y,1)\,,\label{eq:vecn}
+\vec n=(-b_x,-b_y,1)/\sqrt{1+b_x^2+b_y^2}.
+\label{eq:vecn}
 \end{equation} 
-presents the unit vector normal to the ground.  
-Putting a slip law on the ground to account for a relatively thin turbulent boundary layer, 
+We posit a slip law on the ground to account for a negligibly thin turbulent boundary layer:
 \begin{equation}
-\vec q_{\text{tan}}=c_uh\frac{\partial\vec q_{\text{tan}}}{\partial\vec n} \text{ on } z=b\,,
+\vec q_{\text{tan}}=c_uh\frac{\partial\vec q_{\text{tan}}}{\partial n} \quad\text{on } z=b\,,
 \label{bc:slip}
 \end{equation} 
-where the term $\vec q_{\text{tan}}$ represents the velocity tangential to the ground. 
-Roberts et al.~\cite{Roberts2008} consider the constant $c_u\approx1.85$ to match open channel flow observations. 
-In applications, the coefficient~$c_u$ would change for different ground roughness. 
-Define
+where $\vec q_{\text{tan}}$ represents the velocity tangential to the ground. 
+Roberts et al.~\cite{Roberts2008} found the constant $c_u\approx1.85$ matched open channel flow observations. 
+In a wider range of applications, the coefficient~$c_u$ would change for different ground roughness. 
+Unit vectors tangential to the ground in the $x$~and~$y$ directions are
 \begin{equation*}
 \vec t_x=\frac{1}{\sqrt{1+b_x^2}}(1,0,b_x)
 \quad\text{and}\quad
-\vec t_y=\frac{1}{\sqrt{1+b_y^2}}(0,1,b_y)
+\vec t_y=\frac{1}{\sqrt{1+b_y^2}}(0,1,b_y).
 \end{equation*}
-are unit vectors tangential to the ground in the $x$~and~$y$ directions. 
 The boundary condition~\eqref{bc:slip} on the ground becomes
 \begin{align}&
-\frac{1}{\sqrt{1+b_x^2}}(u+wb_x)=\frac{c_uh}{\sqrt{1+b_x^2+b_y^2}}\frac{\partial}{\partial\vec n}(u+wb_x)\,,\label{slip:u}\\&
-\frac{1}{\sqrt{1+b_y^2}}(v+wb_y)=\frac{c_uh}{\sqrt{1+b_x^2+b_y^2}}\frac{\partial}{\partial\vec n}(v+wb_y)\,.\label{slip:v}
+\frac{1}{\sqrt{1+b_x^2}}(u+wb_x)=\frac{c_uh}{\sqrt{1+b_x^2+b_y^2}}\frac{\partial}{\partial n}(u+wb_x)\,,\label{slip:u}\\&
+\frac{1}{\sqrt{1+b_y^2}}(v+wb_y)=\frac{c_uh}{\sqrt{1+b_x^2+b_y^2}}\frac{\partial}{\partial n}(v+wb_y)\,.\label{slip:v}
 \end{align}
-On the free surface, the kinematic condition is 
+On the free surface (at least its turbulent mean position), the kinematic condition is 
 \begin{equation}
- \frac{\partial\eta}{\partial t}+u\frac{\partial\eta}{\partial x}+v\frac{\partial\eta}{\partial y}=w \text{ on } z=\eta\,,
+ \frac{\partial\eta}{\partial t}+u\frac{\partial\eta}{\partial x}+v\frac{\partial\eta}{\partial y}=w \quad\text{on } z=\eta=h+b\,,
 \end{equation}
-where the term $\eta=h+b$ denotes the turbulent mean location of the free surface. Assume the pressure of the air on the free surface is zero. 
-Thus the turbulent mean stress normal to the free surface is also zero,
+Relative to atmospheric pressure, the pressure on the free surface is zero. 
+Thus the turbulent mean stress normal to the free surface is also zero: on $z=\eta$,
 \begin{equation}
     -p+\frac{\tau_{33} -2\eta_x\tau_{13} -2\eta_y\tau_{23}
     +\eta_x^2\tau_{11} +2\eta_x\eta_y\tau_{12}+\eta_y^2\tau_{22}}
@@ -173,13 +172,13 @@ Thus the turbulent mean stress normal to the free surface is also zero,
      =0\,.
     \label{bc:ttz}
 \end{equation}
-There must be no turbulent mean, tangential stress at the free surface,
+There must be no turbulent mean, tangential stress at the free surface: on $z=\eta$,
 \begin{eqnarray}&&
     (1-\eta_x^2)\tau_{13}+\eta_x(\tau_{33}-\tau_{11})-\eta_y(\tau_{12}+\eta_x\tau_{23})=0\,,
-    \label{bc:ttx} \\&&
+   \qquad\label{bc:ttx} \\&&
     (1-\eta_y^2)\tau_{23}+\eta_y(\tau_{33}-\tau_{22})
     -\eta_x(\tau_{12}+\eta_y\tau_{13})=0\,.
-    \label{bc:tty}
+   \qquad\label{bc:tty}
 \end{eqnarray}
 
 
