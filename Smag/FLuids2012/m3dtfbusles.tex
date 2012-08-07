@@ -8,6 +8,8 @@
 \usepackage[a5paper,tmargin=15mm,bmargin=15mm]{geometry}
 \addtolength{\textwidth}{2.7em}% width is about right
 \let\affiliation\date
+\usepackage[author=AJR]{pdfcomment}
+\AtBeginDocument{\listofpdfcomments}
 \or %case 1 is for the real thing
 \documentclass[twocolumn]{afmc_art}
 \fi
@@ -43,6 +45,7 @@
 \newcommand{\ee}{\textsc{e}}
 \newcommand{\rnu}{R_\nu}
 \newcommand{\ros}{{\dot\varepsilon}}
+\renewcommand{\vec}[1]{\text{\boldmath$#1$}}
 %
 %%%  Title goes here - do not force a line-break unless ABSOLUTELY necessary
 %
@@ -91,7 +94,7 @@ The theory assures that there exists an emergent low dimensional, slow manifold 
 The resulting model is then used to simulate flows over straight and meandering compound channels and to compare with published data~\cite[e.g.]{Bousmar2002, Liu2009}.
 
 
-\section{Description of the turbulence model}
+\section{Detailed equations of the turbulent model}
 
 Let's consider three dimensional incompressible and irrotational turbulent fluid flowing down a slightly sloping ground. 
 Define Cartesian coordinates with the lateral directions $x_1=x$ and $x_2=y$ and the normal direction $x_3=z$. 
@@ -130,7 +133,7 @@ Thus, equations~\eqref{eq:tau}$-$\eqref{eq:nu} give the turbulent mean stress te
 \tau_{ij}=2\nu(\ros)\ros_{ij}=c_th^2\ros\left( \D{x_j}{u_i} +\D{x_i}{u_j}\right) \,.\label{eq:stress}
 \end{equation}
 We formulate boundary conditions on the ground $z=b(x,y)$ and free surface $z=\eta(x,y,t)=h(x,y,t)+b(x,y)$ in terms of the turbulent mean velocity field~$\vec q(x,y,z,t)$ and the fluid depth~$h(x,y,t)$. 
-On the ground, no flow penetrating the ground requires $\vec q\cdot\vec n=0$, that is,
+On the ground, no flow penetrating the ground requires $\vec q\cdot\vec n=0$\,:
 \begin{equation}
 w=ub_x+vb_y \quad\text{on } z=b\,,
 \label{eq:nopen}
@@ -154,14 +157,14 @@ Unit vectors tangential to the ground in the $x$~and~$y$ directions are
 \quad\text{and}\quad
 \vec t_y=\frac{1}{\sqrt{1+b_y^2}}(0,1,b_y).
 \end{equation*}
-The boundary condition~\eqref{bc:slip} on the ground becomes
+The boundary condition~\eqref{bc:slip} on the ground \(z=b\) becomes
 \begin{align}&
-\frac{1}{\sqrt{1+b_x^2}}(u+wb_x)=\frac{c_uh}{\sqrt{1+b_x^2+b_y^2}}\frac{\partial}{\partial n}(u+wb_x)\,,\label{slip:u}\\&
-\frac{1}{\sqrt{1+b_y^2}}(v+wb_y)=\frac{c_uh}{\sqrt{1+b_x^2+b_y^2}}\frac{\partial}{\partial n}(v+wb_y)\,.\label{slip:v}
+\frac{1}{\sqrt{1+b_x^2}}(u+wb_x)=\frac{c_uh}{\sqrt{1+b_x^2+b_y^2}}\D n{}(u+wb_x)\,,\label{slip:u}\\&
+\frac{1}{\sqrt{1+b_y^2}}(v+wb_y)=\frac{c_uh}{\sqrt{1+b_x^2+b_y^2}}\D n{}(v+wb_y)\,.\label{slip:v}
 \end{align}
-On the free surface (at least its turbulent mean position), the kinematic condition is 
+On the free surface (that is, on its turbulent mean position), the kinematic condition is 
 \begin{equation}
- \frac{\partial\eta}{\partial t}+u\frac{\partial\eta}{\partial x}+v\frac{\partial\eta}{\partial y}=w \quad\text{on } z=\eta=h+b\,,
+ \D{t}{\eta}+u\D{x}{\eta}+v\D{y}{\eta}=w \quad\text{on } z=\eta=h+b\,,
 \end{equation}
 Relative to atmospheric pressure, the pressure on the free surface is zero. 
 Thus the turbulent mean stress normal to the free surface is also zero: on $z=\eta$,
@@ -172,66 +175,90 @@ Thus the turbulent mean stress normal to the free surface is also zero: on $z=\e
      =0\,.
     \label{bc:ttz}
 \end{equation}
-There must be no turbulent mean, tangential stress at the free surface: on $z=\eta$,
+There must be no turbulent mean, tangential stress at the free surface: namely the following for the case of parameter $\gamma=1$\,,
 \begin{eqnarray}&&
-    (1-\eta_x^2)\tau_{13}+\eta_x(\tau_{33}-\tau_{11})-\eta_y(\tau_{12}+\eta_x\tau_{23})=0\,,
-   \qquad\label{bc:ttx} \\&&
+    (1-\eta_x^2)\tau_{13}+\eta_x(\tau_{33}-\tau_{11})
+    -\eta_y(\tau_{12}+\eta_x\tau_{23})
+    \nonumber\\&&{}
+    = \frac{(1-\gamma)\sqrt2c_t}{(1+c_u)(1+2c_u)} u\sqrt{u^2+v^2}
+    \quad\text{on } z=\eta\,,
+    \label{bc:ttx}
+    \\&&
     (1-\eta_y^2)\tau_{23}+\eta_y(\tau_{33}-\tau_{22})
-    -\eta_x(\tau_{12}+\eta_y\tau_{13})=0\,.
-   \qquad\label{bc:tty}
+    -\eta_x(\tau_{12}+\eta_y\tau_{13})
+    \nonumber\\&&{}
+    = \frac{(1-\gamma)\sqrt2c_t}{(1+c_u)(1+2c_u)} v\sqrt{u^2+v^2}
+    \quad\text{on } z=\eta\,.
+    \label{bc:tty}
 \end{eqnarray}
 
 
-
-
-\section{Low order models of the dynamics}
+\section{Reduced dimension modelling of the dynamics}
 
 This section focusses on interpreting the application of centre manifold theory and the resulting low order models.
-Instead of depth averaging equations, we apply the centre manifold theory to deal with the turbulent dynamics across the fluid layer. 
-Roberts et al.~\cite{Roberts2008,Georgiev2008} detailed similar approaches by introducing a parameter~$\gamma$ to the boundary conditions~\eqref{bc:ttx} and~\eqref{bc:tty}, where $\gamma=0$ provides analytic analysis and $\gamma=1$ recovers the physical case. 
-Centre manifold theory assures that there exist a slow manifold for the evolution of equations~\eqref{eq:cont},~\eqref{eq:mom} and~\eqref{eq:stress}.
+Instead of depth averaging equations, we apply centre manifold theory to deal with the turbulent dynamics across the fluid layer. 
+Roberts, Georgiev and Strunin~\cite{Roberts2008, Georgiev2008} detailed similar approaches by introducing the parameter~$\gamma$ into the free surface tangential stress conditions~\eqref{bc:ttx} and~\eqref{bc:tty} where $\gamma=0$ empowers analytic analysis and approximation, whereas $\gamma=1$ recovers the physical case. 
+As described in previous research~\cite{Roberts2008, Georgiev2008}, when parameter \(\gamma=0\) lateral shear modes of turbulent flow become neutral modes of the dynamics, that is, they form a slow subspace along with conservation of fluid.
+Centre manifold theory~\cite[e.g.]{Vanderbauwhede88} then assures us that there exists a slow manifold, that we can construct, of the nonlinear dynamics and under changes in the parameters.
+Evaluating the resulting slow manifold model at the real case of parameter \(\gamma=1\) then provides a model for the fluid dynamics.
  
-Roberts et al.~\cite{Roberts:2008fk} described the algebra of constructing the existed slow manifold. 
-Developed computer algebra program derives the evolutions of the depth field $h(x,y,t)$ and the mean lateral velocities $\uu(x,y,t)$ and $\vv(x,y,t)$ in the $x$~and~$y$ directions. 
-Let $\bq=\sqrt{\uu^2+\vv^2}$ denote the mean velocity of the fluid.
-The evolution of $h(x,y,t)$, $\uu(x,y,t)$ and $\vv(x,y,t)$ are described by the conservation equation and momentum equations,
+Roberts~\cite{Roberts:2008fk}, in a freely available report, detailed the computer algebra that constructed the slow manifold model in 2D flow. 
+Modifications for 3D~flow empowers the computer algebra program to derive the evolutions of the water depth~$h(x,y,t)$ and the depth averaged lateral velocities $\uu(x,y,t)$~and~$\vv(x,y,t)$. 
+In the centre manifold framework we can choose any reasonable measure of the fluid dynamics in order to parametrise the model: we \emph{choose} the depth averaged lateral velocities and fluid depth. 
+We let $\bq(x,y,t)=\sqrt{\uu^2+\vv^2}$ denote the depth averaged speed of the fluid flow.
+Omitting the intricate details of the derivation, the evolution of~$h(x,y,t)$, $\uu(x,y,t)$ and~$\vv(x,y,t)$ are described by the fluid conservation equation and by analogues of the  lateral momentum equations:
 \begin{align}
-\frac{\partial h}{\partial t}&
-\approx-\frac{\partial h\bar u}{\partial x}-\frac{\partial h\bar v}{\partial y}\,,\label{smag:h}
+\D{t}{h}&
+\approx-\D{x}{h\bar u}-\D{y}{h\bar v}\,,\label{smag:h}
 \\
-\frac{\partial\bar u}{\partial t}&
-\approx-0.00293\gamma\frac{\bar u\bq}{h}+0.985g_x+0.00799\gamma g_x
+\D{t}{\bar u}&
+\approx-0.00293 \frac{\bar u\bq}{h}
++0.993\left(g_x-g_z\D{x}{h}-g_z\D{x}{b}\right)
 \nonumber\\&
--0.985g_z\left(\frac{\partial h}{\partial x}+\frac{\partial b}{\partial x}\right)-0.00799\gamma g_z\D xb
+-1.03\bar v\D{y}{\bar u}
+-1.045\bar u\D{x}{\bar u}
+-0.0115\uu\D{y}{\vv}
++0.0136 \vv\D{y}{\uu}
 \nonumber\\&
--0.00799\gamma g_z\D xh-1.03\bar v\frac{\partial\bar u}{\partial y}-1.045\bar u\frac{\partial\bar u}{\partial x}
-\nonumber\\&
--0.0115\uu\D{y}{\vv}+0.0136\gamma\vv\D{y}{\uu}+0.00305\gamma\uu\D{y}{\vv}
-\nonumber\\&
-+0.0204\gamma\uu\D{x}{\uu}+0.237h\bq\DD y\uu+0.0266h\bq\DD x\uu\,,
++0.0030 \uu\D{y}{\vv}
++0.0204 \uu\D{x}{\uu}
++0.237h\bq\DD y\uu
++0.0266h\bq\DD x\uu\,,
+\pdfcomment{There does not seem to be enough symmetry between the second order terms of the u equation and the v equation.  Needs checking??}
 \label{smag:u}
 \\
-\frac{\partial\bar v}{\partial t}&
-\approx-0.00293\gamma\frac{\bar v\bq}{h}-0.989g_z\left(\frac{\partial h}{\partial y}+\frac{\partial b}{\partial y}\right)
+\D{t}{\bar v}&
+\approx-0.00293 \frac{\bar v\bq}{h}
+-0.993g_z\left(\D{y}{h}+\D{y}{b}\right)
+-1.042\bar v\D{y}{\bar v}
 \nonumber\\&
--0.00366\gamma g_z\D yh-0.00366\gamma g_z\D yb-1.042\bar v\frac{\partial\bar v}{\partial y}
+-1.026\bar u\D{x}{\bar v}
++0.0037\uu\D y\uu
+-0.0152\vv\D x\uu
++0.0167 \vv\D y\vv
 \nonumber\\&
--1.026\bar u\frac{\partial\bar v}{\partial x}+0.00371\uu\D y\uu-0.0152\vv\D x\uu+0.0167\gamma\vv\D y\vv
++0.0097 \uu\D x\vv
+-0.0038 \uu\D y\uu
++0.0068 \vv\D x\uu
 \nonumber\\&
-+0.00975\gamma\uu\D x\vv-0.0038\gamma\uu\D y\uu+0.00686\gamma\vv\D x\uu\nonumber\\&
-+0.2488h\bq\DD y\vv+0.00606h\bq\DD x\vv+0.256h\bq\D x\uu\D y\uu
-\,,\label{smag:v}
++0.249h\bq\DD y\vv
++0.0060h\bq\DD x\vv
++0.256h\bq\D x\uu\D y\uu
+\,.\label{smag:v}
 \end{align}
-The equations~\eqref{smag:h}$--$\eqref{smag:v} come as a result of taking into account the relatively slow variations in the lateral directions $x$~and~$y$, and small but non-zero $\partial_x$ and $\partial_y$, thus these equations are smooth and slow in~$x$ and~$y$.  
-The momentum equations~\eqref{smag:u} and~\eqref{smag:v} incorporate the inertial terms~$\qq_t$, self-advection terms $\qq\frac{\partial\qq}{\partial x}$, bed drag terms $\bq\frac{\qq}{h}$, gravitational forcing $g_x-g_z\frac{\partial(h+b)}{\partial x_i}$, and other terms related to the turbulent mixing, where $\qq=(\uu,\vv)$ and~$i=1,3$. 
-Although equations~\eqref{smag:h}$--$\eqref{smag:v} are expressed in terms of depth averaged lateral velocities, they are derived not by depth averaging, but instead by systematically accounting for interaction between vertical profiles of velocity/stress and bed drag and lateral space variations. 
-The coefficients in equations~\eqref{smag:h}$--$\eqref{smag:v} are supported by centre manifold theory. 
-When the parameter $\gamma=1$, the model describes the physical dynamics.
+Equations~\eqref{smag:h}--\eqref{smag:v} are a result of taking into account the relatively slow variations in the lateral directions $x$~and~$y$ via small but non-zero lateral derivatives $\partial_x$~and~$\partial_y$.  
+THey are a form of slowly varying approximations~\cite[e.g.]{Roberts1996}.
+The momentum equations~\eqref{smag:u} and~\eqref{smag:v} incorporate inertial terms~$\qq_t$, self-advection terms~$\qq\D x\qq$,
+\pdfcomment{Might need to be more careful here with self advection??}
+bed drag terms~$\bq{\qq}/{h}$, gravitational forcing $g_x-g_z{\grad(h+b)}$, and other terms related to the turbulent mixing, where $\qq=(\uu,\vv)$. 
+Although equations~\eqref{smag:h}--\eqref{smag:v} are expressed in terms of depth averaged lateral velocities, they are derived not by depth averaging, but instead by systematically accounting for interaction between vertical profiles of the velocity and the stress and bed drag and lateral space variations. 
+The form and coefficients in equations~\eqref{smag:h}--\eqref{smag:v} are supported by dynamical systems theory: the detail in the equations reflects that a slow manifold is in principle composed of exact solutions of the full dynamics and hence accounts for all interactions up to a given order of analysis no matter how small the numerical coefficient in the interactions.
+In practice one might only implement the terms of equations~\eqref{smag:h}--\eqref{smag:v} which are important in a specific application.
+%When the parameter $\gamma=1$, the model describes the physical dynamics.
 
-\section{Modelling flows over straight channels}
+\section{Modelling flows along straight channels}
 
 \begin{figure}
-%\vspace{2mm}
 \centering
 \begin{tabular}{c@{}c}
 \rotatebox{90}{\hspace{4ex}mean~velocity~$\bq$} &
@@ -246,8 +273,8 @@ Zero slopes of these curves indicate the fluid converges to steady state. }
 
 \begin{figure}
 \centering
-\begin{tabular}{c@{}c}
-\rotatebox{90}{\hspace{8ex}mean~$\uu$}&
+\begin{tabular}{cc}
+\rotatebox{90}{\hspace{7ex}mean~$\uu$}&
 \includegraphics[scale=0.8]{straight-velocity-u}\\
 & cross-section~$y$
 \end{tabular}
@@ -259,14 +286,16 @@ The channel is nine times as deep in the middle as in the surrounding shallow re
 \begin{figure}
 \centering
 \begin{tabular}{c@{}c}
-\includegraphics[scale=0.8]{straight-velocity-vc}
+\rotatebox{90}{\hspace{9ex}\(y\)}&
+\includegraphics[scale=0.8]{straight-velocity-vc}\\
+&\(x\)
 \end{tabular}
 \caption{Contours of the mean transverse velocity~$\vv$ at time $t=800$ with parameters $2\beta=8$, $B=0.9$ and $\theta=0.01$. 
 The high value curves~(red) and low value curves~(blue) indicate travelling vortices on the shear near the interactions between the channel and shallow regions. }
 \label{straight-velocity-vc}
 \end{figure}%
 
-This section focuses on the application of the resulting model for turbulence flow over straight open channels. 
+This section focuses on the application of the model~\eqref{smag:h}--\eqref{smag:v} for turbulent flow over straight open channels. 
 Consider the turbulence flow over a slightly sloping ground with a straight open channel. 
 Compare this channel flow with small viscous open channel flow by Roberts et al.~\cite{Robertsli2006} and the experiments of turbulent flow over flood plains and channels in a flume with water of variable depth by Bousmar et al.~\cite{Bousmar2002,Bousmar2003a}. 
  
@@ -324,7 +353,7 @@ Describe the meandering open channel~$b(x,y)$ by
 b(x,y)=-1+B-B\left[1-\left(\frac{y-\kappa_1\cos(\kappa_2x)}{\beta}\right)^2\right]^2\,,\label{bed:meander}
 \end{align}
 where the parameter~$\kappa_1$ and~$\kappa_2$ determine the curvature of the meandering channel, and the parameters $\beta$ and~$B$ are the width and mid-depth of the meandering channel.
-Simulate the turbulent flow over such channel by the equations~\eqref{smag:h}$--$\eqref{smag:v} with periodic boundary conditions in both $x$~and~$y$ directions for both the flow and channel. 
+Simulate the turbulent flow over such channel by the equations~\eqref{smag:h}--\eqref{smag:v} with periodic boundary conditions in both $x$~and~$y$ directions for both the flow and channel. 
 
 \begin{figure}
 \centering

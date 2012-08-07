@@ -6,8 +6,8 @@ Bousmar, D., {\em Flow modelling in compund channels: momentum trans- fer
   thesis, Universitie Catholique de Louvain, 2002.
 
 \bibitem{Bousmar2003a}
-Bousmar, D. and Zech, Y., Large-scale coherent structures in com- pound
-  channels, Technical report, Universitie Catholique de Louvain, 2003.
+Bousmar, D. and Zech, Y., Large-scale coherent structures in compound channels,
+  Technical report, Universitie Catholique de Louvain, 2003.
 
 \bibitem{Demuren1993}
 Demuren, A.~O., A numerical model for flow in meandering channels with natural
@@ -15,7 +15,11 @@ Demuren, A.~O., A numerical model for flow in meandering channels with natural
 
 \bibitem{Georgiev2008}
 Georgiev, D.~J., Roberts, A.~J. and Strunin, D.~V., Modelling turbulent flow
-  from dam break using slow manifold, {\em ANZIAM J. 50\/}, 1033--1051.
+  from dam break using slow manifolds, in {\em Proceedings of the 14th Biennial
+  Computational Techniques and Applications Conference, CTAC-2008\/}, editors
+  G.~N. Mercer and A.~J. Roberts, 2009, volume~50 of {\em ANZIAM J.\/},
+  C1033--C1051, C1033--C1051, \url
+  {http://journal.austms.org.au/ojs/index.php/ANZIAMJ/article/view/1466}.
 
 \bibitem{Liu2009}
 Liu, H., Zhou, G.~J. and Burrows, R., Lattice boltzmann model for shallow water
@@ -34,19 +38,25 @@ Ozgokmen, T.~M., Iliescu, T., Fisher, P.~F., Srinivasan, A. and Duan, J., Large
 
 \bibitem{Roberts1996}
 Roberts, A.~J., Low-dimensional models of thin film fluid dynamics, {\em Phys.
-  Letts.~A\/}, {\bf 212}, 1997, 63--72.
+  Letts.~A\/}, {\bf 212}, 1997, 63--72, \doi{10.1016/0375-9601(96)00040-0}.
 
 \bibitem{Roberts:2008fk}
 Roberts, A.~J., Computer algebra describes flow of turbulent floods via the
-  smagorinski large eddy closure, Technical report, 2008.
+  smagorinski large eddy closure, Technical report, University of Southern
+  Queensland, 2008, \url{http://eprints. usq.edu.au/4008/}.
 
 \bibitem{Roberts2008}
 Roberts, A.~J., Georgiev, D.~J. and Strunin, D.~V., Model turbulent floods with
-  the {Smagorinsky} large eddy closure, Technical report, 2008.
+  the {Smagorinsky} large eddy closure, Technical report,
+  \url{http://arxiv.org/abs/0805.3192}, 2008.
 
 \bibitem{Robertsli2006}
 Roberts, A.~J. and Li, Z., An accurate and comprehensive model of thin fluid
-  flows with inertia on curved substrates, {\em Fluid Mechanics\/}, {\bf
-  553(1)}, 2006, 33--73.
+  flows with inertia on curved substrates, {\em J.~Fluid Mechanics\/}, {\bf
+  553}, 2006, 33--73, \doi{10.1017/S0022112006008640}.
+
+\bibitem{Vanderbauwhede88}
+Vanderbauwhede, A. and Iooss, G., Center manifold theory in infinite
+  dimensions, {\em Dynamics Reported\/}, {\bf 1}, 1988, 125--163.
 
 \end{thebibliography}
