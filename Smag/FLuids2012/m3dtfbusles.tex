@@ -12,8 +12,7 @@
 \documentclass[twocolumn]{afmc_art}
 \fi
 \usepackage{amsmath,defns}
-\usepackage{url}
-\usepackage{graphicx}
+\usepackage{url,graphicx,microtype}
 \usepackage{hyperref} 
 \hypersetup{pdftex,
             backref=true,
@@ -61,26 +60,35 @@
 \maketitle
 
 \section{Abstract}
-Rivers, floods and tsunamis are often very turbulent. Conventional models of such environmental fluids are typically based on depth-averaged inviscid irrotational flow equations. We explore changing such a base to the turbulent Smagorinski large eddy closure. The aim is to more appropriately model the fluid dynamics of such complex environmental fluids by using such a turbulent closure. Large changes in fluid depth are allowed. Computer algebra constructs the slow manifold of the flow in terms of the fluid depth~$h$ and the mean turbulent lateral velocities~$\bar u$ and~$\bar v$. The major challenge is to deal with the nonlinear stress tensor in the Smagorinski closure. The model integrates the effects of inertia, self-advection, bed drag, gravitational forcing and turbulent dissipation with minimal assumptions. Although the resultant model is close to established models, the real outcome is creating a sound basis for the modelling so others, in their modelling of more complex situations, can systematically include more complex physical processes.
+Rivers, floods and tsunamis are often very turbulent.
+Conventional models of such environmental fluids are typically based on depth averaged inviscid irrotational flow equations.
+We explore the implications of changing the theoretical base to the turbulent Smagorinski large eddy closure.
+The aim is to more appropriately model the fluid dynamics of such complex environmental fluids by using such a turbulent closure.
+Large changes in fluid depth are allowed.
+Computer algebra constructs the slow manifold of the flow in terms of the fluid depth and the mean turbulent lateral velocities.
+The major challenge is to deal with the nonlinear stress tensor in the Smagorinski closure.
+The model integrates the effects of inertia, self-advection, bed drag, gravitational forcing and turbulent dissipation with minimal assumptions.
+Although the resultant model is close to established models, the real outcome is creating a sound basis for the modelling so others, in their modelling of more complex situations, can systematically include more complex physical processes.
 
 \textbf{Keywords}\quad turbulent flood, tsunami, Smagorinski closure, channel flows
 
 \section{Introduction}
 
 Environmental turbulent fluids have large wave length compared with the fluid depth.
-Large eddy viscosity model is always used to account for the turbulence.
-Compound channel flows, as a typical of such environmental turbulent fluid, are investigated experimentally and numerically including Bousmar~\cite{Bousmar2002}, Liu et al.~\cite{Liu2009} and Demuren~\cite{Demuren1993}.
-Conventional models of such flows are carried out by depth-averaging the flow equations. 
-Bousmar~\cite{Bousmar2002} proposed an exchange discharge model~(\textsc{edm}) by depth-averaging the Navier-Stokes equations.
-The~\textsc{edm} solves the momentum transfers experimentally and numerically due to the turbulent exchange and geometrical transfer between channel subsections, the channel and the shallow regions.
-The~\textsc{edm} predicts the discharge and water profile computation successfully and supports our numerical analysis of flows over straight channels. 
-Liu et al.~\cite{Liu2009} simulated shallow water flows in curved and meandering channels by a depth-averaged lattice Boltzmann model with adding the large eddy simulation model to account for turbulence.
-The simulations of flows over meandering channels are compared  with the work by Liu et al.~\cite{Liu2009}. 
+%Large eddy viscosity model is always used to account for the turbulence.
+Bousmar~\cite{Bousmar2002}, Liu et al.~\cite{Liu2009}, Demuren~\cite{Demuren1993} and others experimentally and numerically explored compound channel flows as being typical of such environmental turbulent fluid.
+Conventional mathematical models of such flows are carried out by depth averaging the flow equations. 
+Bousmar~\cite{Bousmar2002} proposed an exchange discharge model~(\textsc{edm}) by depth averaging the Navier--Stokes equations.
+The~\textsc{edm} solves the momentum transfers experimentally and numerically through the turbulent exchange and geometrical transfer between channel subsections, the channel and the shallow regions.
+The~\textsc{edm} predicts the discharge and water profile computation successfully and supports our simulations of flows along straight channels. 
+Liu et al.~\cite{Liu2009} simulated shallow water flows in curved and meandering channels by a depth averaged lattice Boltzmann model by using the large eddy simulation model to account for turbulence.
+Our simulations of flows over meandering channels are compared with those of Liu et al.~\cite{Liu2009}. 
 
-However, these kinds of depth-averaging models are conjectured to be deficient by Roberts~\cite{Roberts1996}, since depth-averaging is qualitatively unsound except perhaps for low Reynolds number flows.
-Instead of depth-averaging flow equations, obtain the low order models which resolve the turbulent dynamics based on the centre manifold theory. 
-The theory assures there existing a slow manifold for the evolution of the continuity equation~\eqref{eq:cont}, momentum equation~\eqref{eq:mom} and nonlinear shear tensor in the Smagorinski closure~\eqref{eq:stress}.
-The resulting model is adopted to simulate the flows over straight and meandering compound channels and compare with the published data~\cite[e.g.]{Bousmar2002,Liu2009}.
+However, Roberts~\cite{Roberts1996} discussed evidence that the depth averaging in such models is quantitatively unsound.
+Here we resolve some of the turbulent dynamics using the Smagorinski model.
+But instead of depth averaging flow equations, we obtain low order models based upon centre manifold theory. 
+The theory assures that there exists an emergent low dimensional, slow manifold for the evolution governed by the continuity equation~\eqref{eq:cont}, momentum equation~\eqref{eq:mom} and nonlinear shear tensor in the Smagorinski closure~\eqref{eq:stress}.
+The resulting model is then used to simulate flows over straight and meandering compound channels and to compare with published data~\cite[e.g.]{Bousmar2002, Liu2009}.
 
 
 \section{Description of the turbulence model}
@@ -180,7 +188,7 @@ There must be no turbulent mean, tangential stress at the free surface,
 \section{Low order models of the dynamics}
 
 This section focusses on interpreting the application of centre manifold theory and the resulting low order models.
-Instead of depth-averaging equations, we apply the centre manifold theory to deal with the turbulent dynamics across the fluid layer. 
+Instead of depth averaging equations, we apply the centre manifold theory to deal with the turbulent dynamics across the fluid layer. 
 Roberts et al.~\cite{Roberts2008,Georgiev2008} detailed similar approaches by introducing a parameter~$\gamma$ to the boundary conditions~\eqref{bc:ttx} and~\eqref{bc:tty}, where $\gamma=0$ provides analytic analysis and $\gamma=1$ recovers the physical case. 
 Centre manifold theory assures that there exist a slow manifold for the evolution of equations~\eqref{eq:cont},~\eqref{eq:mom} and~\eqref{eq:stress}.
  
@@ -335,7 +343,7 @@ The flow in the simulation converges to steady state, shown by the red curves in
 Figure~\ref{meander-velocity-cont} exhibit the contours of the mean lateral velocities $\uu(x,y,t)$ and $\vv(x,y,t)$. 
 The mean downstream velocity~$\uu$ reaches maximum at the bends.
 The mean transverse velocity~$\vv$ gets to maximum and minimum at the connection of the bends, which are consistent with the results of Liu eta al.~\cite{Liu2009} who modelled the water in meandering channels with~$60^\circ$ and~$90^\circ$ consecutive bends and a width of~$0.3$\,m.
-Demuren~\cite{Demuren1993} calculated the depth and the depth-averaged longitudinal and transverse velocities of three dimensional flows in meandering channels with natural bed configuration by a finite volume numerical method. 
+Demuren~\cite{Demuren1993} calculated the depth and the depth averaged longitudinal and transverse velocities of three dimensional flows in meandering channels with natural bed configuration by a finite volume numerical method. 
 Simulations at fifteen observed stations of the meandering channel indicate that the location of the maximum velocity shifts from the inner bank to the outer bank as the water flowing through the bends of the channel. 
 Figure~\ref{meander-depth} and~\ref{meander-velocity} show the plots of the depth $h(x,y,t)$, the mean downstream velocity $\uu(x,y,t)$ and the mean transverse velocity $\vv(x,y,t)$ at the channel bends $x=10$ and $x=20$.
 The depth, downstream velocity and transverse velocity are bigger in the outer bank than in the inner bank, which correspond to the computations by Demuren~\cite{Demuren1993}. 
