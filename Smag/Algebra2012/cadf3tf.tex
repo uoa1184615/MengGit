@@ -126,7 +126,10 @@ to investigate in the algebraic expressions.
 
 \begin{reduce}
 on div; off allfac; on revpri; 
-factor vv,uu,qq,rqq,h,ct,gx,gz,gam,r2;
+%factor vv,uu,qq,rqq,h,ct,gx,gz,gam,r2;
+factor uu(0,1),uu(1,0),uu(2,0),uu(1,1),uu(0,2)
+      ,vv(0,1),vv(1,0),vv(2,0),vv(1,1),vv(0,2)
+      ,h(0,0);
 \end{reduce}
 
 \subsection{Define order parameters}
@@ -690,11 +693,11 @@ dims:={ h(~m)=>nh*ll
 Write out the final evolution on the slow manifold.
 
 \begin{reduce}
-r2:=sqrt(2)$ %eps:=1$
+r2:=sqrt(2)$ gam:=eps:=1;
 on rounded; print_precision 4;
-write dhdt:=length(gh);
-write dudt:=length(gu);  
-write dvdt:=length(gv);  
+write dhdt:=(gh);
+write dudt:=(gu);  
+write dvdt:=(gv);  
 \end{reduce}
 
 

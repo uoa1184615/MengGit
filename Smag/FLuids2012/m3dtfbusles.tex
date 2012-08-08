@@ -8,11 +8,11 @@
 \usepackage[a5paper,tmargin=15mm,bmargin=15mm]{geometry}
 \addtolength{\textwidth}{2.7em}% width is about right
 \let\affiliation\date
-\usepackage[author=AJR]{pdfcomment}
-\AtBeginDocument{\listofpdfcomments}
 \or %case 1 is for the real thing
 \documentclass[twocolumn]{afmc_art}
 \fi
+\usepackage[author=AJR]{pdfcomment}
+\AtBeginDocument{\listofpdfcomments}
 \usepackage{amsmath,defns}
 \usepackage{url,graphicx,microtype}
 \usepackage{hyperref} 
@@ -99,7 +99,7 @@ The resulting model is then used to simulate flows over straight and meandering 
 Let's consider three dimensional incompressible and irrotational turbulent fluid flowing down a slightly sloping ground. 
 Define Cartesian coordinates with the lateral directions $x_1=x$ and $x_2=y$ and the normal direction $x_3=z$. 
 Let the turbulent fluid have thickness~$h(x,y,t)$ over the ground located at $z=b(x,y)$ with a mean slope~$\theta$ in the $x=x_1$ direction, denote the turbulent mean velocity field by $\vec q(x,y,z,t)=(u,v,w)=(u_1,u_2,u_3)$, and the turbulent mean pressure field by~$p(x,y,z,t)$.
-After non-dimensionalising the variables with respect to a velocity scale, typical fluid thickness, and fluid density, the non-dimensional governing partial differential equations for the incompressible, irrotational, three dimensional, turbulent mean fluid fields are the continuity equation
+After non-dimensionalising the variables with respect to a typical fluid thickness~$H$, the velocity scale~$\sqrt{gH}$, and the  fluid density, the non-dimensional governing partial differential equations for the incompressible, irrotational, three dimensional, turbulent mean fluid fields are the continuity equation
 \begin{equation}
     \divv\vec q=\D xu+\D yv+\D zw=0\,,\label{eq:cont}
 \end{equation}
@@ -108,7 +108,7 @@ and the momentum equation
     \D t{\vec q} +\vec q\cdot\grad\vec q
     =-\grad p +\divv\tau +\vec{g}\,,\label{eq:mom}
 \end{equation}
-where~$\tau$ is the turbulent mean stress tensor, and $\vec g=(g_1,0,g_3)$ is the non-dimensional forcing from gravity.
+where~$\tau$ is the turbulent mean stress tensor, and $\vec g=(g_1,0,g_3)$ is the forcing from gravity ($|\vec g|=1$ by the non-dimensionalisation).
 In the Smagorinski model the effects of turbulence are modelled by via an eddy viscosity~$\nu$, which is related to the mean shear stress through the mean stress-strain equation of
 \begin{equation}
 \tau_{ij}=2\nu\ros_{ij}\,,\label{eq:tau}
@@ -128,12 +128,12 @@ In the Smagorinski model~\cite[e.g.]{Ozgokmen2007a}, the eddy viscosity~$\nu$ va
   \nu=c_th^2\ros\quad\text{where}\quad |\ros|^2=\sum_{i,j}\ros_{ij}^2\,.\label{eq:nu}
 \end{equation}
 Roberts et al.~\cite{Roberts2008} recommended the proportionality constant $c_t\approx0.02$ for turbulent environmental flows through comparison with established channel flow experiments~\cite[e.g.]{Nezu2005}.
-Thus, equations~\eqref{eq:tau}$-$\eqref{eq:nu} give the turbulent mean stress tensor
+Thus, equations~\eqref{eq:tau}--\eqref{eq:nu} give the turbulent mean stress tensor
 \begin{equation}
 \tau_{ij}=2\nu(\ros)\ros_{ij}=c_th^2\ros\left( \D{x_j}{u_i} +\D{x_i}{u_j}\right) \,.\label{eq:stress}
 \end{equation}
 We formulate boundary conditions on the ground $z=b(x,y)$ and free surface $z=\eta(x,y,t)=h(x,y,t)+b(x,y)$ in terms of the turbulent mean velocity field~$\vec q(x,y,z,t)$ and the fluid depth~$h(x,y,t)$. 
-On the ground, no flow penetrating the ground requires $\vec q\cdot\vec n=0$\,:
+On the ground, no fluid penetrating the ground requires $\vec q\cdot\vec n=0$\,:
 \begin{equation}
 w=ub_x+vb_y \quad\text{on } z=b\,,
 \label{eq:nopen}
@@ -206,7 +206,7 @@ Roberts~\cite{Roberts:2008fk}, in a freely available report, detailed the comput
 Modifications for 3D~flow empowers the computer algebra program to derive the evolutions of the water depth~$h(x,y,t)$ and the depth averaged lateral velocities $\uu(x,y,t)$~and~$\vv(x,y,t)$. 
 In the centre manifold framework we can choose any reasonable measure of the fluid dynamics in order to parametrise the model: we \emph{choose} the depth averaged lateral velocities and fluid depth. 
 We let $\bq(x,y,t)=\sqrt{\uu^2+\vv^2}$ denote the depth averaged speed of the fluid flow.
-Omitting the intricate details of the derivation, the evolution of~$h(x,y,t)$, $\uu(x,y,t)$ and~$\vv(x,y,t)$ are described by the fluid conservation equation and by analogues of the  lateral momentum equations:
+Omitting the intricate details of the derivation, the evolution of~$h(x,y,t)$, $\uu(x,y,t)$ and~$\vv(x,y,t)$ are described by the fluid conservation equation and by effective lateral momentum equations:
 \begin{align}
 \D{t}{h}&
 \approx-\D{x}{h\bar u}-\D{y}{h\bar v}\,,\label{smag:h}
@@ -215,7 +215,7 @@ Omitting the intricate details of the derivation, the evolution of~$h(x,y,t)$, $
 \approx-0.00293 \frac{\bar u\bq}{h}
 +0.993\left(g_x-g_z\D{x}{h}-g_z\D{x}{b}\right)
 \nonumber\\&
--1.03\bar v\D{y}{\bar u}
+-1.030\bar v\D{y}{\bar u}
 -1.045\bar u\D{x}{\bar u}
 -0.0115\uu\D{y}{\vv}
 +0.0136 \vv\D{y}{\uu}
@@ -224,7 +224,7 @@ Omitting the intricate details of the derivation, the evolution of~$h(x,y,t)$, $
 +0.0204 \uu\D{x}{\uu}
 +0.237h\bq\DD y\uu
 +0.0266h\bq\DD x\uu\,,
-\pdfcomment{There does not seem to be enough symmetry between the second order terms of the u equation and the v equation.  Needs checking??}
+\pdfcomment{There does not seem to be enough symmetry between the second order terms of the u equation and the v equation.  Needs checking??  Needs something on why this set of terms??  Note: for 'small' terms should probably only use at most a couple of sig. digits in the coefficients.}
 \label{smag:u}
 \\
 \D{t}{\bar v}&
@@ -247,7 +247,7 @@ Omitting the intricate details of the derivation, the evolution of~$h(x,y,t)$, $
 \,.\label{smag:v}
 \end{align}
 Equations~\eqref{smag:h}--\eqref{smag:v} are a result of taking into account the relatively slow variations in the lateral directions $x$~and~$y$ via small but non-zero lateral derivatives $\partial_x$~and~$\partial_y$.  
-THey are a form of slowly varying approximations~\cite[e.g.]{Roberts1996}.
+They are a form of slowly varying approximations~\cite[e.g.]{Roberts1996}.
 The momentum equations~\eqref{smag:u} and~\eqref{smag:v} incorporate inertial terms~$\qq_t$, self-advection terms~$\qq\D x\qq$,
 \pdfcomment{Might need to be more careful here with self advection??}
 bed drag terms~$\bq{\qq}/{h}$, gravitational forcing $g_x-g_z{\grad(h+b)}$, and other terms related to the turbulent mixing, where $\qq=(\uu,\vv)$. 
@@ -258,18 +258,42 @@ In practice one might only implement the terms of equations~\eqref{smag:h}--\eqr
 
 \section{Modelling flows along straight channels}
 
-\begin{figure}
-\centering
-\begin{tabular}{c@{}c}
-\rotatebox{90}{\hspace{4ex}mean~velocity~$\bq$} &
-\includegraphics[scale=0.8]{history}\\
-& time~$t$
-\end{tabular}
-\caption{The histories of the mean velocity $\bq$ for the flow over the straight channel~(blue) and meandering channel~(red) at three reasonable observed stations. 
-The relevant parameters $2\beta=8$, $B=0.9$, $\kappa_1=1$, $\kappa_2=4\pi/L_x$, $\theta=0.01$~(straight) and $\theta=0.001$~(meander).
-Zero slopes of these curves indicate the fluid converges to steady state. }
-\label{history}
-\end{figure}%
+%\begin{figure}
+%\centering
+%\begin{tabular}{c@{}c}
+%\rotatebox{90}{\hspace{4ex}mean~velocity~$\bq$} &
+%\includegraphics[scale=0.8]{history}\\
+%& time~$t$
+%\end{tabular}
+%\caption{The histories of the mean velocity $\bq$ for the flow over the straight channel~(blue) and meandering channel~(red) at three reasonable observed stations. 
+%The relevant parameters $2\beta=8$, $B=0.9$, $\kappa_1=1$, $\kappa_2=4\pi/L_x$, $\theta=0.01$~(straight) and $\theta=0.001$~(meander).
+%Zero slopes of these curves indicate the fluid converges to steady state. }
+%\label{history}
+%\end{figure}%
+
+
+
+This section focuses on the preliminary application of the model~\eqref{smag:h}--\eqref{smag:v} for turbulent flow driven by a small downslope along straight open channels.
+The water covers the entire domain in order to avoid, at this stage, complications of moving contact lines between wet and dry bed: the flow is in the channel and over a surrounding flood plain.
+We compare this turbulent channel flow with viscous open channel flow by Roberts et al.~\cite{Robertsli2006} and the experiments of turbulent flow over flood plains and channels in a flume with water of variable depth by Bousmar et al.~\cite{Bousmar2002,Bousmar2003a}.
+
+Let~$x$ be the down-stream and $y$~be the cross-stream coordinate. 
+%Consider the water of a depth~$h(x,y,t)$ flows with the averaged lateral velocities~$\uu(x,y,t)$ and~$\vv(x,y,t)$ along the channel of
+We choose a quartic shape for the channel to make smooth transitions to and from the shallows and the channel: 
+\begin{equation}
+z=b(x,y)=-1+B-B\left\{\max\left[0,1-\left({y}/{\beta}\right)^2\right]\right\}^2,\label{bed:straight}
+\end{equation}
+where~$\beta$ denotes the half-width of the channel, $1-B$ the depth of water on the shallow `flood plain' on either side of the channel, and the mid-depth of the channel is one (non-dimensionally) as we set the mean water level to be at $z=0$.  
+For the simulations reported here we set $2\beta=8$, $B=0.9$ so the shallows are of depth~$0.1$, and a mean slope $\theta=0.01$ in the $x$~direction.  
+%Consider the initial still water level is zero and then the depth of the shallow regions is $-1+0.9=-0.1$.
+For comparison, the channel of Bousmar~\cite{Bousmar2002} was about twice as deep in the constant channel as in the flood plain.
+
+%Consider the fluid of zero initial water level flowing with small mean downstream velocity $\uu(x,y,t)$ down the open channel described by equation~\eqref{bed:straight}. 
+%Nondimensionalise the variables of fluid depth $h(x,y,t)$ and mean lateral velocities $\uu(x,y,t)$ and $\vv(x,y,t)$ with respect to some velocity scale, a typical depth and a fluid density, and consider $g=1$. 
+%Equations~\eqref{smag:h}--\eqref{smag:v} describe the dynamics of this fluid with the periodic boundary conditions both in the $x$~and~$y$ directions for both the flow and channel. 
+
+Numerical simulations were simply implemented using centred difference approximations to the spatial derivatives in equations~\eqref{smag:h}--\eqref{smag:v} on a regular but staggered grid in space.
+Time integration was performed by Matlab's \verb|ode15s|.
 
 \begin{figure}
 \centering
@@ -279,7 +303,7 @@ Zero slopes of these curves indicate the fluid converges to steady state. }
 & cross-section~$y$
 \end{tabular}
 \caption{Plot of the mean downstream velocity~$\uu$ in the cross-section at the point $x=20$ and the time $t=800$ with parameters $2\beta=8$, $B=0.9$ and $\theta=0.01$. 
-The channel is nine times as deep in the middle as in the surrounding shallow regions, and the mean downstream velocity is one and a half times as fast in the middle as in the shallow regions.}
+The channel is nine times as deep as in the surrounding shallows, but the peak downstream velocity is only $50$\%~faster than in the shallows.}
 \label{straight-velocity-u}
 \end{figure}%
 
@@ -295,38 +319,21 @@ The high value curves~(red) and low value curves~(blue) indicate travelling vort
 \label{straight-velocity-vc}
 \end{figure}%
 
-This section focuses on the application of the model~\eqref{smag:h}--\eqref{smag:v} for turbulent flow over straight open channels. 
-Consider the turbulence flow over a slightly sloping ground with a straight open channel. 
-Compare this channel flow with small viscous open channel flow by Roberts et al.~\cite{Robertsli2006} and the experiments of turbulent flow over flood plains and channels in a flume with water of variable depth by Bousmar et al.~\cite{Bousmar2002,Bousmar2003a}. 
- 
- Let~$x$ be the along stream coordinate,~$y$ be the horizontal distance across the stream on the channel and~$z$ be normal to the channel. 
-Consider the water of a depth $h(x,y,t)$ flows with the mean lateral velocities $\uu(x,y,t)$ and $\vv(x,y,t)$ along the channel of
-\begin{equation}
-b(x,y)=-1+B-B\left[1-\left(\frac{y}{\beta}\right)^2\right]^2,\label{bed:straight}
-\end{equation}
-where~$\beta$ denotes the width of the channel, and~$B$ the mid-depth of the channel.  
-The centreline of the channel locates at $y=0$.
-Assume the channel has a width of  $2\beta=8$ and a slope $\theta=0.01$ in the $x$~direction.  
-The mid-depth of the channel is $B=0.9$.
-Consider the initial still water level is zero and then the depth of the shallow regions is $-1+0.9=-0.1$.
-The channel of~\cite{Bousmar2002} is about two times as deep in the constant channel as in the flood plain.
-
-Consider the fluid of zero initial water level flowing with small mean downstream velocity $\uu(x,y,t)$ down the open channel described by equation~\eqref{bed:straight}. 
-Nondimensionalise the variables of fluid depth $h(x,y,t)$ and mean lateral velocities $\uu(x,y,t)$ and $\vv(x,y,t)$ with respect to some velocity scale, a typical depth and a fluid density, and consider $g=1$. 
-Equations~\eqref{smag:h}--\eqref{smag:v} describe the dynamics of this fluid with the periodic boundary conditions both in the $x$~and~$y$ directions for both the flow and channel. 
-
-The flow in the simulation converges to steady state, shown by the blue curves in Figure~\ref{history}.
+\pdfcomment{Rule of thumb: generally put the figure environments immediately before the paragraph that the figure is first mentioned.}
+In simulations, we typically started the fluid with zero velocity and a flat free surface ($z=0$). 
+Transients in the simulations decayed on a non-dimensional time of typically $t=400$.
 Figure~\ref{straight-velocity-u} shows that fast flow developed in the deeper channel and slow flow on the shallow regions.
-This corresponds to the interpretation of Roberts et al.~\cite{Robertsli2006} for the viscous flow in a small open channel, where the viscous flow is eight times as fast in the channel as on the shallow regions. 
-Equation~\eqref{smag:u} demonstrates the equilibrium downstream velocity in the shallow regions is $\sqrt{0.985\sin(0.01)\times0.1/0.00293}=0.582$, which corresponds the numerical result in Figure~\ref{straight-velocity-u}. 
-The equilibrium downstream velocity in the mid-channel should be $\sqrt{0.985\sin(0.01)\times1/0.00293}=1.84$, but is~$0.95$ in the numerical simulation, shown in Figure~\ref{straight-velocity-u}. 
-Numerical tests show that when the shape of the bed becomes complex, the equilibrium downstream velocity decreases. 
-For example, for the slope~$\theta=0.001$, the equilibrium downstream velocity on the flat bed is~$0.582$, on the bed with straight channel with a width~$2\beta=14$ is~$0.374$, on the bed with straight channel with a width~$2\beta=8$ is~$0.302$, on the bed with slight meandering channel with a width~$2\beta=8$ is~$0.307$.
-Figure~\ref{straight-velocity-vc} displays the contour of the mean transverse velocity~$\vv(x,y,t)$ at time~$t=800$, which indicates that weak horizontal vortices grow on the shear near the interactions between the channel and shallow regions, and travel downstream. 
-Similar vortices were observed by~\cite{Robertsli2006} for the small viscous open channel flow and by~\cite{Bousmar2003a} for the turbulent flows over a flume. 
+In a viscous flow in a small open channel~\cite{Robertsli2006}, the flow was eight times as fast in the channel as on the shallow regions. 
+Equation~\eqref{smag:u} suggests the equilibrium downstream velocity in the shallow regions is $\sqrt{0.993\sin(0.01)\times0.1/0.00293}=0.58$, which corresponds the numerical result in Figure~\ref{straight-velocity-u}. 
+\pdfcomment{Avoid giving excessive decimal digits: prefer the minimum that is necessary.}
+The equilibrium downstream velocity for a fluid of depth one is $\sqrt{0.993\sin(0.01)\times1/0.00293}=1.84$, but in our channel is only~$0.95$ as in Figure~\ref{straight-velocity-u}: 
+such simulations show that when the shape of the bed becomes complex, the equilibrium downstream velocity decreases through lateral mixing and dissipation. 
+For example, for the lesser slope~$\theta=0.001$, the equilibrium downstream velocity over a flat bed is~$0.58$, in mid-channel with  width~$2\beta=14$ is~$0.37$, in mid-channel with  width~$2\beta=8$ is~$0.30$, and in a slightly meandering channel with a width~$2\beta=8$ is~$0.31$.
+Figure~\ref{straight-velocity-vc} displays the contour of the mean transverse velocity~$\vv(x,y,t)$ at time~$t=800$, which indicates that weak horizontal vortices grow on the shear in the transition between the channel and shallow regions.  
+These weak mixing vortices travel downstream. 
+Similar vortices were observed by Roberts and Li~\cite{Robertsli2006} in numerical simulations of viscous open channel flow and by Boussmar~\cite{Bousmar2003a} in experiments of turbulent flow along channels in a flume. 
 
 \begin{figure}
-%\vspace{2mm}
 \centering
 \begin{tabular}{c@{}c}
 \rotatebox{90}{\hspace{12ex}$y$}&
@@ -341,12 +348,12 @@ The black curves plot the meandering channel.}
 \label{meander-velocity-cont}
 \end{figure}%
 
-\section{Modelling flows over meandering channels}
+\section{Flows along meandering channels}
 
 This part describes the simulations of turbulent fluid flowing over a slightly sloped ground with a meandering open channel. 
 The simulations are compared with the numerical results of Liu et al.~\cite{Liu2009} and Demuren~\cite{Demuren1993} who calculated the two and three dimensional turbulence flows in meandering channels by a lattice Boltzmann model and a finite volume numerical model, respectively.
 
-Create a Cartesian coordinate system~$(x,y,z)$ . 
+Create a Cartesian coordinate system~$(x,y,z)$. 
 Consider nondimensionalised fluid depth $h(x,y,t)$, mean lateral velocities $\uu(x,y,t)$ in the $x$~direction and $\vv(x,y,t)$ in the $y$~direction. 
 Describe the meandering open channel~$b(x,y)$ by
 \begin{align}&
@@ -367,8 +374,8 @@ The relevant parameters $2\beta=8$, $B=0.9$, $\theta=0.01$, $\kappa_1=1$ and $\k
 \label{meander-depth}
 \end{figure}%
 
-The flow in the simulation converges to steady state, shown by the red curves in Figure~\ref{history}.
-Figure~\ref{meander-velocity-cont} exhibit the contours of the mean lateral velocities $\uu(x,y,t)$ and $\vv(x,y,t)$. 
+Transients decay over times of typically \(t\approx400\).
+Figure~\ref{meander-velocity-cont} exhibits the contours of the mean lateral velocities $\uu(x,y,t)$ and $\vv(x,y,t)$. 
 The mean downstream velocity~$\uu$ reaches maximum at the bends.
 The mean transverse velocity~$\vv$ gets to maximum and minimum at the connection of the bends, which are consistent with the results of Liu eta al.~\cite{Liu2009} who modelled the water in meandering channels with~$60^\circ$ and~$90^\circ$ consecutive bends and a width of~$0.3$\,m.
 Demuren~\cite{Demuren1993} calculated the depth and the depth averaged longitudinal and transverse velocities of three dimensional flows in meandering channels with natural bed configuration by a finite volume numerical method. 
