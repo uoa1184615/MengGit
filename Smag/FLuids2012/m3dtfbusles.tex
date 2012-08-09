@@ -193,9 +193,9 @@ There must be no turbulent mean, tangential stress at the free surface: namely t
 \end{eqnarray}
 
 
-\section{Reduced dimension modelling of the dynamics}
+\section{Reduced model of the fluid dynamics}
 
-This section focusses on interpreting the application of centre manifold theory and the resulting low order models.
+This section focusses on interpreting the application of centre manifold theory and the resulting modelling of the turbulent flow.
 Instead of depth averaging equations, we apply centre manifold theory to deal with the turbulent dynamics across the fluid layer. 
 Roberts, Georgiev and Strunin~\cite{Roberts2008, Georgiev2008} detailed similar approaches by introducing the parameter~$\gamma$ into the free surface tangential stress conditions~\eqref{bc:ttx} and~\eqref{bc:tty} where $\gamma=0$ empowers analytic analysis and approximation, whereas $\gamma=1$ recovers the physical case. 
 As described in previous research~\cite{Roberts2008, Georgiev2008}, when parameter \(\gamma=0\) lateral shear modes of turbulent flow become neutral modes of the dynamics, that is, they form a slow subspace along with conservation of fluid.
@@ -253,7 +253,10 @@ The momentum equations~\eqref{smag:u} and~\eqref{smag:v} incorporate inertial te
 bed drag terms~$\bq{\qq}/{h}$, gravitational forcing $g_x-g_z{\grad(h+b)}$, and other terms related to the turbulent mixing, where $\qq=(\uu,\vv)$. 
 Although equations~\eqref{smag:h}--\eqref{smag:v} are expressed in terms of depth averaged lateral velocities, they are derived not by depth averaging, but instead by systematically accounting for interaction between vertical profiles of the velocity and the stress and bed drag and lateral space variations. 
 The form and coefficients in equations~\eqref{smag:h}--\eqref{smag:v} are supported by dynamical systems theory: the detail in the equations reflects that a slow manifold is in principle composed of exact solutions of the full dynamics and hence accounts for all interactions up to a given order of analysis no matter how small the numerical coefficient in the interactions.
-In practice one might only implement the terms of equations~\eqref{smag:h}--\eqref{smag:v} which are important in a specific application.
+
+In practice one might only implement those terms of equations~\eqref{smag:h}--\eqref{smag:v} which are important in a specific application.
+Future planned research is to explore how important is each of the multitude of terms in some flows of environmental interest.
+Our first task here is then to establish the model's predictions in a range of turbulent flows.
 %When the parameter $\gamma=1$, the model describes the physical dynamics.
 
 \section{Modelling flows along straight channels}
@@ -333,6 +336,27 @@ Figure~\ref{straight-velocity-vc} displays the contour of the mean transverse ve
 These weak mixing vortices travel downstream. 
 Similar vortices were observed by Roberts and Li~\cite{Robertsli2006} in numerical simulations of viscous open channel flow and by Boussmar~\cite{Bousmar2003a} in experiments of turbulent flow along channels in a flume. 
 
+
+
+
+
+
+
+
+\section{Flows along meandering channels}
+
+This section describes simulations of turbulent flow over a slightly sloped ground with a meandering open channel. 
+The simulations are compared with the numerical results of Liu et al.~\cite{Liu2009} and Demuren~\cite{Demuren1993} who calculated the two and three dimensional turbulence flows in meandering channels by a lattice Boltzmann model and a finite volume numerical model, respectively.
+
+%Create a Cartesian coordinate system~$(x,y,z)$. 
+%Consider nondimensionalised fluid depth $h(x,y,t)$, mean lateral velocities $\uu(x,y,t)$ in the $x$~direction and $\vv(x,y,t)$ in the $y$~direction. 
+Here we describe simple meandering open channels by the bed
+\begin{align}&
+z=b(x,y)=-1+B-B\left\{\max\left[0,1-\left(\frac{y-\kappa_1\cos(\kappa_2x)}{\beta}\right)^2\right]\right\}^2,\label{bed:meander}
+\end{align}
+where the parameter~$\kappa_2$ determine the wavelength~$2\pi/\kappa_2$ of the meandering channel, the parameter~$\kappa_1$ is the half-width of the extent of the meanders, and the parameters $\beta$~and~$1-B$ are the half-width and mid-depth of the meandering channel as before.
+Simulate the turbulent flow over such channel by the equations~\eqref{smag:h}--\eqref{smag:v} with periodic boundary conditions in both $x$~and~$y$ directions for both the flow and channel. 
+
 \begin{figure}
 \centering
 \begin{tabular}{c@{}c}
@@ -348,50 +372,37 @@ The black curves plot the meandering channel.}
 \label{meander-velocity-cont}
 \end{figure}%
 
-\section{Flows along meandering channels}
+%\begin{figure}
+%\centering
+%\begin{tabular}{c@{}c}
+%\rotatebox{90}{\hspace{8ex}depth~$h$} &
+%\includegraphics[scale=0.8]{meander-depth}\\
+%& channel~cross-section~$y$
+%\end{tabular}
+%\caption{Plot of the fluid depth $h(x,y,t)$ in the cross-section of the channel at stations~$x=10$~(blue) and~$x=20$~(red). 
+%The relevant parameters $2\beta=8$, $B=0.9$, $\theta=0.01$, $\kappa_1=1$ and $\kappa_2=4\pi/L_x$.}
+%\label{meander-depth}
+%\end{figure}%
 
-This part describes the simulations of turbulent fluid flowing over a slightly sloped ground with a meandering open channel. 
-The simulations are compared with the numerical results of Liu et al.~\cite{Liu2009} and Demuren~\cite{Demuren1993} who calculated the two and three dimensional turbulence flows in meandering channels by a lattice Boltzmann model and a finite volume numerical model, respectively.
+In our numerical simulations, we found transients decay over times of typically \(t\approx400\).
+Figure~\ref{meander-velocity-cont} exhibits the contours of the depth averaged lateral velocities $\uu(x,y,t)$~and~$\vv(x,y,t)$. 
+The downstream velocity~$\uu$ reaches maximum at the bends.
+The transverse velocity~$\vv$ attains maximum and minimum at the connection of the bends, which is consistent with the results of Liu eta al.~\cite{Liu2009} who modelled the water in meandering channels with~$60^\circ$ and~$90^\circ$ consecutive bends and a width of~$0.3$\,m.
+Demuren~\cite{Demuren1993} calculated the water depth and the depth averaged longitudinal and transverse velocities of three dimensional flows in meandering channels with a natural bed configuration by a finite volume numerical method. 
+Simulations at fifteen observed stations of the meandering channel indicate that the location of the maximum velocity shifts from the inner bank to the outer bank as the water flows through the bends of the channel. 
 
-Create a Cartesian coordinate system~$(x,y,z)$. 
-Consider nondimensionalised fluid depth $h(x,y,t)$, mean lateral velocities $\uu(x,y,t)$ in the $x$~direction and $\vv(x,y,t)$ in the $y$~direction. 
-Describe the meandering open channel~$b(x,y)$ by
-\begin{align}&
-b(x,y)=-1+B-B\left[1-\left(\frac{y-\kappa_1\cos(\kappa_2x)}{\beta}\right)^2\right]^2\,,\label{bed:meander}
-\end{align}
-where the parameter~$\kappa_1$ and~$\kappa_2$ determine the curvature of the meandering channel, and the parameters $\beta$ and~$B$ are the width and mid-depth of the meandering channel.
-Simulate the turbulent flow over such channel by the equations~\eqref{smag:h}--\eqref{smag:v} with periodic boundary conditions in both $x$~and~$y$ directions for both the flow and channel. 
+Plots of the water depth do not show any features of much interest: plots are dominated by the variations in the bed.
+Figure~\ref{meander-velocity} plots of the the downstream velocity~$\uu(x,y,t)$ and the transverse velocity~$\vv(x,y,t)$ at the channel bends $x=10$ and $x=20$.
+The downstream velocity and transverse velocity are bigger in the outer bank than in the inner bank, which correspond to the computations by Demuren~\cite{Demuren1993}. 
+
 
 \begin{figure}
 \centering
 \begin{tabular}{c@{}c}
-\rotatebox{90}{\hspace{8ex}depth~$h$} &
-\includegraphics[scale=0.8]{meander-depth}\\
-& channel~cross-section~$y$
-\end{tabular}
-\caption{Plot of the fluid depth $h(x,y,t)$ in the cross-section of the channel at stations~$x=10$~(blue) and~$x=20$~(red). 
-The relevant parameters $2\beta=8$, $B=0.9$, $\theta=0.01$, $\kappa_1=1$ and $\kappa_2=4\pi/L_x$.}
-\label{meander-depth}
-\end{figure}%
-
-Transients decay over times of typically \(t\approx400\).
-Figure~\ref{meander-velocity-cont} exhibits the contours of the mean lateral velocities $\uu(x,y,t)$ and $\vv(x,y,t)$. 
-The mean downstream velocity~$\uu$ reaches maximum at the bends.
-The mean transverse velocity~$\vv$ gets to maximum and minimum at the connection of the bends, which are consistent with the results of Liu eta al.~\cite{Liu2009} who modelled the water in meandering channels with~$60^\circ$ and~$90^\circ$ consecutive bends and a width of~$0.3$\,m.
-Demuren~\cite{Demuren1993} calculated the depth and the depth averaged longitudinal and transverse velocities of three dimensional flows in meandering channels with natural bed configuration by a finite volume numerical method. 
-Simulations at fifteen observed stations of the meandering channel indicate that the location of the maximum velocity shifts from the inner bank to the outer bank as the water flowing through the bends of the channel. 
-Figure~\ref{meander-depth} and~\ref{meander-velocity} show the plots of the depth $h(x,y,t)$, the mean downstream velocity $\uu(x,y,t)$ and the mean transverse velocity $\vv(x,y,t)$ at the channel bends $x=10$ and $x=20$.
-The depth, downstream velocity and transverse velocity are bigger in the outer bank than in the inner bank, which correspond to the computations by Demuren~\cite{Demuren1993}. 
-
-
-\begin{figure}
-%\vspace{2mm}
-\centering
-\begin{tabular}{c@{}c}
-\rotatebox{90}{\hspace{7ex}mean~$\uu$} &
+\rotatebox{90}{\hspace{6ex}mean~$\vv,\uu$} &
 \includegraphics[scale=0.8]{meander-velocity1}\\
 & channel~cross-section~$y$\\
-\rotatebox{90}{\hspace{7ex}mean~$\vv$} &
+\rotatebox{90}{\hspace{6ex}mean~$\vv,\uu$} &
 \includegraphics[scale=0.8]{meander-velocity2}\\
 & channel~cross-section~$y$
 \end{tabular}
@@ -402,14 +413,14 @@ The relevant parameters $2\beta=8$, $B=0.9$, $\theta=0.01$, $\kappa_1=1$ and $\k
 
 \section{Conclusion}
 
-The proposed approach supporting by centre manifold theory describes the environmental turbulent fluids reliably. 
-The flows in straight and meandering compound channel, as examples, are simulated by the new approach. 
-The results correspond to the analysis and numerical simulations of the published work~\cite[e.g.]{Bousmar2002,Liu2009}.
- The equations~\eqref{smag:h}--\eqref{smag:v} account for the interactions between the vertical profiles and lateral spatial variations, and thus can be used to predict erosion and sand transport of the turbulent fluid in the further work.
+The proposed approach to supporting turbulent flood models by the dynamical systems theory of centre manifolds appears to predict environmental turbulent fluids reliably. 
+The flows in straight and meandering compound channel, as examples, were numerically simulated by the new approach. 
+The results correspond to the analysis and numerical simulations of the published work~\cite[e.g.]{Bousmar2002, Liu2009}.
+The equations~\eqref{smag:h}--\eqref{smag:v} account for the interactions between the vertical profiles and lateral spatial variations, and thus may in future work be used to better model erosion and sediment transport of the turbulent fluid.
 
 
 
-
+\pdfcomment{Need to check and see if Bousmar's work has been published in a regular journal??}
 \bibliographystyle{afmc}
 \bibliography{bibsmag}
 \end{document}
