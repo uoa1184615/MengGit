@@ -40,7 +40,7 @@ uubv=[gam*(uu(imid,jp)+uu(imid,jm))/2
 uu(1,j)=sum(uubv(1:2*interOrd,:));    
 
 % wave part of rhs is very easy by symmetry
-dhudt(i,j)=-(uu(i+1,j)-uu(i-1,j))/(dx*2);
+dhudt(i,j)=-(uu(i+1,j)-uu(i-1,j))/2/dx;
 
 % other parts of equations require more craft: 
 % h is when both same; u is when both different;
@@ -66,9 +66,15 @@ dhudt(i0,j1)=dhudt(i0,j1) ...
 % nonlinear advection terms
 dhudt(i1,j0)=dhudt(i1,j0) ...
     -c1*uu(i1,j0).*(uu(i1+2,j0)-uu(i1-2,j0))/4/dx;
-uux=(uu(i0(1:end-2),j1)-uu(i0(3:end),j1))/4/dx;
+uux=(-uu(i0(1:end-2),j1)+uu(i0(3:end),j1))/4/dx;
+%dhudt(i0,j1)=dhudt(i0,j1) ...
+%   -c1*uu(i0,j1).*[uux(1,:);uux;uux(end,:)];
+%uuxl=(-3*uu(i0(1),j1)+4*uu(i0(2),j1)-uu(i0(3),j1))/4/dx;% first derivative on the two ends of each patch
+%uuxr=(uu(i0(end-2),j1)-4*uu(i0(end-1),j1)+3*uu(i0(end),j1))/4/dx;
+uuxl=(uu(i0(2),j1)-uu(i0(1),j1))/2/dx;% two points method
+uuxr=(uu(i0(end),j1)-uu(i0(end-1),j1))/2/dx;
 dhudt(i0,j1)=dhudt(i0,j1) ...
-    -c1*uu(i0,j1).*[uux(1,:);uux;uux(end,:)];
+   -c1*uu(i0,j1).*[uuxl;uux;uuxr];
 
 % form time derivative into a vector
 dhudt=reshape(dhudt(i,j),n*m,1);  
