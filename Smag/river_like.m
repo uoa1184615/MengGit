@@ -10,20 +10,21 @@ Lx=40; % considered length in x-direction
 Ly=20; % considered length in y-direction
 dx=Lx/nx; % spatial step in x-direction
 dy=Ly/ny; % spatial step in y-direction
-theta=0.001; % slope in x-direction
+theta=0.0005; % slope in x-direction
+mag=0.75; % determine the center depth of the channel
 
 % define the coordinate and the river-like channel.
 % multi-D linear spline prediction
 xk=[.2 .2 .2 .2 .5 .5 .5 .5 .25 .25 .25 .25 .4 .4 .4 .4 .7 .7 .7 .7 .8 .8 .8 .8 .9 .9 .9 .9];
-yk=[.1 .3 .6 .9 .3 .5 .7 .9 .1 .4 .6 .9 .3 .4 .5 .9 .1 .4 .6 .9 .1 .3 .45 .7 .1 .3 .6 .9];
-fk=[.8  0  .8  .8  .8  .8  0  .8 .8 0 .8 .8 .8 .8 0 .8 .8 .8 0 .8 .8 .8 0 .8 .8 0 .8 .8];
+yk=[.1 .15 .55 .7 .3 .4 .7 .9 .1 .5 .6 .7 .2 .3 .4 .8 .1 .3 .6 .9 .1 .3 .4 .7 .1 .3 .6 .9];
+fk=[1  0  1  1  1  1  0  1 1 0 1 1 1 1 0 1 1 1 0 1 1 1 0 1 1 0 1 1];
 % force column vector and make periodic??
 n=length(xk);
 xk=xk(:); yk=yk(:); fk=fk(:);
 pk=exp(i*2*pi*xk);
 qk=exp(i*2*pi*yk);
 % basis function(interpoint distances)
-basisfn=@(d) d;
+basisfn=@(d) d.^3;
 % find coefficients
 [ppk,pp]=meshgrid(pk,pk);
 [qqk,qq]=meshgrid(qk,qk);
@@ -41,8 +42,10 @@ q=exp(i*2*pi/Ly*y);
 [ppk,pp]=meshgrid(pk,p(:));
 [qqk,qq]=meshgrid(qk,q(:));
 dist=sqrt(abs(pp-ppk).^2+abs(qq-qqk).^2);
-b=abc(1)+abc(2)*p(:)+abc(3)*q(:)+basisfn(dist)*abc(4:n+3);
-b=reshape(real(b),nx,ny);
+z=abc(1)+abc(2)*p(:)+abc(3)*q(:)+basisfn(dist)*abc(4:n+3);
+b=max(1e-5,real(z));
+b=min(mag,b-min(b));
+b=reshape(b,nx,ny);
 
 % define the indexes.
 ii=1:nx;
@@ -61,8 +64,7 @@ k0p=k0p(:);
 k0m=k0m(:);
 
 % initial values
-mp=0.4;
-h=max(max(b))+mp-b; % the minimum shallow water depth is mp.
+h=1-b; 
 u=0*sqrt(0.992*sin(theta).*h/0.00293) ...
     +0.001*rand(nx,ny)+0*0.01*sin(2*pi/Lx*x);
 v=zeros(nx,ny);
