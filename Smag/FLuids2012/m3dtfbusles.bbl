@@ -1,9 +1,9 @@
 \begin{thebibliography}{10}
 
 \bibitem{Bousmar2002}
-Bousmar, D., {\em Flow modelling in compund channels: momentum trans- fer
-  between main channel and prismatic and non-prismatic floodplains\/}, Ph.D.
-  thesis, Universitie Catholique de Louvain, 2002.
+Bousmar, D., {\em Flow modelling in compund channels: momentum transfer between
+  main channel and prismatic and non-prismatic floodplains\/}, Ph.D. thesis,
+  Universitie Catholique de Louvain, 2002.
 
 \bibitem{Bousmar2003a}
 Bousmar, D. and Zech, Y., Large-scale coherent structures in compound channels,
@@ -55,8 +55,9 @@ Roberts, A.~J. and Li, Z., An accurate and comprehensive model of thin fluid
   flows with inertia on curved substrates, {\em J.~Fluid Mechanics\/}, {\bf
   553}, 2006, 33--73, \doi{10.1017/S0022112006008640}.
 
-\bibitem{Vanderbauwhede88}
-Vanderbauwhede, A. and Iooss, G., Center manifold theory in infinite
-  dimensions, {\em Dynamics Reported\/}, {\bf 1}, 1988, 125--163.
+\bibitem{Sofialidis:1999fk}
+Sofialidis, D. and Prinos, P., Turbulent flow in open channels with smooth and
+  rough flood plains, {\em Journal of Hydraulic Research\/}, {\bf 37}, 1999,
+  615--640.
 
 \end{thebibliography}
