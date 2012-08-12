@@ -7,7 +7,7 @@ Bousmar, D., {\em Flow modelling in compund channels: momentum transfer between
 
 \bibitem{Bousmar2003a}
 Bousmar, D. and Zech, Y., Large-scale coherent structures in compound channels,
-  Technical report, Universitie Catholique de Louvain, 2003.
+  {\em Shallow flows\/}, 347--354.
 
 \bibitem{Demuren1993}
 Demuren, A.~O., A numerical model for flow in meandering channels with natural
@@ -18,8 +18,7 @@ Georgiev, D.~J., Roberts, A.~J. and Strunin, D.~V., Modelling turbulent flow
   from dam break using slow manifolds, in {\em Proceedings of the 14th Biennial
   Computational Techniques and Applications Conference, CTAC-2008\/}, editors
   G.~N. Mercer and A.~J. Roberts, 2009, volume~50 of {\em ANZIAM J.\/},
-  C1033--C1051, C1033--C1051, \url
-  {http://journal.austms.org.au/ojs/index.php/ANZIAMJ/article/view/1466}.
+  C1033--C1051, C1033--C1051.
 
 \bibitem{Liu2009}
 Liu, H., Zhou, G.~J. and Burrows, R., Lattice boltzmann model for shallow water
@@ -36,9 +35,14 @@ Ozgokmen, T.~M., Iliescu, T., Fisher, P.~F., Srinivasan, A. and Duan, J., Large
   a rectangular enclosed domain, {\em Ocean Modelling\/}, {\bf 16}, 2007,
   106--140.
 
+\bibitem{Roberts1988}
+Roberts, A.~J., The application of centre-manifold theory to the evolution of
+  systems which vary slowly in space, {\em J. Austral. Math. Soc. Ser. B\/},
+  {\bf 29}, 1988, 480--500.
+
 \bibitem{Roberts1996}
 Roberts, A.~J., Low-dimensional models of thin film fluid dynamics, {\em Phys.
-  Letts.~A\/}, {\bf 212}, 1997, 63--72, \doi{10.1016/0375-9601(96)00040-0}.
+  Letts.~A\/}, {\bf 212}, 1997, 63--72.
 
 \bibitem{Roberts:2008fk}
 Roberts, A.~J., Computer algebra describes flow of turbulent floods via the
@@ -53,7 +57,7 @@ Roberts, A.~J., Georgiev, D.~J. and Strunin, D.~V., Model turbulent floods with
 \bibitem{Robertsli2006}
 Roberts, A.~J. and Li, Z., An accurate and comprehensive model of thin fluid
   flows with inertia on curved substrates, {\em J.~Fluid Mechanics\/}, {\bf
-  553}, 2006, 33--73, \doi{10.1017/S0022112006008640}.
+  553}, 2006, 33--73.
 
 \bibitem{Sofialidis:1999fk}
 Sofialidis, D. and Prinos, P., Turbulent flow in open channels with smooth and
